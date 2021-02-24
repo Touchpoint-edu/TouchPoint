@@ -41,7 +41,6 @@ export default function SignupForm({ toggleVariant }) {
           <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
             <h2>Create your account</h2>
           </div>
-          {/* Password Matching Source: https://github.com/formium/formik/issues/90 */}
           <Formik
             initialValues={{ email: "", password: "", confirmPassword: "" }}
             validationSchema={validationSchema}
