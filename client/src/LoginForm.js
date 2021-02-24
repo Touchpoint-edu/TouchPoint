@@ -38,10 +38,8 @@ export default function LoginForm() {
             <h2 >Sign in</h2>
           </div>
           <Formik
-            //initialValues correspond to 'name' value for each FloatingTextField object
             initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
-            //Call to the api route using axios
             onSubmit={handleSubmit}
           >
             {({

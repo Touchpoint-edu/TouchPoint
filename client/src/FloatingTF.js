@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 const textStyles = "text-lg text-grey-darker font-sans";
 
@@ -13,7 +13,7 @@ export default function FloatingTF({
   error,
   onBlur,
 }) {
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = useState(false);
 
   function handleActivation(e) {
     const prevState = active;
