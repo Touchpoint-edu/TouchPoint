@@ -14,7 +14,8 @@ function App() {
 
   const [apiCall, setapiCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
 
   useEffect(() => {
     callAPI().then(
@@ -25,8 +26,9 @@ function App() {
     });
     
   }, []);
+
   return (
-    <DataStoreContext.Provider value = {{isLoggedIn}}>
+    <DataStoreContext.Provider value = {{user, setUser}}>
     <Router>
       <div className = "container-fluid shadow">  
           <Nav />
@@ -37,9 +39,8 @@ function App() {
             <Route path="/" exact={true}>
                 <Home/>
             </Route>
-            <Route path="/signin" exact={true}>
-            </Route>
-            <Route path="/signup" exact={true}>
+            <Route path="/dashboard" exact={true}>
+                <Home/>
             </Route>
             <Route path="*">
             </Route>

@@ -11,9 +11,16 @@
     box-shadow: 1px 3px 1px #9E9E9E;
 }
 
+
+.text-red-500{
+  color: red;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+}
 .logout_button{
   color: #2E323F;
   font-family: 'Inter', sans-serif;
+
 }
 
 .logout_button:hover{
@@ -21,16 +28,21 @@
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
+  background-color:transparent;
 }
 
 .signup_button{
   color: #40904C;
   font-family: 'Inter', sans-serif;
+  background-color:transparent;
+  border: none;
 }
 
 .signin_button{
   color: #83B55C;
   font-family: 'Inter', sans-serif;
+  background-color:transparent;
+  border: none;
 }
 
 .signup_button:hover{
@@ -38,6 +50,8 @@
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
+  background-color:transparent;
+  border: none;
 }
 
 .signin_button:hover{
@@ -45,8 +59,63 @@
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
+  background-color:transparent;
+  border: none;
 }
 
+.submit_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+  width: 80%;
+}
+
+.google_button{
+  background-color: #83B55C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+  width: 80%;
+
+}
+
+.modal-header-text{
+  color: #616161;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+#sign-up-email, #sign-up-password, #sign-up-password-confirm {
+  width:88%;
+}
+
+#sign-in-email, #sign-in-password {
+  width:88%;
+}
+.terms{
+  color: #616161;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+
+#terms-highlight{
+  color: #83B55C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
+#terms-highlight:hover{
+  color: #83B55C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
 .loader {
   margin: 100px auto;
   font-size: 25px;
