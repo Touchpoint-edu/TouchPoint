@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var testRouter = require("./routes/test");
+var loginRouter = require("./routes/login");
 
 var app = express();
 
@@ -25,18 +26,18 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //Add routes here
 app.use("/test", testRouter);
+app.use("/api/login", loginRouter);
 
-app.get('/getTest', (req,res) =>{
-  res.send("TERRY WAS HERE EXPRESS AND REACT CONNECT");
-  console.log("Send test to React App");
-});
+// Terry's useless code
+// app.get('/getTest', (req,res) =>{
+//   res.send("TERRY WAS HERE EXPRESS AND REACT CONNECT");
+//   console.log("Send test to React App");
+// });
 
-
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + "/views/index.html");
-});
-
+// Also Terry's useless code
+// app.get('/', function(req, res){
+//   res.sendFile(__dirname + "/views/index.html");
+// });
 
 
 

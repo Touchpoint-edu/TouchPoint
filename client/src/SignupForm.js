@@ -3,8 +3,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import FloatingTextField from "./FloatingTF";
 import { DataStoreContext } from "./contexts";
-
-
+import GoogleSignIn from './GoogleSignIn';
 import Button from "./Button";
 import { signUp } from "./auth";
 import { useHistory } from "react-router-dom";
@@ -109,6 +108,7 @@ export default function SignupForm({ toggleVariant }) {
                 >
                   Create Account
                 </Button>
+                <GoogleSignIn/>
               </form>
             )}
           </Formik>

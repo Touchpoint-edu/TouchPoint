@@ -6,6 +6,7 @@ import FloatingTextField from "./FloatingTF";
 import Button from "./Button";
 import { login } from "./auth";
 import { DataStoreContext } from "./contexts";
+import GoogleSignIn from './GoogleSignIn';
 
 
 export default function LoginForm() {
@@ -99,6 +100,7 @@ export default function LoginForm() {
                         >
                         Sign in with Google
                 </Button>
+                <GoogleSignIn/>
               </form>
             )}
           </Formik>

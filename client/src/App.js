@@ -5,6 +5,7 @@ import Loading from './Loading.js';
 import Home from './Home.js'
 import Nav from './Nav.js';
 import { DataStoreContext} from "./contexts";
+import Dashboard from "./Dashboard";
 
 // import Home from './Home.js';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -40,7 +41,7 @@ function App() {
                 <Home/>
             </Route>
             <Route path="/dashboard" exact={true}>
-                <Home/>
+                <Dashboard/>
             </Route>
             <Route path="*">
             </Route>
