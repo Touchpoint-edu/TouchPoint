@@ -93,14 +93,10 @@ export default function LoginForm() {
                   Sign in
                 </Button>
                 <hr className="solid my-4" />
-                <Button
-                        className = "google_button ml-5 mb-3"
-                        fullWidth={true}
-                        type="google"
-                        >
-                        Sign in with Google
-                </Button>
-                <GoogleSignIn/>
+                    <GoogleSignIn
+                      className = "google-button ml-5 mb-6"
+                    >
+                    </GoogleSignIn>
               </form>
             )}
           </Formik>

@@ -74,13 +74,15 @@
 }
 
 .google_button{
-  background-color: #83B55C;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-weight: 500!important;
+  font-family: 'Inter', sans-serif!important;
   text-decoration: none;
-  color:white;
+  color:#83B55C!important;
   border: none;
+  padding-left:20%!important;
   width: 80%;
+  text-align: center!important;
+  align-content: center!important;
 
 }
 

@@ -30,6 +30,7 @@ export default function GoogleSignIn() {
             <GoogleLogin
                 clientId={"903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com"}
                 buttonText="Log in with Google"
+                className = "google_button ml-5"
                 onSuccess={handleLogin}
                 onFailure={handleLogin}
             />
