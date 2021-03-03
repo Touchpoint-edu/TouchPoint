@@ -9,7 +9,7 @@ import { signUp } from "./auth";
 import { useHistory } from "react-router-dom";
 
 
-export default function SignupForm({ toggleVariant }) {
+export default function SignupForm({ toggleVariant, onClose }) {
    
 
     const validationSchema = Yup.object().shape({
@@ -32,7 +32,8 @@ export default function SignupForm({ toggleVariant }) {
       e.preventDefault();
       const user = await signUp({ email, password, confirmPassword });
       setUser(user);
-      history.push("/");
+      history.push("/dashboard");
+      onClose();
     }
   
     return (
@@ -52,7 +53,7 @@ export default function SignupForm({ toggleVariant }) {
               handleSubmit,
               isSubmitting,
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form >
                 <FloatingTextField
                   className="mt-8"
                   id="sign-up-email"
@@ -62,14 +63,14 @@ export default function SignupForm({ toggleVariant }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={handleBlur}
-                  error={!!errors.email && touched.email}
+                  error={errors.email}
                   className = "ml-5 ftf" 
                 />
-                {errors.email && touched.email && (
+                {errors.email && (
                   <p className="text-red-500 ml-5">{errors.email}</p>
                 )}
                 <FloatingTextField
-                  className={errors.email && touched.email ? "mt-2" : "mt-8"}
+                  className={errors.email ? "mt-2" : "mt-8"}
                   id="sign-up-password"
                   name="password"
                   placeholder="Password"
@@ -77,14 +78,14 @@ export default function SignupForm({ toggleVariant }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={handleBlur}
-                  error={!!errors.password && touched.password}
+                  error={!!errors.password}
                   className = "ml-5" 
                 />
-                {errors.password && touched.password && (
+                {errors.password && (
                   <p className="text-red-500 ml-5">{errors.password}</p>
                 )}
                 <FloatingTextField
-                  className={errors.password && touched.password ? "mt-2" : "mt-8"}
+                  className={errors.password ? "mt-2" : "mt-8"}
                   id="sign-up-password-confirm"
                   name="confirmPassword"
                   placeholder="Confirm password"
@@ -92,19 +93,20 @@ export default function SignupForm({ toggleVariant }) {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onBlur={handleBlur}
-                  error={!!errors.confirmPassword && touched.confirmPassword}
+                  error={errors.confirmPassword}
                   className = "ml-5" 
                 />
-                {errors.confirmPassword && touched.confirmPassword && (
+                {errors.confirmPassword && (
                   <p className="text-red-500 ml-5">{errors.confirmPassword}</p>
                 )}
                 <p className="ml-5 mr-5 terms"> By signing up, you agree to the <a href="#" id="terms-highlight">Terms of Service</a> and <a href="#" id="terms-highlight">Privacy Policy</a>, including Cookie Use. </p>
                 <Button
                   className={`${
-                    errors.password && touched.password ? "mt-2" : "mt-8"
+                    errors.password? "mt-2" : "mt-8"
                   } h-12 text-xl submit_button ml-5 mt-3 mb-5`}
                   fullWidth={true}
                   disabled={isSubmitting}
+                  onSubmit = {handleSubmit}
                 >
                   Create Account
                 </Button>

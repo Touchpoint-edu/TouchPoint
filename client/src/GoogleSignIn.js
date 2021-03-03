@@ -20,6 +20,7 @@ export default function GoogleSignIn() {
 
         if (res.status === 201) {
             setAuthenticated(true);
+
         }
 
         console.log(data);
@@ -34,7 +35,7 @@ export default function GoogleSignIn() {
                 onSuccess={handleLogin}
                 onFailure={handleLogin}
             />
-            { isAuthenticated === true ? <Redirect to="/dashboard" /> : null}
+            { isAuthenticated === true ? <Redirect to="/dashboard"/> : null}
         </>
 
     );

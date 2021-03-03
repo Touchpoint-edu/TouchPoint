@@ -44,9 +44,9 @@ export default function SigninSignupModal({ open, variant, onClose, toggleVarian
             </div>
             <div>
             {variant === "signIn" ? (
-                <LoginForm />
+                <LoginForm  onClose={onClose}/>
             ) : (
-                <SignupForm toggleVariant={toggleVariant} />
+                <SignupForm toggleVariant={toggleVariant} onClose={onClose} />
             )}
             </div>
             

@@ -9,25 +9,26 @@ import { DataStoreContext } from "./contexts";
 import GoogleSignIn from './GoogleSignIn';
 
 
-export default function LoginForm() {
+export default function LoginForm({onClose}) {
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email("Invalid email").required("Email required"),
         password: Yup.string().required("Password required"),
       });
 
-    const [email, setEmail] = useState("dtang@usc.edu");
-    const [password, setPassword] = useState("password");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const { user, setUser } = useContext(DataStoreContext);
     const history = useHistory();
   
     async function handleSubmit(e) {
       e.preventDefault();
-  
+      
       try {
         const user = await login({ email, password });
         setUser(user);
-        history.push("/");
+        onClose();
+        history.push("/dashboard");
       } catch (error) {
         console.error(error);
       }
@@ -50,7 +51,7 @@ export default function LoginForm() {
               handleSubmit,
               isSubmitting,
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form >
                 <FloatingTextField
                   className="mt-8"
                   id="sign-in-email"
@@ -60,14 +61,14 @@ export default function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={handleBlur}
-                  error={!!errors.email && touched.email}
+                  error={errors.email}
                   className = "ml-5"   
                 />
-                {errors.email && touched.email && (
+                {errors.email && (
                   <p className="text-red-500 ml-5">{errors.email}</p>
                 )}
                 <FloatingTextField
-                  className={errors.email && touched.email ? "mt-2" : "mt-8"}
+                  className={errors.email ? "mt-2" : "mt-8"}
                   id="sign-in-password"
                   name="password"
                   placeholder="Password"
@@ -75,19 +76,20 @@ export default function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={handleBlur}
-                  error={!!errors.password && touched.password}
+                  error={errors.password}
                   className = "ml-5" 
                 />
-                {errors.password && touched.password && (
+                {errors.password && (
                   <p className="text-red-500 ml-5">{errors.password}</p>
                 )}
                 <Button
                   className={`${
-                    errors.password && touched.password ? "mt-3" : "mt-4"
+                    errors.password  ? "mt-3" : "mt-4"
                   } h-12 text-xl, submit_button ml-5`}
                   variant="filled"
                   fullWidth={true}
                   type="submit"
+                  onClick = {handleSubmit}
 
                 >
                   Sign in
@@ -95,6 +97,7 @@ export default function LoginForm() {
                 <hr className="solid my-4" />
                     <GoogleSignIn
                       className = "google-button ml-5 mb-6"
+                      onClose = {onClose}
                     >
                     </GoogleSignIn>
               </form>

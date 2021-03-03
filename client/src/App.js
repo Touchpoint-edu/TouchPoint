@@ -13,42 +13,31 @@ import './App.css';
 
 function App() {
 
-  const [apiCall, setapiCall] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
 
-  useEffect(() => {
-    callAPI().then(
-    (res) => {
-      setapiCall(res);
-    }).finally(() => {
-        setIsLoading(false);
-    });
-    
-  }, []);
-
   return (
     <DataStoreContext.Provider value = {{user, setUser}}>
-    <Router>
-      <div className = "container-fluid shadow">  
-          <Nav />
-      </div>
+      <Router>
       {isLoading ? <Loading/> : <>
-        <main className = "col-10">
-          <Switch>
-            <Route path="/" exact={true}>
-                <Home/>
-            </Route>
-            <Route path="/dashboard" exact={true}>
-                <Dashboard/>
-            </Route>
-            <Route path="*">
-            </Route>
-          </Switch>
-        </main>
-    </>}
-    </Router>
+        <div className = "container-fluid shadow">  
+            <Nav />
+        </div>
+          <main className = "col-10">
+            <Switch>
+              <Route path="/" exact={true}>
+                  <Home/>
+              </Route>
+              <Route path="/dashboard" exact={true}>
+                  <Dashboard/>
+              </Route>
+              <Route path="*">
+              </Route>
+            </Switch>
+          </main>
+      </>}
+      </Router>
     </DataStoreContext.Provider>
 
 
