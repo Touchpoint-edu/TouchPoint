@@ -11,7 +11,6 @@ const SECRET_KEY = "ae280b2d0d3e3ca11caa15e3ba7ea172"; // move to environment va
 const client = new OAuth2Client("903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com")
 
 function sendToken(res, data) {
-    const secret = JSON.parse(json).secret;
     const token = jwt.sign({
         sub: data._id,
         name: data.name

@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 //PLAY AROUND HERE
-
-mongo.connect("mongodb+srv://touchpoint:csci401@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", function(err) {
+// put in the uri here haha
+mongo.connect("uri", function(err) {
     //Add routes here
     app.use("/test", testRouter);
     app.use("/api/login", loginRouter);
