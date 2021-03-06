@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
+var mongo = require('./models/mongo');
 
 var app = express();
 
@@ -24,9 +25,14 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //PLAY AROUND HERE
 
-//Add routes here
-app.use("/test", testRouter);
-app.use("/api/login", loginRouter);
+mongo.connect("mongodb+srv://touchpoint:csci401@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", function(err) {
+    //Add routes here
+    app.use("/test", testRouter);
+    app.use("/api/login", loginRouter);
+});
+
+
+
 
 // Terry's useless code
 // app.get('/getTest', (req,res) =>{

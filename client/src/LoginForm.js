@@ -23,7 +23,6 @@ export default function LoginForm({onClose}) {
   
     async function handleSubmit(e) {
       e.preventDefault();
-      
       try {
         const user = await login({ email, password });
         setUser(user);

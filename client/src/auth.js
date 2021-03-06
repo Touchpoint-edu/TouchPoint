@@ -35,11 +35,13 @@ export function logout() {
 }
 
 export async function login(userData) {
-  const response = await fetch("/api/login", {
+  console.log(userData);
+  const response = await fetch("/api/login/auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+      "Authorization": "Basic "
     },
     body: JSON.stringify(userData),
   });
