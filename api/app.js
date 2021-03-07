@@ -3,9 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config()
 
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
+var emailRouter = require("./routes/email_verification");
 
 var app = express();
 
@@ -27,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 //Add routes here
 app.use("/test", testRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/email_verification", emailRouter); 
 
 // Terry's useless code
 // app.get('/getTest', (req,res) =>{
