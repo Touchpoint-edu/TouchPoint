@@ -26,7 +26,7 @@ router.post("/auth/google", async (req, res) => {
     const { token }  = req.body;
     console.log(req.body);
     // Verify Google Token
-    const ticket = await client.verifyIdToken({
+    client.verifyIdToken({
         idToken: token,
         audience: "903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com"
     })
