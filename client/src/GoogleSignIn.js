@@ -23,15 +23,7 @@ export default function GoogleSignIn({onClose, buttonText}) {
                 const data = await res.json();
                 setGoogleErrorMsg(data.message);
             }
-
-        const data = await res.json();
-
-        if (res.status === 201) {
-            setAuthenticated(true);
-
         }
-
-        console.log(data);
     }
 
     return (
