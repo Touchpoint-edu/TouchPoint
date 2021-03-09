@@ -23,7 +23,6 @@ export default function GoogleSignIn({onClose, buttonText}) {
                 const data = await res.json();
                 setGoogleErrorMsg(data.message);
             }
-        })
 
         const data = await res.json();
 
