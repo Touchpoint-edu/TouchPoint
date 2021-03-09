@@ -31,23 +31,20 @@ export default function SigninSignupModal({ open, variant, onClose, toggleVarian
   return createPortal(
       <>
       <div className="modal-backdrop show"></div>
-      <div className="modal" tabIndex="-1" style={{ display: "block" }}>
-        <div className="modal-dialog">
+      <div className="modal d-block" tabIndex="-1">
+        <div className="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
           <div className="modal-content pb-3" onClick={stopPropagation}>
             <div className = "d-flex justify-content-end mr-3 mt-3 ">
-                <div className="invisible " onClick={onClose}>
-                <Close />
-                </div>
                 <div className="modal-close cursor-pointer z-50" onClick={onClose}>
                 <Close />
                 </div>
             </div>
-            <div>
-            {variant === "signIn" ? (
-                <LoginForm  onClose={onClose}/>
-            ) : (
-                <SignupForm toggleVariant={toggleVariant} onClose={onClose} />
-            )}
+            <div className="px-5">
+            {variant === "signIn" ?
+              <LoginForm onClose={onClose}/>
+             : 
+              <SignupForm toggleVariant={toggleVariant} onClose={onClose} />
+            }
             </div>
             
           </div>
