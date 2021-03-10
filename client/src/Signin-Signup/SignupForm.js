@@ -1,11 +1,11 @@
 import React, {useState, useContext} from 'react';
 import * as Yup from "yup";
 import { Formik } from "formik";
-import FloatingTextField from "./FloatingTF";
-import { DataStoreContext } from "./contexts";
+import FloatingTextField from "../Components/FloatingTF.js";
+import { DataStoreContext } from "../contexts.js";
 import GoogleSignIn from './GoogleSignIn';
-import Button from "./Button";
-import { signUp } from "./auth";
+import Button from "../Components/Button";
+import { signUp } from "../api/auth";
 import { useHistory } from "react-router-dom";
 
 
@@ -101,6 +101,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   fullWidth={true}
                   disabled={isSubmitting}
                   onSubmit = {handleSubmit}
+                  onClose = {onClose}
                 >
                   Create Account
                 </Button>

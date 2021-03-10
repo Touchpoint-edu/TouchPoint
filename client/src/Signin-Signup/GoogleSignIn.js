@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
-import { loginWithGoogle } from "./auth";
+import { loginWithGoogle } from "../api/auth";
 
 export default function GoogleSignIn({onClose, buttonText}) {
     const [isAuthenticated, setAuthenticated] = useState(false);

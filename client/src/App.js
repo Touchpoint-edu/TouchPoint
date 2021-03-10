@@ -1,11 +1,10 @@
 
 import React, {useState, useEffect} from 'react';
-import { callAPI } from './api.js';
-import Loading from './Loading.js';
+import Loading from '../src/Components/Loading.js';
 import Home from './Home.js'
 import Nav from './Nav.js';
 import { DataStoreContext} from "./contexts";
-import Dashboard from "./Dashboard";
+import Dashboard from "../src/Dashboard/Dashboard.js";
 
 // import Home from './Home.js';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -14,7 +13,7 @@ import './App.css';
 function App() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("Elly Berge");
 
 
   return (
@@ -26,10 +25,10 @@ function App() {
         </div>
           <main className = "col-10">
             <Switch>
-              <Route path="/" exact={true}>
+              <Route path="/temp" exact={true}>
                   <Home/>
               </Route>
-              <Route path="/dashboard" exact={true}>
+              <Route path="/" exact={true}>
                   <Dashboard/>
               </Route>
               <Route path="*">

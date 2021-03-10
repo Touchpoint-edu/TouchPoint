@@ -72,6 +72,36 @@
   border: none;
 }
 
+.import_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  width: 101%;
+  border: none;
+
+}
+.dash_header_buttons{
+  margin-right: 100px;
+}
+.dash_title{
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #40904C;
+  font-size: 25px;
+
+}
+.export_button {
+  background-color: #83B55C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+
+}
+
 .google_button{
   font-weight: 500!important;
   font-family: 'Inter', sans-serif!important;
@@ -112,6 +142,18 @@
   font-weight: 300;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
+}
+.upload-box{
+  margin-left: 150px;
+} 
+.file-uploader{
+  margin-left: -25px;
+  background-color: transparent!important;
+  color: #83B55C;
+}
+.student-modal{
+  max-height: 400px;
+  overflow: auto;
 }
 .loader {
   margin: 100px auto;
