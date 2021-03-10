@@ -6,24 +6,31 @@ export default function GoogleSignIn() {
     const [isAuthenticated, setAuthenticated] = useState(false);
 
     const handleLogin = async googleData => {
-        const res = await fetch("api/login/auth/google", {
-            method: "POST",
-            body: JSON.stringify({
-                token: googleData.tokenId
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        const data = await res.json();
-
-        if (res.status === 201) {
-            setAuthenticated(true);
-
+        if (googleData.error) {
+            // handle error
+            console.log(googleData.error);
         }
+        else{
+            console.log(googleData);
+            const res = await fetch("api/login/auth/google", {
+                method: "POST",
+                body: JSON.stringify({
+                    token: googleData.tokenId
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
 
-        console.log(data);
+            if (res.status === 200) {
+                setAuthenticated(true);
+            }
+            else {
+                const data = await res.json();
+                console.log(data.message);
+                // display error message
+            }
+        }
     }
 
     return (

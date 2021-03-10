@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
+var mongo = require('./models/mongo');
 
 var app = express();
 
@@ -23,10 +24,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 //PLAY AROUND HERE
+// put in the uri here haha
+mongo.connect("uri", function(err) {
+    //Add routes here
+    app.use("/test", testRouter);
+    app.use("/api/login", loginRouter);
+});
 
-//Add routes here
-app.use("/test", testRouter);
-app.use("/api/login", loginRouter);
+
+
 
 // Terry's useless code
 // app.get('/getTest', (req,res) =>{
