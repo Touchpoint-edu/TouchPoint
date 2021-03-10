@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
+import { DataStoreContext } from "../contexts.js";
 
-export default function GoogleSignIn() {
+export default function GoogleSignIn({onClose}) {
     const [isAuthenticated, setAuthenticated] = useState(false);
+    const { user, setUser } = useContext(DataStoreContext);
 
     const handleLogin = async googleData => {
         const res = await fetch("api/login/auth/google", {
@@ -17,13 +19,13 @@ export default function GoogleSignIn() {
         })
 
         const data = await res.json();
-
         if (res.status === 201) {
             setAuthenticated(true);
+            // setUser(data);
+            // onClose();
 
         }
-
-        console.log(data);
+        console.log(isAuthenticated);
     }
 
     return (

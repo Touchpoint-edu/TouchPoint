@@ -2,10 +2,10 @@ import React, {useState, useContext} from 'react';
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
-import FloatingTextField from "./FloatingTF";
-import Button from "./Button";
-import { login } from "./auth";
-import { DataStoreContext } from "./contexts";
+import FloatingTextField from "../Components/FloatingTF";
+import Button from "../Components/Button";
+import { login } from "../api/auth.js";
+import { DataStoreContext } from "../contexts";
 import GoogleSignIn from './GoogleSignIn';
 
 
@@ -95,11 +95,13 @@ export default function LoginForm({onClose}) {
                   Sign in
                 </Button>
                 <hr className="solid my-4" />
-                    <GoogleSignIn
-                      className = "google-button ml-5 mb-6"
-                      onClose = {onClose}
-                    >
-                    </GoogleSignIn>
+                <GoogleSignIn
+                    className = "google-button ml-5 mb-6"
+                    onClose = {onClose}
+                >
+                </GoogleSignIn>
+       
+                    
               </form>
             )}
           </Formik>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 
-import Close from "./Close";
+import Close from "../Components/Close";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import { createPortal } from "react-dom";
@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 const modalContainer = document.getElementById("modal-container");
 
 export default function SigninSignupModal({ open, variant, onClose, toggleVariant }) {
-  React.useEffect(() => {
+  useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
         onClose();
