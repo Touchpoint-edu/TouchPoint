@@ -145,10 +145,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                 </>
             )}
             </div>
-            
           </div>
-          
-
         </div>
       </div>
     </>
