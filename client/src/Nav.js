@@ -15,7 +15,10 @@ export default function Nav(){
         setModalVariant(variant);
         setModalOpen(true);
     };
-    const closeModal = () => setModalOpen(false);
+    const closeModal = () => {
+        console.log("closing modal");
+        setModalOpen(false);
+    }
 
     const { user, setUser } = useContext(DataStoreContext);
 

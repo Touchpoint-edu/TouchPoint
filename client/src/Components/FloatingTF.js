@@ -4,7 +4,6 @@ const textStyles = "text-lg text-grey-darker font-sans";
 
 export default function FloatingTF({
   className,
-  id,
   name,
   placeholder,
   value,
@@ -32,11 +31,10 @@ export default function FloatingTF({
       <input
         className={[
           textStyles,
-          "outline-none w-full rounded bg-transparent text-sm mt-3 mb-3 px-3 py-2",
+          "outline-none w-100 rounded bg-transparent text-sm mt-3 mb-3 px-3 py-2",
           "transition-all duration-200 ease-in-out",
           active && "pt-7",
         ].join(" ")}
-        id={id}
         type={type}
         name={name}
         value={value}

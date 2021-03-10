@@ -38,7 +38,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
   
     return (
         <>
-          <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
+          <div className="mt-8 d-flex justify-content-start modal-header-text">
             <h2>Create your account</h2>
           </div>
           <Formik
@@ -64,13 +64,12 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={handleBlur}
                   error={errors.email}
-                  className = "ml-5 ftf" 
+                  className = "ftf" 
                 />
                 {errors.email && (
-                  <p className="text-red-500 ml-5">{errors.email}</p>
+                  <p className="text-red-500">{errors.email}</p>
                 )}
                 <FloatingTextField
-                  className={errors.email ? "mt-2" : "mt-8"}
                   id="sign-up-password"
                   name="password"
                   placeholder="Password"
@@ -79,13 +78,11 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={handleBlur}
                   error={!!errors.password}
-                  className = "ml-5" 
                 />
                 {errors.password && (
-                  <p className="text-red-500 ml-5">{errors.password}</p>
+                  <p className="text-red-500">{errors.password}</p>
                 )}
                 <FloatingTextField
-                  className={errors.password ? "mt-2" : "mt-8"}
                   id="sign-up-password-confirm"
                   name="confirmPassword"
                   placeholder="Confirm password"
@@ -94,16 +91,13 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onBlur={handleBlur}
                   error={errors.confirmPassword}
-                  className = "ml-5" 
                 />
                 {errors.confirmPassword && (
-                  <p className="text-red-500 ml-5">{errors.confirmPassword}</p>
+                  <p className="text-red-500">{errors.confirmPassword}</p>
                 )}
-                <p className="ml-5 mr-5 terms"> By signing up, you agree to the <a href="#" id="terms-highlight">Terms of Service</a> and <a href="#" id="terms-highlight">Privacy Policy</a>, including Cookie Use. </p>
+                <p className="terms mt-3"> By signing up, you agree to the <a href="#" id="terms-highlight">Terms of Service</a> and <a href="#" id="terms-highlight">Privacy Policy</a>, including Cookie Use. </p>
                 <Button
-                  className={`${
-                    errors.password? "mt-2" : "mt-8"
-                  } h-12 text-xl submit_button ml-5 mt-3 mb-5`}
+                  className={` w-100 h-12 text-xl submit_button mt-3`}
                   fullWidth={true}
                   disabled={isSubmitting}
                   onSubmit = {handleSubmit}
@@ -111,7 +105,8 @@ export default function SignupForm({ toggleVariant, onClose }) {
                 >
                   Create Account
                 </Button>
-                <GoogleSignIn/>
+                <hr />
+                <GoogleSignIn buttonText="Sign up with Google" />
               </form>
             )}
           </Formik>

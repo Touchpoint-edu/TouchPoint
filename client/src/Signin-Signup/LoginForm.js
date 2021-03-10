@@ -1,13 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, { useState } from 'react';
 import * as Yup from "yup";
-import { Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { Formik, Form } from "formik";
 import FloatingTextField from "../Components/FloatingTF";
 import Button from "../Components/Button";
-import { login } from "../api/auth.js";
-import { DataStoreContext } from "../contexts";
+import { login } from "../api/auth";
 import GoogleSignIn from './GoogleSignIn';
-
+import { Redirect } from "react-router-dom";
 
 export default function LoginForm({onClose}) {
 
@@ -16,19 +14,24 @@ export default function LoginForm({onClose}) {
         password: Yup.string().required("Password required"),
       });
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const { user, setUser } = useContext(DataStoreContext);
-    const history = useHistory();
+    const [isAuthenticated, setAuthenticated] = useState("");
+    const [loginErrorMsg, setLoginErrorMsg] = useState("");
   
-    async function handleSubmit(e) {
-      e.preventDefault();
-      
+    async function handleSubmit(values) {
+
       try {
-        const user = await login({ email, password });
-        setUser(user);
-        onClose();
-        history.push("/dashboard");
+        const success = await login({ 
+          email: values.email, 
+          password: values.password 
+        });
+        if (success === 200) {
+          setAuthenticated(true);
+          onClose();
+        }
+        else {
+          console.log(success);
+          setLoginErrorMsg(success.message);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -36,8 +39,8 @@ export default function LoginForm({onClose}) {
 
     return (
         <>
-          <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
-            <h2 >Sign in</h2>
+          <div className="d-flex justify-content-start modal-header-text">
+            <h2>Sign in</h2>
           </div>
           <Formik
             initialValues={{ email: "", password: "" }}
@@ -48,65 +51,55 @@ export default function LoginForm({onClose}) {
               errors,
               touched,
               handleBlur,
-              handleSubmit,
+              handleChange,
               isSubmitting,
+              values
             }) => (
-              <form >
+              <Form >
                 <FloatingTextField
                   className="mt-8"
-                  id="sign-in-email"
                   name="email"
                   placeholder="Email"
                   type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={values.email}
+                  onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.email}
-                  className = "ml-5"   
+                  error={!!errors.email}
                 />
-                {errors.email && (
-                  <p className="text-red-500 ml-5">{errors.email}</p>
+                {errors.email && touched.email && (
+                  <p className="text-red-500 mb-0">{errors.email}</p>
                 )}
                 <FloatingTextField
-                  className={errors.email ? "mt-2" : "mt-8"}
-                  id="sign-in-password"
                   name="password"
                   placeholder="Password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={values.password}
+                  onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.password}
-                  className = "ml-5" 
+                  error={!!errors.password}
                 />
-                {errors.password && (
-                  <p className="text-red-500 ml-5">{errors.password}</p>
-                )}
+                {errors.password && touched.password && 
+                  <p className="text-red-500 mb-0">{errors.password}</p>
+                }
                 <Button
-                  className={`${
-                    errors.password  ? "mt-3" : "mt-4"
-                  } h-12 text-xl, submit_button ml-5`}
+                  className="mt-3 h-12 text-xl w-100 submit_button"
                   variant="filled"
                   fullWidth={true}
                   type="submit"
-                  onClick = {handleSubmit}
-
                 >
                   Sign in
                 </Button>
+                <p className="text-red-500 mt-3">{loginErrorMsg}</p>
                 <hr className="solid my-4" />
-                <GoogleSignIn
-                    className = "google-button ml-5 mb-6"
-                    onClose = {onClose}
-                >
-                </GoogleSignIn>
-       
-                    
-              </form>
+                    <GoogleSignIn
+                      onClose = {onClose}
+                    >
+                    </GoogleSignIn>
+             </Form>
             )}
           </Formik>
           
-          
+          { isAuthenticated === true ? <Redirect to="/dashboard"/> : null}
           
         </>
       );
