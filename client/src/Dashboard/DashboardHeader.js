@@ -26,7 +26,7 @@ export default function DashboardHeader() {
     const [selectedPeriod, setSelectedPeriod] = useState("Periods");
     
     function handlePeriodChange(event) {
-        //API Call
+        // API Call
         // const newStudents 
         // setStudents(newStudents);
         setSelectedPeriod(event.target.value);

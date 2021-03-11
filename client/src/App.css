@@ -146,6 +146,21 @@
 .upload-box{
   margin-left: 150px;
 } 
+.tile{
+  background-color: #83B55C;
+  border-radius: 5px;
+  padding-top:5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right:5px;
+
+}
+
+.layout{
+  background-color:#40904C;
+  margin-left:105px; 
+  border-radius: 5px;
+}
 .file-uploader{
   margin-left: -25px;
   background-color: transparent!important;
