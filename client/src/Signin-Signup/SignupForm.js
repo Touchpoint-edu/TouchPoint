@@ -5,7 +5,7 @@ import FloatingTextField from "../Components/FloatingTF.js";
 import { DataStoreContext } from "../contexts.js";
 import GoogleSignIn from './GoogleSignIn';
 import Button from "../Components/Button";
-import { signUp } from "../api/auth";
+import { signUp, signUpWithGoogle } from "../api/auth";
 import { useHistory } from "react-router-dom";
 
 

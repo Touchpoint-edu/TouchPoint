@@ -6,7 +6,7 @@ import Button from "../Components/Button";
 import { login } from "../api/auth";
 import GoogleSignIn from './GoogleSignIn';
 import { Redirect } from "react-router-dom";
-import { loginWithGoogle } from "./auth";
+import { loginWithGoogle } from "../api/auth";
 
 
 export default function LoginForm({onClose}) {
