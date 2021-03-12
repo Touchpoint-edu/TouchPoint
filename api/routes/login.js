@@ -22,6 +22,13 @@ function sendToken(res, data) {
     res.sendStatus(200);
 }
 
+function sendError(res, status, message) {
+    res.status(status);
+    res.json({
+        message: message
+    });
+}
+
 router.post("/auth/google", async (req, res) => {
     const { token }  = req.body;
     console.log(req.body);
@@ -36,15 +43,20 @@ router.post("/auth/google", async (req, res) => {
         const options = {
             projection: {
                 _id: 1,
-                name: 1
+                name: 1,
+                status: 1
             }
         }
         mongo.findUser({ google_id: sub}, options)
         .then((data) => {
+            console.log("STATUS: ", data.status);
             if (data == null) {
+                sendError(res, 401, "No account found. Please create an account.");
+            }
+            else if (data.status == "pending") {
                 res.status(401);
                 res.json({
-                    message: "No account found. Please create an account."
+                    message: "Your account is pending verification."
                 });
             }
             else {
@@ -72,7 +84,9 @@ router.post("/auth", async (req, res) => {
             _id: 1,
             email: 1,
             hash: 1,
-            name: 1
+            name: 1,
+            google_id: 1,
+            status: 1
         }
     }
 
@@ -84,6 +98,12 @@ router.post("/auth", async (req, res) => {
             res.json({
                 message: "No account found. Please create an account."
             });
+        }
+        else if (data.status === "pending") {
+            sendError(res, 401, "Your account is pending verification.");
+        }
+        else if (!!data.google_id) {
+            sendError(res, 401, "Please use 'Sign in with Google' to log in.");
         }
         else {
             // hash provided password and check against hash stored in database
@@ -99,19 +119,13 @@ router.post("/auth", async (req, res) => {
                     sendToken(res, data);
                 }
                 else {
-                    res.status(401);
-                    res.json({
-                        message: "Incorrect password." // can change error messages later
-                    });
+                    sendError(res, 401, "Incorrect password."); // can change error messages later
                 }
             });
         }
     })
     .catch(err => {
-        res.status(401);
-        res.json({
-            message: "Login failed."
-        });
+        sendError(res, 401, "Login failed.");
     });
  
 })

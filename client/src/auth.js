@@ -64,3 +64,17 @@ export async function loginWithGoogle(token) {
   });
   return res;
 }
+
+export async function signUpWithGoogle(token) {
+  console.log("signing up with google :)");
+  const res = await fetch("api/signup/google", {
+    method: "POST",
+    body: JSON.stringify({
+        token: token
+    }),
+    headers: {
+        "Content-Type": "application/json"
+    }
+  });
+  return res;
+}
