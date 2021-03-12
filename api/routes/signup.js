@@ -47,7 +47,7 @@ router.post("/google", async (req, res) => {
         });
     })
     .catch(error => {
-        sendError(res, 400, "Signup with Google failed.");
+        sendError(res, 500, "Signup with Google failed.");
     });
 });
 
@@ -81,8 +81,6 @@ router.post("/", async (req, res) => {
                 if (err) {
                     throw err;
                 }
-                console.log("got derived key: ", derivedKey.toString('hex'));
-                console.log("salt: ", Buffer.from(salt, 'hex'));
                 const hash = derivedKey.toString('hex') + ":" + salt.toString('hex');
                 mongo.insertOne("users", {
                     fname: fname,
@@ -91,12 +89,14 @@ router.post("/", async (req, res) => {
                     hash: hash,
                     status: "pending"
                 });
+
+                // ADD EMAIL VERIFICATION HERE (suggested to create a email verification function)
                 res.sendStatus(201);
             });
         }
     })
     .catch(err => {
-        sendError(res, 400, "Signup failed.");
+        sendError(res, 500, "Signup failed.");
     });
  
 })

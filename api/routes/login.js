@@ -6,15 +6,13 @@ var crypto = require('crypto');
 var fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 
-const SECRET_KEY = "ae280b2d0d3e3ca11caa15e3ba7ea172"; // move to environment variable when we transfer to server
-
 const client = new OAuth2Client("903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com")
 
 function sendToken(res, data) {
     const token = jwt.sign({
         sub: data._id,
         name: data.name
-    }, SECRET_KEY, {expiresIn: '1h'}); // change expiry time
+    }, process.env.JWT_SECRET_KEY, {expiresIn: '1h'}); // change expiry time
     res.cookie('c_user', token, { 
         expires: new Date(Date.now() + 900000), // change expiry time
         httpOnly: true
@@ -99,9 +97,6 @@ router.post("/auth", async (req, res) => {
                 message: "No account found. Please create an account."
             });
         }
-        else if (data.status === "pending") {
-            sendError(res, 401, "Your account is pending verification.");
-        }
         else if (!!data.google_id) {
             sendError(res, 401, "Please use 'Sign in with Google' to log in.");
         }
@@ -116,7 +111,12 @@ router.post("/auth", async (req, res) => {
                 console.log("hash: ", hash);
                 console.log("salt: ", salt);
                 if (derivedKey.toString('hex') === hash) {
-                    sendToken(res, data);
+                    if (data.status === "pending") {
+                        sendError(res, 401, "Your account is pending verification.");
+                    }
+                    else {
+                        sendToken(res, data);
+                    }
                 }
                 else {
                     sendError(res, 401, "Incorrect password."); // can change error messages later
