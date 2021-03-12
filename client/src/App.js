@@ -23,7 +23,7 @@ function App() {
         <div className = "container-fluid shadow">  
             <Nav />
         </div>
-          <main className = "col-10">
+          <main >
             <Switch>
               <Route path="/temp" exact={true}>
                   <Home/>
