@@ -1,10 +1,16 @@
-var express = require("express")
+var express = require('express');
 var router = express.Router();
 var mongo = require('../models/mongo');
 var crypto = require('crypto');
-
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client("903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com")
+
+const { ACCOUNT_EXISTS_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
+const { USER_PENDING_EMAIL_STATUS } = require('../constants/status');
+const { GOOGLE_CLIENT_ID } = require('../constants/config');
+
+const USER_COLLECTION_NAME = "users";
+
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 function sendError(res, status, message) {
     res.status(status);
@@ -15,11 +21,10 @@ function sendError(res, status, message) {
 
 router.post("/google", async (req, res) => {
     const { token }  = req.body;
-    console.log(req.body);
     // Verify Google Token
     client.verifyIdToken({
         idToken: token,
-        audience: "903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com"
+        audience: GOOGLE_CLIENT_ID
     })
     .then(ticket => {
         // Find google id in database
@@ -33,27 +38,26 @@ router.post("/google", async (req, res) => {
         mongo.findUser({ email: email }, options)
         .then((data) => {
             if (data !== null) {
-                sendError(res, 400, "Account already exists with this email. Please log in.");
+                sendError(res, 400, ACCOUNT_EXISTS_ERROR_MSG);
             }
             else {
-                mongo.insertOne("users", {
+                mongo.insertOne(USER_COLLECTION_NAME, {
                     google_id: sub,
                     fname: given_name,
                     lname: family_name,
                     email: email,
-                    status: "pending"
+                    status: USER_PENDING_EMAIL_STATUS
                 });
             }
         });
     })
     .catch(error => {
-        sendError(res, 500, "Signup with Google failed.");
+        sendError(res, 500, SERVER_ERROR_MSG);
     });
 });
 
 router.post("/", async (req, res) => {
     const base64credentials = req.headers.authorization.split(' ')[1]
-    console.log(base64credentials);
     const credentials = Buffer.from(base64credentials, 'base64').toString('ascii');
     const [email, password] = credentials.split(':');
     const {fname, lname} = req.body;
@@ -72,7 +76,7 @@ router.post("/", async (req, res) => {
     mongo.findUser({ email: email }, options)
     .then(data => {
         if (!!data) {
-            sendError(res, 400, "Account already exists with this email. Please log in.");
+            sendError(res, 400, ACCOUNT_EXISTS_ERROR_MSG);
         }
         else {
             
@@ -82,12 +86,12 @@ router.post("/", async (req, res) => {
                     throw err;
                 }
                 const hash = derivedKey.toString('hex') + ":" + salt.toString('hex');
-                mongo.insertOne("users", {
+                mongo.insertOne(USER_COLLECTION_NAME, {
                     fname: fname,
                     lname: lname,
                     email: email,
                     hash: hash,
-                    status: "pending"
+                    status: USER_PENDING_EMAIL_STATUS
                 });
 
                 // ADD EMAIL VERIFICATION HERE (suggested to create a email verification function)
@@ -96,7 +100,7 @@ router.post("/", async (req, res) => {
         }
     })
     .catch(err => {
-        sendError(res, 500, "Signup failed.");
+        sendError(res, 500, SERVER_ERROR_MSG);
     });
  
 })
