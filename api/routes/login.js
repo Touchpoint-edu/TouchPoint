@@ -3,23 +3,34 @@ var mongo = require('../models/mongo');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
-var fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 
-const SECRET_KEY = "ae280b2d0d3e3ca11caa15e3ba7ea172"; // move to environment variable when we transfer to server
+const { INCORRECT_PASSWORD_ERROR_MSG, NO_ACCOUNT_FOUND_ERROR_MSG, PENDING_VERIFICATION_ERROR_MSG, SERVER_ERROR_MSG, USE_GOOGLE_ERROR_MSG } = require('../constants/errors');
+const { USER_PENDING_EMAIL_STATUS } = require('../constants/status')
+const { GOOGLE_CLIENT_ID } = require('../constants/config');
 
-const client = new OAuth2Client("903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com")
+const JWT_EXPIRY_TIME = '1h'; // change expiry time
+const JWT_COOKIE_NAME = 'c_user';
+
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 function sendToken(res, data) {
     const token = jwt.sign({
         sub: data._id,
         name: data.name
-    }, SECRET_KEY, {expiresIn: '1h'}); // change expiry time
-    res.cookie('c_user', token, { 
+    }, process.env.JWT_SECRET_KEY, {expiresIn: JWT_EXPIRY_TIME});
+    res.cookie(JWT_COOKIE_NAME, token, { 
         expires: new Date(Date.now() + 900000), // change expiry time
         httpOnly: true
     });
     res.sendStatus(200);
+}
+
+function sendError(res, status, message) {
+    res.status(status);
+    res.json({
+        message: message
+    });
 }
 
 router.post("/auth/google", async (req, res) => {
@@ -28,7 +39,7 @@ router.post("/auth/google", async (req, res) => {
     // Verify Google Token
     client.verifyIdToken({
         idToken: token,
-        audience: "903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com"
+        audience: GOOGLE_CLIENT_ID
     })
     .then(ticket => {
         // Find google id in database
@@ -36,16 +47,17 @@ router.post("/auth/google", async (req, res) => {
         const options = {
             projection: {
                 _id: 1,
-                name: 1
+                name: 1,
+                status: 1
             }
         }
         mongo.findUser({ google_id: sub}, options)
         .then((data) => {
             if (data == null) {
-                res.status(401);
-                res.json({
-                    message: "No account found. Please create an account."
-                });
+                sendError(res, 401, NO_ACCOUNT_FOUND_ERROR_MSG);
+            }
+            else if (data.status == USER_PENDING_EMAIL_STATUS) {
+                sendError(res, 401, PENDING_VERIFICATION_ERROR_MSG);
             }
             else {
                 // successfully verified google token and found in db
@@ -54,17 +66,12 @@ router.post("/auth/google", async (req, res) => {
         });
     })
     .catch(error => {
-        console.log(error);
-        res.status(401);
-        res.json({
-            message: "Login with Google failed."
-        });
+        sendError(res, 500, SERVER_ERROR_MSG);
     });
 })
 
 router.post("/auth", async (req, res) => {
     const base64credentials = req.headers.authorization.split(' ')[1]
-    console.log(base64credentials);
     const credentials = Buffer.from(base64credentials, 'base64').toString('ascii');
     const [email, password] = credentials.split(':');
     const options = {
@@ -72,7 +79,9 @@ router.post("/auth", async (req, res) => {
             _id: 1,
             email: 1,
             hash: 1,
-            name: 1
+            name: 1,
+            google_id: 1,
+            status: 1
         }
     }
 
@@ -80,10 +89,10 @@ router.post("/auth", async (req, res) => {
     mongo.findUser({ email: email }, options)
     .then(data => {
         if (!data) {
-            res.status(401);
-            res.json({
-                message: "No account found. Please create an account."
-            });
+            sendError(res, 401, NO_ACCOUNT_FOUND_ERROR_MSG);
+        }
+        else if (!!data.google_id) {
+            sendError(res, 401, USE_GOOGLE_ERROR_MSG);
         }
         else {
             // hash provided password and check against hash stored in database
@@ -92,26 +101,22 @@ router.post("/auth", async (req, res) => {
                 if (err) {
                     throw err;
                 }
-                console.log("got derived key: ", derivedKey.toString('hex'));
-                console.log("hash: ", hash);
-                console.log("salt: ", salt);
                 if (derivedKey.toString('hex') === hash) {
-                    sendToken(res, data);
+                    if (data.status === USER_PENDING_EMAIL_STATUS) {
+                        sendError(res, 401, PENDING_VERIFICATION_ERROR_MSG);
+                    }
+                    else {
+                        sendToken(res, data);
+                    }
                 }
                 else {
-                    res.status(401);
-                    res.json({
-                        message: "Incorrect password." // can change error messages later
-                    });
+                    sendError(res, 401, INCORRECT_PASSWORD_ERROR_MSG); // can change error messages later
                 }
             });
         }
     })
     .catch(err => {
-        res.status(401);
-        res.json({
-            message: "Login failed."
-        });
+        sendError(res, 500, SERVER_ERROR_MSG);
     });
  
 })

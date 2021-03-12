@@ -6,6 +6,8 @@ import Button from "../Components/Button";
 import { login } from "../api/auth";
 import GoogleSignIn from './GoogleSignIn';
 import { Redirect } from "react-router-dom";
+import { loginWithGoogle } from "../api/auth";
+
 
 export default function LoginForm({onClose}) {
 
@@ -93,6 +95,7 @@ export default function LoginForm({onClose}) {
                 <hr className="solid my-4" />
                     <GoogleSignIn
                       onClose = {onClose}
+                      dbFunc={loginWithGoogle}
                     >
                     </GoogleSignIn>
              </Form>
