@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import FloatingTextField from "./FloatingTF";
-import Button from "./Button";
-import { login } from "./auth";
+import FloatingTextField from "../Components/FloatingTF";
+import Button from "../Components/Button";
+import { login } from "../api/auth";
 import GoogleSignIn from './GoogleSignIn';
 import { Redirect } from "react-router-dom";
 import { loginWithGoogle } from "./auth";
