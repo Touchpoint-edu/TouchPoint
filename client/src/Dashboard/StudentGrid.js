@@ -9,7 +9,6 @@ import { DashboardContext } from '../contexts';
 
 export default function StudentGrid({students, setStudents}){
  
- 
  const [size, setSize] = useState((students.length/6)*100)
   // target id will only be set if dragging from one dropzone to another.
   function onChange(sourceId, sourceIndex, targetIndex, targetId) {

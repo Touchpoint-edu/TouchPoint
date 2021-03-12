@@ -146,16 +146,30 @@
 .upload-box{
   margin-left: 150px;
 } 
+
+.dash{
+  display: flex;
+  justify-content: flex-start;   /* adjustment */
+  position: relative; 
+}
 .add-button-container{
-  margin-left:13%;
+  margin-left:7.7%;
   margin-top:5px;
+  flex: 0 1 auto;
+  margin-right:auto;
 
 }
 .add-button{
-  border-radius:5px;
+  border-radius:0.25rem;
   background-color: #83B55C;
   border:none;
   color: white;
+}
+
+.name-error{
+  color: red;
+  margin-left:7.7%
+
 }
 .tile{
   width: 100%;
@@ -174,7 +188,11 @@
   display:flex;
   touch-action: none;
   width: 600px;
-  margin-left:15px;
+  flex: 0 1 auto;
+  position: absolute;            
+  left: 50%;
+  transform: translateX(-50%);
+
  
 }
 .grid-item{
