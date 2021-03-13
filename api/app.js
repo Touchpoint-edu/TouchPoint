@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 var dotenv = require('dotenv');
 
 
@@ -12,6 +13,7 @@ var signupRouter = require("./routes/signup");
 let periodRouter = require("./routes/period");
 var mongo = require('./models/mongo');
 let mongoose = require('./models/mongoose');
+var emailRouter = require("./routes/email_verification");
 
 
 var app = express();
@@ -45,9 +47,8 @@ mongo.connect(process.env.MONGO_DB_URI, function(err) {
     app.use("/test", testRouter);
     app.use("/api/login", loginRouter);
     app.use("/api/signup", signupRouter);
+    app.use("/api/email_verification", emailRouter); 
 });
-
-
 
 
 // Terry's useless code
