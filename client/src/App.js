@@ -1,11 +1,10 @@
 
 import React, {useState, useEffect} from 'react';
-import { callAPI } from './api.js';
-import Loading from './Loading.js';
+import Loading from '../src/Components/Loading.js';
 import Home from './Home.js'
 import Nav from './Nav.js';
 import { DataStoreContext} from "./contexts";
-import Dashboard from "./Dashboard";
+import Dashboard from "../src/Dashboard/Dashboard.js";
 
 // import Home from './Home.js';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -24,7 +23,7 @@ function App() {
         <div className = "container-fluid shadow">  
             <Nav />
         </div>
-          <main className = "col-10">
+          <main >
             <Switch>
               <Route path="/" exact={true}>
                   <Home/>
