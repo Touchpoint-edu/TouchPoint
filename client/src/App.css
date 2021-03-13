@@ -70,7 +70,36 @@
   text-decoration: none;
   color:white;
   border: none;
-  width: 80%;
+}
+
+.import_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  width: 101%;
+  border: none;
+
+}
+.dash_header_buttons{
+  margin-right: 100px;
+}
+.dash_title{
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #40904C;
+  font-size: 25px;
+
+}
+.export_button {
+  background-color: #83B55C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+
 }
 
 .google_button{
@@ -80,7 +109,6 @@
   color:#83B55C!important;
   border: none;
   padding-left:20%!important;
-  width: 80%;
   text-align: center!important;
   align-content: center!important;
 
@@ -92,13 +120,10 @@
   font-family: 'Inter', sans-serif;
 }
 
-#sign-up-email, #sign-up-password, #sign-up-password-confirm {
-  width:88%;
+.cursor-pointer {
+  cursor: pointer;
 }
 
-#sign-in-email, #sign-in-password {
-  width:88%;
-}
 .terms{
   color: #616161;
   font-weight: 300;
@@ -117,6 +142,80 @@
   font-weight: 300;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
+}
+.upload-box{
+  margin-left: 150px;
+} 
+
+.dash{
+  display: flex;
+  justify-content: flex-start;   /* adjustment */
+  position: relative; 
+}
+.add-button-container{
+  margin-left:7.7%;
+  margin-top:5px;
+  flex: 0 1 auto;
+  margin-right:auto;
+
+}
+.add-button{
+  border-radius:0.25rem;
+  background-color: #83B55C;
+  border:none;
+  color: white;
+}
+
+.name-error{
+  color: red;
+  margin-left:7.7%
+
+}
+.tile{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #83B55C;
+  display: flex;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;;
+  padding:5px;
+}
+.grid-container{
+  display:flex;
+  touch-action: none;
+  width: 600px;
+  flex: 0 1 auto;
+  position: absolute;            
+  left: 50%;
+  transform: translateX(-50%);
+
+ 
+}
+.grid-item{
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dropzone{
+  display:flex;
+  background-color:#40904C;
+  flex: 1;
+  /* height: 100%; */
+  border-radius: 1rem;
+}
+.file-uploader{
+  margin-left: -25px;
+  background-color: transparent!important;
+  color: #83B55C;
+}
+.student-modal{
+  max-height: 400px;
+  overflow: auto;
 }
 .loader {
   margin: 100px auto;

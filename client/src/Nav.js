@@ -1,19 +1,24 @@
 import React, {useContext, useState} from 'react';
 import { NavLink } from "react-router-dom";
 import { DataStoreContext } from "./contexts";
-import SigninSignupModal from './SigninSignupModal';
-import {logout} from './auth';
-import Button from './Button';
+import SigninSignupModal from './Signin-Signup/SigninSignupModal';
+import DashboardHeader from './Dashboard/DashboardHeader';
+import {logout} from './api/auth';
+import Button from './Components/Button';
 
 
 export default function Nav(){
     const [modalOpen, setModalOpen] = useState(false);
     const [modalVariant, setModalVariant] = useState("signIn");
+    
     const openModal = (variant) => {
         setModalVariant(variant);
         setModalOpen(true);
     };
-    const closeModal = () => setModalOpen(false);
+    const closeModal = () => {
+        console.log("closing modal");
+        setModalOpen(false);
+    }
 
     const { user, setUser } = useContext(DataStoreContext);
 
@@ -27,10 +32,11 @@ export default function Nav(){
         <nav className="nav-scroller py-4 mb-2 mt-2">
             <div className="nav d-flex">
                 <div className = "p-2 flex-grow-1">
-                <img className= "ml-2 logo_image" src="logo_nav.png" alt="logo" data-testid="logo-image"></img>
+                    <img className= "ml-2 logo_image" src="logo_nav.png" alt="logo" data-testid="logo-image"></img>
                 </div>
                 {user ? 
                 <>
+             
                     <NavLink 
                         className= "logout_button mt-1 p-3" 
                         to="/" 
@@ -61,6 +67,8 @@ export default function Nav(){
                 }
 
             </div>
+            {user ? <><hr></hr>
+                    <DashboardHeader></DashboardHeader></> : <></>}
         </nav>
     );
 }
