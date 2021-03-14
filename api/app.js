@@ -6,10 +6,13 @@ var logger = require('morgan');
 
 var dotenv = require('dotenv');
 
+
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
 var signupRouter = require("./routes/signup");
+let periodRouter = require("./routes/period");
 var mongo = require('./models/mongo');
+let mongoose = require('./models/mongoose');
 var emailRouter = require("./routes/email_verification");
 
 
@@ -30,6 +33,13 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //PLAY AROUND HERE
 dotenv.config();
+
+console.log(process.env.MONGO_DB_URI);
+
+mongoose.connect(process.env.MONGO_DB_URI, function(err){
+  app.use("/api/period", periodRouter);
+});
+
 
 // put in the uri here haha
 mongo.connect(process.env.MONGO_DB_URI, function(err) {
