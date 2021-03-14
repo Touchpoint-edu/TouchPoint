@@ -25,7 +25,7 @@ router.post("/auth/email", async (req, res) => {
 
     //READS IN EMAIL TEMPLATE 
     //USES HANDLEBARS TO REPLACE {{emailID}} field with emailID 
-    const filePath = "routes/email_template.html"; 
+    const filePath = "views/email_template.html"; 
     const source = fs.readFileSync(filePath, 'utf-8').toString();
     const template = handlebars.compile(source);
     //REPLACE MESSAGE WITH USERS UNIQUE ID 
