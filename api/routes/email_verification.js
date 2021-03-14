@@ -10,11 +10,13 @@ router.post("/auth/email", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD
         }
     });
-  
+    console.log(process.env.EMAIL_USERNAME); 
+    console.log(process.env.EMAIL_PASSWORD); 
+
     var mailOptions = {
     from: process.env.EMAIL_USERNAME,
         to: process.env.EMAIL_USERNAME,
-        subject: 'Sending Email using Node.js',
+        subject: 'Validate TouchPoint Email',
         //Ideally, email is a link where if a userclicks on it, we know they are verified 
         text: 'That was easy!'
     };
@@ -26,5 +28,6 @@ router.post("/auth/email", async (req, res) => {
             console.log('Email sent: ' + info.response);
         }
     });
+    res.sendStatus(200);
 })
 module.exports = router;
