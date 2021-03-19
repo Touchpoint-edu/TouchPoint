@@ -1,38 +1,287 @@
-.App {
-  text-align: center;
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+.shadow{
+    -webkit-box-shadow: 1px 3px 1px #9E9E9E;
+    -moz-box-shadow: 1px 3px 1px #9E9E9E;
+    box-shadow: 1px 3px 1px #9E9E9E;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.text-red-500{
+  color: red;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+}
+.logout_button{
+  color: #2E323F;
+  font-family: 'Inter', sans-serif;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.logout_button:hover{
+  color: #2E323F;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  background-color:transparent;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.signup_button{
+  color: #40904C;
+  font-family: 'Inter', sans-serif;
+  background-color:transparent;
+  border: none;
+}
+
+.signin_button{
+  color: #83B55C;
+  font-family: 'Inter', sans-serif;
+  background-color:transparent;
+  border: none;
+}
+
+.signup_button:hover{
+  color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  background-color:transparent;
+  border: none;
+}
+
+.signin_button:hover{
+  color: #83B55C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  background-color:transparent;
+  border: none;
+}
+
+.submit_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+}
+
+.import_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  width: 101%;
+  border: none;
+
+}
+.dash_header_buttons{
+  margin-right: 100px;
+}
+.dash_title{
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #40904C;
+  font-size: 25px;
+
+}
+.export_button {
+  background-color: #83B55C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+
+}
+
+.google_button{
+  font-weight: 500!important;
+  font-family: 'Inter', sans-serif!important;
+  text-decoration: none;
+  color:#83B55C!important;
+  border: none;
+  padding-left:20%!important;
+  text-align: center!important;
+  align-content: center!important;
+
+}
+
+.modal-header-text{
+  color: #616161;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.terms{
+  color: #616161;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+
+#terms-highlight{
+  color: #83B55C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
+#terms-highlight:hover{
+  color: #83B55C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
+.upload-box{
+  margin-left: 150px;
+} 
+
+.dash{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: flex-start;   /* adjustment */
+  position: relative; 
+}
+.add-button-container{
+  margin-left:7.7%;
+  margin-top:5px;
+  flex: 0 1 auto;
+  margin-right:auto;
+
+}
+.add-button{
+  border-radius:0.25rem;
+  background-color: #83B55C;
+  border:none;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
+.name-error{
+  color: red;
+  margin-left:7.7%
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+}
+.tile{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #83B55C;
+  display: flex;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;;
+  padding:5px;
+}
+.grid-container{
+  display:flex;
+  touch-action: none;
+  width: 600px;
+  flex: 0 1 auto;
+  position: absolute;            
+  left: 50%;
+  transform: translateX(-50%);
+
+ 
+}
+.grid-item{
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dropzone{
+  display:flex;
+  background-color:#40904C;
+  flex: 1;
+  /* height: 100%; */
+  border-radius: 1rem;
+}
+.file-uploader{
+  margin-left: -25px;
+  background-color: transparent!important;
+  color: #83B55C;
+}
+.student-modal{
+  max-height: 400px;
+  overflow: auto;
+}
+.loader {
+  margin: 100px auto;
+  font-size: 25px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-animation: load5 1.1s infinite ease;
+  animation: load5 1.1s infinite ease;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+@-webkit-keyframes load5 {
+  0%,
+  100% {
+    box-shadow: 0em -2.6em 0em 0em #83b55c, 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.5), -1.8em -1.8em 0 0em rgba(131,181,92, 0.7);
   }
-  to {
-    transform: rotate(360deg);
+  12.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.7), 1.8em -1.8em 0 0em #83b55c, 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.5);
+  }
+  25% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.5), 1.8em -1.8em 0 0em rgba(131,181,92, 0.7), 2.5em 0em 0 0em #83b55c, 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  37.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.5), 2.5em 0em 0 0em rgba(131,181,92, 0.7), 1.75em 1.75em 0 0em #83b55c, 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  50% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.5), 1.75em 1.75em 0 0em rgba(131,181,92, 0.7), 0em 2.5em 0 0em #83b55c, -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  62.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.5), 0em 2.5em 0 0em rgba(131,181,92, 0.7), -1.8em 1.8em 0 0em #83b55c, -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  75% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.5), -1.8em 1.8em 0 0em rgba(131,181,92, 0.7), -2.6em 0em 0 0em #83b55c, -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  87.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.5), -2.6em 0em 0 0em rgba(131,181,92, 0.7), -1.8em -1.8em 0 0em #83b55c;
+  }
+}
+@keyframes load5 {
+  0%,
+  100% {
+    box-shadow: 0em -2.6em 0em 0em #83b55c, 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.5), -1.8em -1.8em 0 0em rgba(131,181,92, 0.7);
+  }
+  12.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.7), 1.8em -1.8em 0 0em #83b55c, 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.5);
+  }
+  25% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.5), 1.8em -1.8em 0 0em rgba(131,181,92, 0.7), 2.5em 0em 0 0em #83b55c, 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  37.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.5), 2.5em 0em 0 0em rgba(131,181,92, 0.7), 1.75em 1.75em 0 0em #83b55c, 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  50% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.5), 1.75em 1.75em 0 0em rgba(131,181,92, 0.7), 0em 2.5em 0 0em #83b55c, -1.8em 1.8em 0 0em rgba(131,181,92, 0.2), -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  62.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.5), 0em 2.5em 0 0em rgba(131,181,92, 0.7), -1.8em 1.8em 0 0em #83b55c, -2.6em 0em 0 0em rgba(131,181,92, 0.2), -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  75% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.5), -1.8em 1.8em 0 0em rgba(131,181,92, 0.7), -2.6em 0em 0 0em #83b55c, -1.8em -1.8em 0 0em rgba(131,181,92, 0.2);
+  }
+  87.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(131,181,92, 0.2), 1.8em -1.8em 0 0em rgba(131,181,92, 0.2), 2.5em 0em 0 0em rgba(131,181,92, 0.2), 1.75em 1.75em 0 0em rgba(131,181,92, 0.2), 0em 2.5em 0 0em rgba(131,181,92, 0.2), -1.8em 1.8em 0 0em rgba(131,181,92, 0.5), -2.6em 0em 0 0em rgba(131,181,92, 0.7), -1.8em -1.8em 0 0em #83b55c;
   }
 }
