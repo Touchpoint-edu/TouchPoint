@@ -69,6 +69,7 @@ export default function Nav(){
             </div>
             {user ? <><hr></hr>
                     <DashboardHeader></DashboardHeader></> : <></>}
+                    <DashboardHeader></DashboardHeader>
         </nav>
     );
 }
