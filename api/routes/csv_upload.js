@@ -5,11 +5,15 @@ const multer = require('multer');
 const csv = require('fast-csv');
 const fs = require('fs');
 
-const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
+const { CSV_FORMAT_ERROR_MSG } = require('../constants/errors');
 
 var router = express.Router();
 const upload = multer({ dest: 'csv/' });
 
+/**
+ * Parse csv file to save all students into the database and create a period
+ * Return an array of students and the period_id in response body
+ */
 router.post("/upload", upload.single('file'), async (req, res) => {
     // 2D array of students (row = student, cols = name, email)
     const fileRows = [];
@@ -39,7 +43,7 @@ router.post("/upload", upload.single('file'), async (req, res) => {
 
 
 
-            
+
             res.status(200);
             res.json({
                 students: fileRows
