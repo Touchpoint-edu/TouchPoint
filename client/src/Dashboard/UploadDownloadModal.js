@@ -34,7 +34,6 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
 
   // Handles file upload event and updates state
   function handleUpload(event) {
-    console.log("hi -_-")
     setUploadFile(event.target.files[0]);
   }
 
@@ -81,7 +80,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
     onClose();
   }
   async function handleConfirmUpload(e) {
-    console.log("hiiiii ugh")
+    console.log("hiiiii")
     e.preventDefault();
 
     onClose();

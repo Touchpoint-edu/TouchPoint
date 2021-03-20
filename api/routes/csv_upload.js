@@ -36,12 +36,15 @@ router.post("/upload", upload.single('file'), async (req, res) => {
             // create individual students in the db
 
             // create a period out of the student array
-            res.sendStatus(200);
+
+
+
+            
+            res.status(200);
+            res.json({
+                students: fileRows
+            });
         })
-    res.status(400);
-    res.json({
-        message: SERVER_ERROR_MSG
-    });
 })
 
 // router.get("/auth/email/validate/:emailID", async (req, res) => {
