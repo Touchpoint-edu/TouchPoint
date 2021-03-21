@@ -8,22 +8,22 @@ const fs = require('fs');
 const { CSV_FORMAT_ERROR_MSG } = require('../constants/errors');
 
 var router = express.Router();
-const upload = multer({ dest: 'csv/' });
+const filesMulter = multer({ dest: 'csv/' });
 
 /**
  * Parse csv file to save all students into the database and create a period
- * Return an array of students and the period_id in response body
+ * Return the period with students array in the response body
  */
-router.post("/upload", upload.single('file'), async (req, res) => {
-    // 2D array of students (row = student, cols = name, email)
-    const fileRows = [];
+router.post("/upload", filesMulter.single('file'), async (req, res) => {
+    // array of students (row = student, cols = name, email)
+    const students = [];
 
     csv.parseFile(req.file.path,
         {
             headers: [undefined, 'name', 'email', undefined],
             skipLines: 6
         })
-        .on('error', () => {
+        .on("error", () => {
             fs.unlinkSync(req.file.path);   // remove temp file
             res.status(400);
             res.json({
@@ -31,22 +31,25 @@ router.post("/upload", upload.single('file'), async (req, res) => {
             });
         })
         .on("data", data => {
-            fileRows.push(data);
+            students.push(data);
         })
         .on("end", () => {
-            console.log(fileRows);
             fs.unlinkSync(req.file.path);   // remove temp file
 
             // create individual students in the db
+            mongo.insertMany("students", students);
 
-            // create a period out of the student array
+            const period = {
+                columns: 6,
+                students: students
+            }
 
-
-
+            // create a period containing the student array
+            mongo.insertOne("periods", period)
 
             res.status(200);
             res.json({
-                students: fileRows
+                period: period
             });
         })
 })

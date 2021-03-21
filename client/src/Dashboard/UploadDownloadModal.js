@@ -53,7 +53,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
     //setSelectedPeriod
 
     if (!uploadFile) {
-      // put out error message for no file chosen
+      // TODO: put out error message for no file chosen
       return;
     }
 
@@ -69,10 +69,9 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
       console.log("omg")
       return response.json();
     } else if (response.status === 400) {
-      // put out error message for bad file format
-    } else if (response.status === 500) {
-      // put out error message for server error
-    }
+      // TODO: put out error message from response
+      console.log(response)
+    } 
   }
 
   async function handleSubmitDownload(e) {

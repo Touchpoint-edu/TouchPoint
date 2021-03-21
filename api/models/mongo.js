@@ -25,10 +25,19 @@ exports.db = function(name) {
 
 exports.insertOne = function(collection, toInsert, databaseName) {
   if (databaseName) {
-    client.db(databaseName).collection(collection).insertOne(toInsert);
+    return client.db(databaseName).collection(collection).insertOne(toInsert);
   }
   else {
-    state.db.collection(collection).insertOne(toInsert);
+    return state.db.collection(collection).insertOne(toInsert);
+  }
+}
+
+exports.insertMany = function(collection, toInsert, databaseName) {
+  if (databaseName) {
+    client.db(databaseName).collection(collection).insertMany(toInsert);
+  }
+  else {
+    state.db.collection(collection).insertMany(toInsert);
   }
 }
 
