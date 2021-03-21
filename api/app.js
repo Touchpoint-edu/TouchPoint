@@ -4,6 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var dotenv = require('dotenv');
+var MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+
+
 
 
 var testRouter = require("./routes/test");
@@ -34,9 +38,15 @@ dotenv.config();
 
 console.log(process.env.MONGO_DB_URI);
 
-mongoose.connect(process.env.MONGO_DB_URI, function(err){
-  app.use("/api/period", periodRouter);
-});
+// mongoose.connect(process.env.MONGO_DB_URI, function(err){
+//   app.use("/api/period", periodRouter);
+// });
+const dbName = 'touchpoint';
+
+// Create a new MongoClient
+const client = new MongoClient(process.env.MONGO_DB_URI);
+
+
 
 
 // put in the uri here haha
@@ -45,6 +55,7 @@ mongo.connect(process.env.MONGO_DB_URI, function(err) {
     app.use("/test", testRouter);
     app.use("/api/login", loginRouter);
     app.use("/api/signup", signupRouter);
+    app.use("/api/period", periodRouter);
 });
 
 

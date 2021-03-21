@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient
+var ObjectId = require('mongodb').ObjectID;
 
 var state = {
   client: null,
@@ -39,6 +40,14 @@ exports.findUser = function(query, options, databaseName) {
   else {
     return state.db.collection("users").findOne(query, options);
   }
+}
+
+exports.update = function(collection, query, toUpdate, options){
+  return state.db.collection(collection).updateOne(query, toUpdate);
+}
+
+exports.findOne = function(collection, query, options){
+  return state.db.collection(collection).findOne(query);
 }
 
 exports.close = function(done) {
