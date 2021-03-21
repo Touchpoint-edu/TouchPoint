@@ -13,7 +13,7 @@ import './App.css';
 function App() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState("Elly Berge");
+  const [user, setUser] = useState(null);
 
 
   return (
@@ -23,12 +23,12 @@ function App() {
         <div className = "container-fluid shadow">  
             <Nav />
         </div>
-          <main className = "col-10">
+          <main >
             <Switch>
-              <Route path="/temp" exact={true}>
+              <Route path="/" exact={true}>
                   <Home/>
               </Route>
-              <Route path="/" exact={true}>
+              <Route path="/dashboard" exact={true}>
                   <Dashboard/>
               </Route>
               <Route path="*">
