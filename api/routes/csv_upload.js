@@ -1,11 +1,13 @@
 var express = require("express")
 const mongoose = require('mongoose');
-var mongo = require('../models/mongo');
+const mongo = require('../models/mongo');
 const multer = require('multer');
 const csv = require('fast-csv');
 const fs = require('fs');
 
 const { CSV_FORMAT_ERROR_MSG } = require('../constants/errors');
+const verify = require('../scripts/verify')
+const error = require('../scripts/error')
 
 var router = express.Router();
 const filesMulter = multer({ dest: 'csv/' });
@@ -15,43 +17,46 @@ const filesMulter = multer({ dest: 'csv/' });
  * Return the period with students array in the response body
  */
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
-    // array of students (row = student, cols = name, email)
-    const students = [];
-
-    csv.parseFile(req.file.path,
-        {
+    try {
+        verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        
+        let students = [];
+        const parseFileOptions = {
             headers: [undefined, 'name', 'email', undefined],
             skipLines: 6
-        })
-        .on("error", () => {
-            fs.unlinkSync(req.file.path);   // remove temp file
-            res.status(400);
-            res.json({
-                message: CSV_FORMAT_ERROR_MSG
-            });
-        })
-        .on("data", data => {
-            students.push(data);
-        })
-        .on("end", () => {
-            fs.unlinkSync(req.file.path);   // remove temp file
+        }
 
-            // create individual students in the db
-            mongo.insertMany("students", students);
+        csv.parseFile(req.file.path, parseFileOptions)
+            .on("error", () => {
+                fs.unlinkSync(req.file.path);   // remove temp file
+                error.sendError(res, 400, CSV_FORMAT_ERROR_MSG)
+            })
+            .on("data", data => {
+                students.push(data);
+            })
+            .on("end", () => {
+                fs.unlinkSync(req.file.path);   // remove temp file
 
-            const period = {
-                columns: 6,
-                students: students
-            }
+                // create individual students in the db
+                mongo.insertMany("students", students);
 
-            // create a period containing the student array
-            mongo.insertOne("periods", period)
+                const period = {
+                    columns: 6,
+                    students: students
+                }
 
-            res.status(200);
-            res.json({
-                period: period
-            });
-        })
+                // create a period containing the student array
+                mongo.insertOne("periods", period)
+
+                res.status(200);
+                res.json({
+                    period: period
+                });
+            })
+    } catch (err) {
+        console.log(err);
+        error.sendError(res, "404", "huh");
+    }
 })
 
 // router.get("/auth/email/validate/:emailID", async (req, res) => {

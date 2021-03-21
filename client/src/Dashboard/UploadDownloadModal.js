@@ -30,11 +30,14 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
   const [uploadFile, setUploadFile] = useState();
   const [downloadLoadfile, setDownloadFile] = useState("");
   const [studentList, setStudentList] = useState();
-  const { selectedPeriod, setSelectedPeriod, students, setStudents } = useContext(DashboardContext);
+  const { students, setStudents } = useContext(DashboardContext);
+  const { selectedPeriod, setSelectedPeriod } = useContext(DashboardContext);
+  // const { periods, setPeriods } = useContext(DashboardContext);
 
   // Handles file upload event and updates state
   function handleUpload(event) {
     setUploadFile(event.target.files[0]);
+    // TODO: display file preview
   }
 
   // Handles file upload event and updates state
@@ -46,32 +49,49 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
   }
   async function handleSubmitUpload(e) {
     // e.preventDefault();
-    //upload to database, change period
-    //set the students array to student names
-    //setStudents
-    //set the period of the uploaded csv
-    //setSelectedPeriod
+    //upload to database, - DONE
+    // change period - COMMENTED
+    //set the students array to student names - NOT DONE
+    //setStudents - DONE
+    //set the period of the uploaded csv - COMMENTED
+    //setSelectedPeriod - COMMENTED
 
     if (!uploadFile) {
       // TODO: put out error message for no file chosen
       return;
     }
 
-    const formData = new FormData();
+    // make FormData object to pass into request
+    const formData = new FormData()
     formData.append('file', uploadFile)
 
+    // fetch to save csv to database
     const response = await fetch("/period/csv/upload", {
       method: "POST",
       body: formData
     })
+    const responseData = await response.json()
 
     if (response.status === 200) {
-      console.log("omg")
-      return response.json();
+      // set student array
+      if (responseData && responseData.period) {
+        console.log(responseData.period)
+
+        const newPeriod = {
+          id: responseData.period._id,
+          // value: "Period " + (periods.length + 1)
+        }
+
+        // set the currecct period and its students
+        setStudents(responseData.period.students)
+        // setPeriods([...periods, newPeriod])
+        // setSelectedPeriod(newPeriod.value)
+      }
+      // TODO: the rest
     } else if (response.status === 400) {
-      // TODO: put out error message from response
-      console.log(response)
-    } 
+      // TODO: put out error message from responseData
+      console.log(responseData)
+    }
   }
 
   async function handleSubmitDownload(e) {
@@ -111,7 +131,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                         <ul className="list-group ml-5 mr-5">
                           {students.map((student) => {
                             console.log(student);
-                            return (<li className="list-group-item">{student}</li>);
+                            return (<li className="list-group-item">{`${student.name}, ${student.email}`}</li>)
                           })}
                         </ul>
                       </div>
@@ -129,8 +149,8 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                         <h2>upload</h2>
                       </div>
                       <div className="upload-box">
-                        <img src="upload.png" alt="upload" className="mt-2 mb-5" />;
-                          <input type="file" enctype="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} />
+                        <img src="upload.png" alt="upload" className="mt-2 mb-5" />
+                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} />
                       </div>
                       <hr className="solid my-4" />
                       <Button
