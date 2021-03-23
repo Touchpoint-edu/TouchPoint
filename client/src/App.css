@@ -72,6 +72,15 @@
   border: none;
 }
 
+.delete_button {
+  background-color: red;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+}
+
 .import_button {
   background-color: #40904C;
   font-weight: 500;
@@ -146,6 +155,112 @@
 .upload-box{
   margin-left: 150px;
 } 
+
+.dash{
+  display: flex;
+  justify-content: flex-start;   /* adjustment */
+  position: relative; 
+}
+.add-button-container{
+  margin-left:8.3%;
+  margin-top:5px;
+  flex: 0 1 auto;
+  margin-right:auto;
+
+}
+.add-button{
+  border-radius:0.25rem;
+  background-color: #83B55C;
+  border:none;
+  color: white;
+}
+
+.edit-button{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 150%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button:active{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 150%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button:focus{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 150%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button-container{
+  margin-right: -7.8%!important;
+
+}
+
+
+
+.name-error{
+  color: red;
+  margin-left:7.7%
+
+}
+.tile{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #83B55C;
+  display: flex;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;;
+  padding:5px;
+}
+.grid-container{
+  display:flex;
+  touch-action: none;
+  width: 600px;
+  flex: 0 1 auto;
+  position: absolute;  
+  margin-top: 50px;          
+  left: 60%;
+  transform: translateX(-50%);
+
+ 
+}
+.grid-item{
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dropzone{
+  display:flex;
+  background-color:#40904C;
+  flex: 1;
+  /* height: 100%; */
+  border-radius: 1rem;
+}
 .file-uploader{
   margin-left: -25px;
   background-color: transparent!important;
