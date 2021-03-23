@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import FloatingTextField from "../Components/FloatingTF.js";
 import { DataStoreContext } from "../contexts.js";
 import GoogleSignIn from './GoogleSignIn';
@@ -22,18 +22,24 @@ export default function SignupForm({ toggleVariant, onClose }) {
           .required("Confirm Password Required"),
       });
   
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const { user, setUser } = useContext(DataStoreContext);
+    const [ signUpErrorMsg, setSignUpErrorMsg ] = useState("");
+    const [ googleErrorMsg, setGoogleErrorMsg ] = useState("");
     const history = useHistory();
   
-    async function handleSubmit(e) {
-      e.preventDefault();
-      const user = await signUp({ email, password, confirmPassword });
-      setUser(user);
-      history.push("/dashboard");
-      onClose();
+    async function handleSubmit(data) {
+      const res = await signUp({ 
+        email: data.email, 
+        password: data.password 
+      });
+      if (res.status === 200) {
+        setSignUpErrorMsg("Your account has been successfully created.");
+      }
+      else {
+        const json = await res.json();
+        console.log(json);
+        setSignUpErrorMsg(json.message);
+      }
     }
   
     return (
@@ -50,23 +56,24 @@ export default function SignupForm({ toggleVariant, onClose }) {
               errors,
               touched,
               handleBlur,
+              handleChange,
               handleSubmit,
               isSubmitting,
+              values
             }) => (
-              <form >
+              <Form>
                 <FloatingTextField
-                  className="mt-8"
+                  className="mt-8 ftf"
                   id="sign-up-email"
                   name="email"
                   placeholder="Email"
                   type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={values.email}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.email}
-                  className = "ftf" 
                 />
-                {errors.email && (
+                {errors.email && touched.email && (
                   <p className="text-red-500">{errors.email}</p>
                 )}
                 <FloatingTextField
@@ -74,12 +81,12 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   name="password"
                   placeholder="Password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={values.password}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                   error={!!errors.password}
                 />
-                {errors.password && (
+                {errors.password && touched.password && (
                   <p className="text-red-500">{errors.password}</p>
                 )}
                 <FloatingTextField
@@ -87,12 +94,12 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   name="confirmPassword"
                   placeholder="Confirm password"
                   type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={values.confirmPassword}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.confirmPassword}
                 />
-                {errors.confirmPassword && (
+                {errors.confirmPassword && touched.confirmPassword && (
                   <p className="text-red-500">{errors.confirmPassword}</p>
                 )}
                 <p className="terms mt-3"> By signing up, you agree to the <a href="#" id="terms-highlight">Terms of Service</a> and <a href="#" id="terms-highlight">Privacy Policy</a>, including Cookie Use. </p>
@@ -105,9 +112,11 @@ export default function SignupForm({ toggleVariant, onClose }) {
                 >
                   Create Account
                 </Button>
+                <p className="text-red-500 mt-3">{signUpErrorMsg}</p>
                 <hr />
                 <GoogleSignIn buttonText="Sign up with Google" dbFunc={signUpWithGoogle}/>
-              </form>
+                <p className="text-red-500 mt-3">{googleErrorMsg}</p>
+              </Form>
             )}
           </Formik>
      
