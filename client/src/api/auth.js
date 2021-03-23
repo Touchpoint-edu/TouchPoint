@@ -46,10 +46,7 @@ export async function login(userData) {
     },
     //body: JSON.stringify(userData),
   });
-  if (response.status === 200) {
-    return response.status;
-  }
-  return response.json();
+  return response;
 }
 
 export async function loginWithGoogle(token) {
