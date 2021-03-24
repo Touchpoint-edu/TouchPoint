@@ -15,9 +15,9 @@ export default function DashboardHeader() {
     const closeModal = () => setModalOpen(false);
 
     const periods = [
-        { id: 1, value: "Period 1" },
-        { id: 2, value: "Period 2" },
-        { id: 3, value: "Period 3" }
+        { id: 0, value: "Period 1" },
+        { id: 1, value: "Period 2" },
+        { id: 2, value: "Period 3" }
     ];
     const { user, setUser } = useContext(DataStoreContext);
     const [students, setStudents] = useState();
@@ -57,7 +57,7 @@ export default function DashboardHeader() {
             
             </div>
         </div>
-        <div className = " mt-1 dash_header_buttons">
+        <div className = "ml-4 mt-1 dash_header_buttons">
             <div className = "mb-2">
                 <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
                     + Upload CSV
@@ -68,15 +68,14 @@ export default function DashboardHeader() {
                     - Download CSV
                 </Button>
             </div>
-        {modalOpen && <UploadDownloadModal
-            open={modalOpen}
-            onClose={closeModal}
-            variant={modalVariant}
-            toggleVariant={() =>
-            setModalVariant(modalVariant === "upload" ? "upload" : "download")
-        }
-        />}
-            
+            {modalOpen && <UploadDownloadModal
+                open={modalOpen}
+                onClose={closeModal}
+                variant={modalVariant}
+                toggleVariant={() =>
+                setModalVariant(modalVariant === "upload" ? "upload" : "download")
+            }
+            />}
         </div>
         
     </div>
