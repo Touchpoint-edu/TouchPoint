@@ -11,7 +11,11 @@
     box-shadow: 1px 3px 1px #9E9E9E;
 }
 
-
+.form-control{
+    -webkit-box-shadow: 2px 2px 2px #9E9E9E;
+    -moz-box-shadow: 2px 2px 2px #9E9E9E;
+    box-shadow: 2px 2px 2px #9E9E9E;
+}
 .text-red-500{
   color: red;
   font-weight: 300;
@@ -64,6 +68,16 @@
 }
 
 .submit_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+  margin-left:12.5%!important;
+}
+
+.behavior_button {
   background-color: #40904C;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
@@ -173,6 +187,9 @@
   background-color: #83B55C;
   border:none;
   color: white;
+  -webkit-box-shadow: 2px 2px 2px #9E9E9E;
+  -moz-box-shadow: 2px 2px 2px #9E9E9E;
+  box-shadow: 2px 2px 2px #9E9E9E;
 }
 
 .edit-button{
@@ -215,8 +232,6 @@
   margin-right: -7.8%!important;
 
 }
-
-
 
 .name-error{
   color: red;

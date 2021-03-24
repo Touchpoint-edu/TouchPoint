@@ -15,9 +15,9 @@ export default function DashboardHeader() {
     const closeModal = () => setModalOpen(false);
 
     const periods = [
-        { id: 1, value: "Period 1" },
-        { id: 2, value: "Period 2" },
-        { id: 3, value: "Period 3" }
+        { id: 0, value: "Period 1" },
+        { id: 1, value: "Period 2" },
+        { id: 2, value: "Period 3" }
     ];
     const { user, setUser } = useContext(DataStoreContext);
     const [students, setStudents] = useState();
