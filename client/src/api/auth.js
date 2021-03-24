@@ -46,14 +46,24 @@ export async function login(userData) {
     },
     //body: JSON.stringify(userData),
   });
-  if (response.status === 200) {
-    return response.status;
-  }
-  return response.json();
+  return response;
 }
 
 export async function loginWithGoogle(token) {
   const res = await fetch("api/login/auth/google", {
+    method: "POST",
+    body: JSON.stringify({
+        token: token
+    }),
+    headers: {
+        "Content-Type": "application/json"
+    }
+  });
+  return res;
+}
+
+export async function signUpWithGoogle(token) {
+  const res = await fetch("api/signup/google", {
     method: "POST",
     body: JSON.stringify({
         token: token

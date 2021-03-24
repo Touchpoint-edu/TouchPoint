@@ -5,6 +5,7 @@ import {InputGroup, FormControl, Button} from 'react-bootstrap'
 
 
 export default function Dashboard () {
+
     
     const [students, setStudents]   = useState([
       {
@@ -130,10 +131,12 @@ export default function Dashboard () {
     
 
 
+
     const [studentName, setStudentName] = useState("");
     const [size, setSize] = useState((students.length/6)*100)
     const [nameError, setNameError] = useState(false); 
     const [editChart, setEditChart] = useState(false);
+
 
     function addStudent(event){
         event.preventDefault();
@@ -188,6 +191,7 @@ export default function Dashboard () {
             </form>
           </div>
         <div className = "grid-container">
+
           <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
         </div>
         <div className ="edit-button-container">

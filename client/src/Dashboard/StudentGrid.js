@@ -1,4 +1,6 @@
+
 import React, {useState} from 'react';
+
 import {
     GridContextProvider,
     GridDropZone,
@@ -6,6 +8,11 @@ import {
     swap
 } from "react-grid-dnd";
 import { DashboardContext } from '../contexts';
+
+
+export default function StudentGrid({students, setStudents}){
+ 
+
 import StudentBehaviorModal from "./StudentBehaviorModal.js"
 
 export default function StudentGrid({students, setStudents, size, edit}){
@@ -16,6 +23,7 @@ export default function StudentGrid({students, setStudents, size, edit}){
     const nextState = swap(students, sourceIndex, targetIndex);
     setStudents(nextState);
   }
+
   function handleStudentClick(e){
     const name = e.target.innerText;
     const student = students.filter((s) => {
@@ -29,6 +37,7 @@ export default function StudentGrid({students, setStudents, size, edit}){
 
   return (
     <>
+
     <GridContextProvider onChange={onChange}>
       <GridDropZone
         id="items"
@@ -37,6 +46,7 @@ export default function StudentGrid({students, setStudents, size, edit}){
         rowHeight={100}
         disableDrag = {edit}
         disableDrop = {edit}
+
         style = {{height: size}}
       >
       {students && students.length ? (
@@ -45,10 +55,12 @@ export default function StudentGrid({students, setStudents, size, edit}){
               <div className = "btn grid-item"  onClick = {edit ? handleStudentClick : null} >
                   <div className = "tile" >{item.name}</div>
               </div>
+
           </GridItem>
         )) ) : <></>}
       </GridDropZone>
     </GridContextProvider>
+
     {modalOpen && <StudentBehaviorModal open={modalOpen} onClose={closeModal} students = {students} setStudents = {setStudents} student = {student}/>}
     </>
   )

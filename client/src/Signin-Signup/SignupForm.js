@@ -5,7 +5,7 @@ import FloatingTextField from "../Components/FloatingTF.js";
 import { DataStoreContext } from "../contexts.js";
 import GoogleSignIn from './GoogleSignIn';
 import Button from "../Components/Button";
-import { signUp } from "../api/auth";
+import { signUp, signUpWithGoogle } from "../api/auth";
 import { useHistory } from "react-router-dom";
 
 
@@ -106,7 +106,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
                   Create Account
                 </Button>
                 <hr />
-                <GoogleSignIn buttonText="Sign up with Google" />
+                <GoogleSignIn buttonText="Sign up with Google" dbFunc={signUpWithGoogle}/>
               </form>
             )}
           </Formik>

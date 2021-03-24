@@ -4,9 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var dotenv = require('dotenv');
+
+
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
+var signupRouter = require("./routes/signup");
+let periodRouter = require("./routes/period");
 var mongo = require('./models/mongo');
+let mongoose = require('./models/mongoose');
+var emailRouter = require("./routes/email_verification");
+
 
 var app = express();
 
@@ -24,14 +32,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 //PLAY AROUND HERE
-// put in the uri here haha
-mongo.connect("uri", function(err) {
-    //Add routes here
-    app.use("/test", testRouter);
-    app.use("/api/login", loginRouter);
+dotenv.config();
+
+console.log(process.env.MONGO_DB_URI);
+
+mongoose.connect(process.env.MONGO_DB_URI, function(err){
+  app.use("/api/period", periodRouter);
 });
 
 
+// put in the uri here haha
+mongo.connect(process.env.MONGO_DB_URI, function(err) {
+    //Add routes here
+    app.use("/test", testRouter);
+    app.use("/api/login", loginRouter);
+    app.use("/api/signup", signupRouter);
+    app.use("/api/email_verification", emailRouter); 
+});
 
 
 // Terry's useless code
