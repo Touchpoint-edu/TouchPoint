@@ -94,7 +94,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                         </ul>
                       </div>
                       <Button
-                          className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
+                          className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
                           fullWidth={true}
                           onSubmit = {handleConfirmUpload}
                           onClose = {onClose}
@@ -112,7 +112,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                       </div>
                       <hr className="solid my-4" />
                       <Button
-                          className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
+                          className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
                           fullWidth={true}
                           onSubmit = {handleSubmitUpload}
                           onClose = {onClose}
@@ -134,7 +134,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                     </div>
                     <hr className="solid my-4 w-75" />
                     <Button
-                        className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
+                        className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
                         fullWidth={true}
                         onSubmit = {handleSubmitDownload}
                         onClose = {onClose}

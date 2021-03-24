@@ -23,7 +23,8 @@ function sendToken(res, data) {
         expires: new Date(Date.now() + 900000), // change expiry time
         httpOnly: true
     });
-    res.sendStatus(200);
+    
+    res.status(200).json({ name: `${data.fname} ${data.lname}` });
 }
 
 function sendError(res, status, message) {
@@ -47,7 +48,8 @@ router.post("/auth/google", async (req, res) => {
         const options = {
             projection: {
                 _id: 1,
-                name: 1,
+                fname: 1,
+                lname: 1,
                 status: 1
             }
         }
@@ -79,7 +81,8 @@ router.post("/auth", async (req, res) => {
             _id: 1,
             email: 1,
             hash: 1,
-            name: 1,
+            fname: 1,
+            lname: 1,
             google_id: 1,
             status: 1
         }

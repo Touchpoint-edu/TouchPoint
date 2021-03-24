@@ -1,20 +1,16 @@
 import Cookies from "js-cookie";
 
 export async function signUp(userData) {
-  const response = await fetch("/api/users", {
+  let userStr = btoa(`${userData.email}:${userData.password}`);
+  const response = await fetch("/api/signup", {
     method: "POST",
     headers: {
+      "Authorization": "Basic " + userStr,
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
     },
-    body: JSON.stringify(userData),
   });
-
-  if (response.status >= 400) {
-    return Promise.reject(`There was an error signing up`);
-  }
-
-  return response.json();
+  return response;
 }
 
 export async function fetchUser() {
@@ -46,10 +42,7 @@ export async function login(userData) {
     },
     //body: JSON.stringify(userData),
   });
-  if (response.status === 200) {
-    return response.status;
-  }
-  return response.json();
+  return response;
 }
 
 export async function loginWithGoogle(token) {
