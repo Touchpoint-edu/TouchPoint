@@ -190,18 +190,17 @@ export default function Dashboard () {
               </InputGroup>
             </form>
           </div>
-        <div className = "grid-container">
-
-          <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
-        </div>
-        <div className ="edit-button-container">
-            <Button
-                  className="edit-button btn btn-success"
-                  onClick = {handleChartSave}
-                >
-                  {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
-            </Button>
-        </div>
+          <div className = "grid-container">
+            <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
+          </div>
+          <div className ="edit-button-container">
+              <Button
+                    className="edit-button btn btn-success"
+                    onClick = {handleChartSave}
+                  >
+                    {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
+              </Button>
+          </div>
       </div>
       {nameError && <div className = "name-error"> Please enter a name.</div>}
       

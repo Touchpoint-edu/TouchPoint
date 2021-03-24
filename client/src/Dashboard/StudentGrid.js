@@ -43,7 +43,6 @@ export default function StudentGrid({students, setStudents, size, edit}){
         rowHeight={100}
         disableDrag = {edit}
         disableDrop = {edit}
-
         style = {{height: size}}
       >
       {students && students.length ? (
