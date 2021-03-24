@@ -8,12 +8,9 @@ import {
     swap
 } from "react-grid-dnd";
 import { DashboardContext } from '../contexts';
-
-
-export default function StudentGrid({students, setStudents}){
- 
-
 import StudentBehaviorModal from "./StudentBehaviorModal.js"
+
+
 
 export default function StudentGrid({students, setStudents, size, edit}){
     const [modalOpen, setModalOpen] = useState(false);
