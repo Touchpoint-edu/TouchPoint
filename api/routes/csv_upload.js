@@ -1,9 +1,10 @@
 var express = require("express")
-const mongoose = require('mongoose');
+var ObjectId = require('mongodb').ObjectID;
 const mongo = require('../models/mongo');
 const multer = require('multer');
 const csv = require('fast-csv');
 const fs = require('fs');
+
 
 const { CSV_FORMAT_ERROR_MSG } = require('../constants/errors');
 const verify = require('../scripts/verify')
@@ -19,7 +20,7 @@ const filesMulter = multer({ dest: 'csv/' });
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
     try {
         verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-        
+
         let students = [];
         const parseFileOptions = {
             headers: [undefined, 'name', 'email', undefined],
@@ -32,13 +33,11 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
                 error.sendError(res, 400, CSV_FORMAT_ERROR_MSG)
             })
             .on("data", data => {
+                data._id = new ObjectId()
                 students.push(data);
             })
             .on("end", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
-
-                // create individual students in the db
-                mongo.insertMany("students", students);
 
                 const period = {
                     columns: 6,
