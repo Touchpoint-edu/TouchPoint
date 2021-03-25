@@ -70,9 +70,9 @@ Given a period id, adds a single student
 router.post("/students/add-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-    mongo.insertOne("students", req.body);
-    console.log(req.body);
-    // body._id = new ObjectId(); //If you need a new object id
+    // mongo.insertOne("students", req.body);
+    // console.log(req.body);
+    body._id = new ObjectId(); //If you need a new object id
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }

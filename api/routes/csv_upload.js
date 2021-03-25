@@ -1,14 +1,13 @@
 var express = require("express")
 var ObjectId = require('mongodb').ObjectID;
-const mongo = require('../models/mongo');
 const multer = require('multer');
 const csv = require('fast-csv');
 const fs = require('fs');
 
-
-const { CSV_FORMAT_ERROR_MSG } = require('../constants/errors');
+const mongo = require('../models/mongo');
 const verify = require('../scripts/verify')
 const error = require('../scripts/error')
+const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
 
 var router = express.Router();
 const filesMulter = multer({ dest: 'csv/' });
@@ -19,7 +18,7 @@ const filesMulter = multer({ dest: 'csv/' });
  */
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
     try {
-        verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 
         let students = [];
         const parseFileOptions = {
@@ -39,13 +38,9 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             .on("end", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
 
-                const period = {
-                    columns: 6,
-                    students: students
-                }
-
-                // create a period containing the student array
-                mongo.insertOne("periods", period)
+                // create and save period to user
+                const period = createPeriod(students);
+                savePeriodToUser(period._id, userPayload.sub);
 
                 res.status(200);
                 res.json({
@@ -54,9 +49,54 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             })
     } catch (err) {
         console.log(err);
-        error.sendError(res, "404", "huh");
+        error.sendError(res, 404, "huh");
     }
 })
+
+/* ************************************** HELPERS ************************************* */
+
+/**
+ *  create a period containing the students array
+ * @param {*} students : array of students
+ * @returns the period created in the db
+ */
+ const createPeriod = (students) => {
+    const period = {
+        columns: 6,
+        students: students
+    }
+
+    mongo.insertOne("periods", period)
+        .then(data => {
+            if (!data) {
+                error.sendError(res, 500, SERVER_ERROR_MSG);
+            }
+        });
+
+    return period
+}
+
+/**
+ * save period to users document
+ * @param {*} period_id : period id in db
+ * @param {*} user_id : user id to save period to
+ */
+const savePeriodToUser = (period_id, user_id) => {
+    const query = {
+        _id: new ObjectId(user_id)
+    }
+    const update = {
+        $push: { "periods": period_id }
+    }
+    const options = { upsert: true };
+
+    mongo.update("users", query, update, options)
+        .then(data => {
+            if (!data) {
+                error.sendError(res, 500, SERVER_ERROR_MSG);
+            }
+        })
+}
 
 // router.get("/auth/email/validate/:emailID", async (req, res) => {
 //     var emailID = req.params.emailID; 

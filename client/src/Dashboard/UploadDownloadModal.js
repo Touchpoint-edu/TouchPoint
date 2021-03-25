@@ -91,6 +91,9 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
     } else if (response.status === 400) {
       // TODO: put out error message from responseData
       console.log(responseData)
+    } else if (response.status === 500) {
+      // TODO: put out error message from responseData
+      console.log(responseData)
     }
   }
 
