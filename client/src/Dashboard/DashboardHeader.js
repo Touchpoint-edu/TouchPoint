@@ -15,9 +15,9 @@ export default function DashboardHeader() {
     const closeModal = () => setModalOpen(false);
 
     const periods = [
-        { id: 1, value: "Period 1" },
-        { id: 2, value: "Period 2" },
-        { id: 3, value: "Period 3" }
+        { id: 0, value: "Period 1" },
+        { id: 1, value: "Period 2" },
+        { id: 2, value: "Period 3" }
     ];
     const { user, setUser } = useContext(DataStoreContext);
     const [students, setStudents] = useState();
@@ -34,37 +34,33 @@ export default function DashboardHeader() {
 
 
     return (
-        <DashboardContext.Provider value={{
-            selectedPeriod, setSelectedPeriod,
-            students, setStudents,
-            // periods, setPeriods
-        }}>
-            <div className="d-flex">
-                <div className="p-2 ml-5 flex-grow-1">
-                    <div className="mb-2 ml-5">
-                        <span className="dash_title">{user}'s Classroom</span>
-                    </div>
-                    <div>
-                        <select
-                            className="form-control w-25 ml-5"
-                            value={selectedPeriod}
-                            onChange={handlePeriodChange}
-                        >
-                            {periods.map((per) => {
-                                return (
-                                    <option key={per.id} value={per.value}>
-                                        {per.value}
-                                    </option>
-                                );
-                            })}
-                        </select>
-
-                    </div>
-                </div>
-                <div className=" mt-1 dash_header_buttons">
-                    <div className="mb-2">
-                        <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
-                            + Upload CSV
+    <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
+    <div className = "d-flex">
+        <div className = "p-2 ml-5 flex-grow-1">
+            <div className = "mb-2 ml-5">
+                <span className = "dash_title">{user}'s Classroom</span>
+            </div>
+            <div>
+            <select
+                className="form-control w-25 ml-5"
+                value={selectedPeriod}
+                onChange={handlePeriodChange}
+                >
+                {periods.map((per) => {
+                    return (
+                    <option key={per.id} value={per.value}>
+                        {per.value} 
+                    </option>
+                    );
+                })}
+            </select>
+            
+            </div>
+        </div>
+        <div className = "ml-4 mt-1 dash_header_buttons">
+            <div className = "mb-2">
+                <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
+                    + Upload CSV
                 </Button>
                     </div>
                     <div>
@@ -84,5 +80,16 @@ export default function DashboardHeader() {
                 </div>
 
             </div>
-        </DashboardContext.Provider>);
+            {modalOpen && <UploadDownloadModal
+                open={modalOpen}
+                onClose={closeModal}
+                variant={modalVariant}
+                toggleVariant={() =>
+                setModalVariant(modalVariant === "upload" ? "upload" : "download")
+            }
+            />}
+        </div>
+        
+    </div>
+    </DashboardContext.Provider>);
 }

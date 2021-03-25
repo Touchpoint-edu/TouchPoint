@@ -6,23 +6,148 @@ import {InputGroup, FormControl, Button} from 'react-bootstrap'
 
 export default function Dashboard () {
 
+    
+    const [students, setStudents]   = useState([
+      {
+        id: 0,
+        name: "First, Last 1",
+        data: 
+          {
+            category: 0,
+            behavior: 0,
+          },
+        
+      },
+      {
+        id: 1,
+        name: "First, Last 2",
+        data: 
+          {
+            category: 1,
+            behavior: 0,
+          },
+        
+      },
+      {
+        id: 2,
+        name: "First, Last 3",
+        data: 
+          {
+            category: 2,
+            behavior: 0,
+          },
+        
+      },
+      {
+        id: 3,
+        name: "First, Last 4",
+        data: 
+          {
+            category: 3,
+            behavior: 0,
+          },
+        
+      },
+      {
+        id: 4,
+        name: "First, Last 5",
+        data: 
+          {
+            category: 0,
+            behavior: 1,
+          },
+        
+      },
+      {
+        id: 5,
+        name: "First, Last 6",
+        data: 
+          {
+            category: 1,
+            behavior: 1,
+          },
+        
+      },
+      {
+        id: 6,
+        name: "First, Last 7",
+        data: 
+          {
+            category: 2,
+            behavior: 1,
+          },
+        
+      },
+      {
+        id: 7,
+        name: "First, Last 8",
+        data: 
+          {
+            category: 3,
+            behavior: 1,
+          },
+        
+      },
+      {
+        id: 8,
+        name: "First, Last 9",
+        data: {
+            category: 0,
+            behavior: 2,
+        },
+        
+      },
+      {
+        id: 9,
+        name: "First, Last 10",
+        data: 
+          {
+            category: 1,
+            behavior: 2,
+          },
+       
+      },
+      {
+        id: 10,
+        name: "First, Last 11",
+        data: 
+          {
+            category: 2,
+            behavior: 2,
+          },
+        
+      },
+      {
+        id: 11,
+        name: "First, Last 12",
+        data: 
+          {
+            category: 3,
+            behavior: 2,
+          },
+        
+      },
+    ]);
+    
 
-    const [students, setStudents] = useState(["First, Last 1", "First, Last 2", "First, Last 3", "First, Last 4", "First, Last 5", 
-    "First, Last 6", "First, Last 7", "First, Last 8", "First, Last 9", "First, Last 10",  "First, Last 11", "First, Last 12", "First, Last 13",
-    "First, Last 14", "First, Last 15", "First, Last 16", "First, Last 17", "First, Last 18", "First, Last 19", "First, Last 20", "First, Last 21", 
-    "First, Last 22", "First, Last 23", "First, Last 24", "First, Last 25", "First, Last 26", "First, Last 27", "First, Last 28", "First, Last 29",
-    "First, Last 30", "First, Last 31", "First, Last 32", "First, Last 33", "First, Last 34", "First, Last 35", "First, Last 36"]); 
 
 
     const [studentName, setStudentName] = useState("");
     const [size, setSize] = useState((students.length/6)*100)
     const [nameError, setNameError] = useState(false); 
+    const [editChart, setEditChart] = useState(false);
+
 
     function addStudent(event){
         event.preventDefault();
         if(studentName.length > 1){
           setNameError(false);
-          const s = students.concat(studentName);
+          const newStud = {
+            id: students.length,
+            name: studentName,
+            data: {},
+          }
+          const s = students.concat(newStud);
           setStudents(s);
           if(s.length%6 == 1){
             setSize(size+100);
@@ -36,6 +161,13 @@ export default function Dashboard () {
     
     function handleNameChange(event) {
       setStudentName(event.target.value);
+    }
+
+    function handleChartSave(){
+      if(editChart == false){
+        //save the chart
+      }
+      setEditChart(!editChart);
     }
    
     return (
@@ -59,10 +191,20 @@ export default function Dashboard () {
             </form>
           </div>
         <div className = "grid-container">
-          <StudentGrid students = {students} setStudents = {setStudents}></StudentGrid>
+
+          <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
+        </div>
+        <div className ="edit-button-container">
+            <Button
+                  className="edit-button btn btn-success"
+                  onClick = {handleChartSave}
+                >
+                  {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
+            </Button>
         </div>
       </div>
       {nameError && <div className = "name-error"> Please enter a name.</div>}
+      
       </>
     );
     
