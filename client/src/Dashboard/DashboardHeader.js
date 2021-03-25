@@ -62,23 +62,11 @@ export default function DashboardHeader() {
                 <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
                     + Upload CSV
                 </Button>
-                    </div>
-                    <div>
-                        <Button className="export_button" onClick={() => openModal("download")} >
-                            - Download CSV
+            </div>
+            <div>
+                <Button className="export_button" onClick={() => openModal("download")} >
+                    - Download CSV
                 </Button>
-                    </div>
-                    {modalOpen && <UploadDownloadModal
-                        open={modalOpen}
-                        onClose={closeModal}
-                        variant={modalVariant}
-                        toggleVariant={() =>
-                            setModalVariant(modalVariant === "upload" ? "upload" : "download")
-                        }
-                    />}
-
-                </div>
-
             </div>
             {modalOpen && <UploadDownloadModal
                 open={modalOpen}
