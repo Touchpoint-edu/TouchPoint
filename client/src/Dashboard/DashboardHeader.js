@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "../Components/Button";
 import UploadDownloadModal from "./UploadDownloadModal";
 import { DataStoreContext, DashboardContext } from "../contexts.js";
 
 
 export default function DashboardHeader() {
-    
+
     const [modalOpen, setModalOpen] = useState(false);
     const [modalVariant, setModalVariant] = useState("upload");
     const openModal = (variant) => {
@@ -21,17 +21,17 @@ export default function DashboardHeader() {
     ];
     const { user, setUser } = useContext(DataStoreContext);
     const [students, setStudents] = useState();
-    // const [periods, setPeriods] = useState();
+    // const [periods, setPeriods] = useState([]);
     //uncomments and add to dashboardcontext provider
     const [selectedPeriod, setSelectedPeriod] = useState("Periods");
-    
+
     function handlePeriodChange(event) {
         // API Call
         // const newStudents 
         // setStudents(newStudents);
         setSelectedPeriod(event.target.value);
     }
-   
+
 
     return (
     <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
