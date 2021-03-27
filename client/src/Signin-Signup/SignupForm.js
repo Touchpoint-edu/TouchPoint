@@ -34,7 +34,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
           fname: data.fname,
           lname:data.lname
         });
-      if (res.status === 200) {
+      if (res.status === 201) {
         setSignUpErrorMsg("Your account has been successfully created.");
       }
       else if (res.status === 500) {
@@ -42,10 +42,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
       }
       else {
         const json = await res.json();
-        console.log(!!json);
         if (!!json && !!json.message) {
-          console.log("working1");
-          console.log(json);
           setSignUpErrorMsg(json.message);
         }
       }
