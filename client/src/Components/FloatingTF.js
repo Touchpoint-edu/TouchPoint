@@ -22,16 +22,10 @@ export default function FloatingTF({
   }
 
   return (
-    <div
-      className={`${className} relative border-2 ${
-        error ? "border-red-600" : "border-gray-500"
-      } rounded-lg`}
-    >
-      
       <input
         className={[
           textStyles,
-          "outline-none w-100 rounded bg-transparent text-sm mt-3 mb-3 px-3 py-2",
+          "outline-none w-100 rounded bg-transparent text-sm my-3 px-3 py-2",
           "transition-all duration-200 ease-in-out",
           active && "pt-7",
         ].join(" ")}
@@ -42,6 +36,5 @@ export default function FloatingTF({
         onBlur={onBlur}
         placeholder = {placeholder}
       />
-    </div>
   );
 }
