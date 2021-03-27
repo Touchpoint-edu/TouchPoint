@@ -199,7 +199,7 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 150%;
+  width: 145%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -211,7 +211,7 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 150%;
+  width: 145%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -223,13 +223,13 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 150%;
+  width: 145%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
 }
 .edit-button-container{
-  margin-right: -7.8%!important;
+  margin-right:11%!important;
 }
 
 .name-error{
@@ -257,7 +257,7 @@
   flex: 0 1 auto;
   position: absolute;  
   margin-top: 50px;          
-  left: 60%;
+  left: 50%;
   transform: translateX(-50%);
 
  
@@ -283,6 +283,12 @@
 .student-modal{
   max-height: 400px;
   overflow: auto;
+}
+
+.behavior-label{
+  color: #40904C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
 }
 .loader {
   margin: 100px auto;

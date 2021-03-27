@@ -10,57 +10,6 @@ import {Form, Row, Col} from "react-bootstrap";
 const modalContainer = document.getElementById("modal-container");
 
 export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student }) {
-    useEffect(() => { 
-        function handleEscapeKey(event) {
-            if (event.keyCode === 27 && open) {
-                onClose();
-            }
-        }
-        document.addEventListener("keydown", handleEscapeKey);
-        return function cleanup() {
-            document.removeEventListener("keydown", handleEscapeKey);
-        };
-    }, [open, onClose]);
-
-    function stopPropagation(e) {
-        e.stopPropagation();
-    }
-     
-    function handleSubmitBehavior(e) {
-        e.preventDefault();
-        onClose();
-    }
-
-    function handleDeleteStudent(e) {
-     
-        onClose();
-    }
-
-
-    const [selectedCategoryId, setSelectedCategoryId] = useState("-");
-    const [filteredBehaviors, setFilteredBehaviors] = useState([]);
-    const [splice, setSplice] = useState(0)
-
-    function handleCategoryChange(event){
-        const isNoneSelected = event.target.value === "-";
-        if (isNoneSelected) {
-            setFilteredBehaviors([]);
-        } else {
-            const selectedCategoryId = Number(event.target.value);
-            const filteredBehaviors = data.filter((c) => {  
-                if(c.id === selectedCategoryId){
-                    return c.behaviors;
-                }
-            });
-            setFilteredBehaviors(filteredBehaviors);
-
-        }
-        setSelectedCategoryId(event.target.value);
-        setSplice(Math.floor(filteredBehaviors.length / 2))
-
-
-    }
-
     const data = [
         {
             id: 0,
@@ -162,8 +111,60 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
         },
         
     ]
-
+    const [selectedCategoryId, setSelectedCategoryId] = useState("-");
+    const [filteredBehaviors, setFilteredBehaviors] = useState([]);
+    const [selectedBehavior, setSelectedBehavior] = useState("");
     const options = [{ id: "-", category: "Select Category" }].concat(data);
+
+    
+    useEffect(() => { 
+        function handleEscapeKey(event) {
+            if (event.keyCode === 27 && open) {
+                onClose();
+            }
+        }
+        document.addEventListener("keydown", handleEscapeKey);
+        return function cleanup() {
+            document.removeEventListener("keydown", handleEscapeKey);
+        };
+    }, [open, onClose]);
+
+    function stopPropagation(e) {
+        e.stopPropagation();
+    }
+     
+    function handleSubmitBehavior(e) {
+        //add behavior with event value to the student info
+        e.preventDefault();
+        onClose();
+    }
+
+    function handleDeleteStudent(e) {
+        //delete student from database
+        onClose();
+    }
+
+      function handleCategoryChange(event){
+        const isNoneSelected = event.target.value === "-";
+        if (isNoneSelected) {
+            setFilteredBehaviors([]);
+        } else {
+            const selectedCategoryId = Number(event.target.value);
+            const filteredBehaviors = data.filter((c) => {  
+                if(c.id === selectedCategoryId){
+                    return c.behaviors;
+                }
+            });
+            setFilteredBehaviors(filteredBehaviors[0].behaviors);
+           
+
+        }
+        setSelectedCategoryId(event.target.value);
+        
+    }
+    function handleOptionChange(event) {
+        setSelectedBehavior(event.target.value);
+    }
 
 
   return createPortal(
@@ -201,58 +202,63 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                         </select>
 
                       </div>
-                      <hr className="solid my-4" />
-                      <div className = "d-flex justify-content-center">
-                        <fieldset>
-                            <div className = "form-group Row" >
-
-                                        {filteredBehaviors.length > 0 ? 
-                                            filteredBehaviors[0].behaviors.slice(0,splice).map((item) => {
-                                                console.log(item);
-                                              return( <div className="Col-6">
-                                                  <input
-                                                        type="radio"
-                                                        label={item.behavior}
-                                                > {item.behavior}</input>
-                                                </div>);
+                      
+                      
+                            <form onSubmit={handleSubmitBehavior}>
+                                <div className = "row w-75 ml-5 mt-4">
+                                <div className="col">
+                                        {
+                                        filteredBehaviors.length > 0 ? 
+                                        filteredBehaviors.slice(0, (Math.floor(filteredBehaviors.length / 2))).map((item) => {
+                                              return( 
+                                                <div className="radio" key = {item.id}>
+                                                    <label className="behavior-label">
+                                                    <input type="radio" value={item.behavior} checked={selectedBehavior === item.behavior}  onChange={handleOptionChange} />
+                                                         {item.behavior}
+                                                    </label>
+                                                </div>
+                                               );
                                             })
                                          : <></>}  
                                  
-                         
+                                </div>
+                                <div className = "col">
                                         {filteredBehaviors.length > 0 ? 
-                                            filteredBehaviors[0].behaviors.slice(splice).map((item) => {
-                                               return( <div className="Col-6"><input
-                                                type="radio"
-                                                label={item.behavior}
-                                                /></div>);
+                                            filteredBehaviors.slice((Math.floor(filteredBehaviors.length / 2))).map((item) => {
+                                               return( 
+                                               <div className="radio" key = {item.id}>
+                                                <label className = "behavior-label">
+                                                    <input type="radio" value={item.behavior} checked={selectedBehavior === item.behavior} onChange={handleOptionChange} />
+                                                     {item.behavior}
+                                                </label>
+                                                </div>
+                                               );
                                             })
                                          : <></>}        
-                                
-                            </div>
-                        </fieldset>
-                      </div>
-                      <div className = "d-flex justify-content-between">
-                        <Button
-                            className="h-12 text-xl behavior_button ml-5 mt-2 mb-2"
-                            fullWidth={true}
-                            onSubmit = {handleSubmitBehavior}
-                            onClose = {onClose}
-                        >
-                            Submit Behavior
-                        </Button>
-                        <Button
-                            className="h-12 text-xl delete_button mr-5 mt-2 mb-2"
-                            fullWidth={true}
-                            onClick= {handleDeleteStudent}
-                            onClose = {onClose}
-                        >
-                            Delete Student
-                        </Button>
-                      </div>
-                     
-                      
-            
-                 
+                                </div>
+                                </div>
+                                <hr className="solid my-4" />
+                                <div className = "d-flex justify-content-between">
+                                    <Button
+                                        className="h-12 text-xl behavior_button ml-5 mt-2 mb-2"
+                                        fullWidth={true}
+                                        onSubmit = {handleSubmitBehavior}
+                                        onClose = {onClose}
+                                        type = "submit"
+                                    >
+                                        Submit Behavior
+                                    </Button>
+                                    <Button
+                                        className="h-12 text-xl delete_button mr-5 mt-2 mb-2"
+                                        fullWidth={true}
+                                        onClick= {handleDeleteStudent}
+                                        onClose = {onClose}
+                                    >
+                                        Delete Student
+                                    </Button>
+                                </div>
+                            </form>
+
             </div>
           </div>
         </div>
