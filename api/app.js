@@ -8,8 +8,6 @@ var dotenv = require('dotenv');
 var MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
-
-
 var testRouter = require("./routes/test");
 var loginRouter = require("./routes/login");
 var signupRouter = require("./routes/signup");
@@ -17,7 +15,8 @@ let periodRouter = require("./routes/period");
 var mongo = require('./models/mongo');
 let mongoose = require('./models/mongoose');
 var emailRouter = require("./routes/email_verification");
-var csvRouter = require("./routes/csv_upload");
+var csvRouter = require("./routes/csv_upload"); 
+var behaviorRouter = require("./routes/behavior"); 
 
 var app = express();
 
@@ -53,9 +52,10 @@ mongo.connect(process.env.MONGO_DB_URI, function(err) {
     app.use("/test", testRouter);
     app.use("/api/login", loginRouter);
     app.use("/api/signup", signupRouter);
-    app.use("/api/email_verification", emailRouter);
     app.use("/api/period", periodRouter);
-    app.use("/period/csv", csvRouter);
+    app.use("/api/email_verification", emailRouter); 
+    app.use("/period/csv", csvRouter); 
+    app.use("/behavior", behaviorRouter); 
 });
 
 
