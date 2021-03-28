@@ -54,7 +54,7 @@ mongo.connect(process.env.MONGO_DB_URI, function(err) {
     app.use("/api/signup", signupRouter);
 
     app.use("/api/period", periodRouter);
-    app.use("/api/email_verification", emailRouter); 
+    app.use("/api/email_verification", emailRouter.router); 
     app.use("/period/csv", csvRouter); 
     app.use("/behavior", behaviorRouter); 
 });
