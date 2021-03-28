@@ -23,7 +23,6 @@ export default function LoginForm({onClose}) {
     const history = useHistory();
     async function handleSubmit(values) {
 
-      try {
         const res = await login({ 
           email: values.email, 
           password: values.password 
@@ -36,8 +35,11 @@ export default function LoginForm({onClose}) {
           setAuthenticated(true);
           onClose();
         }
+        else if (res.status === 500) {
+          setLoginErrorMsg("There was an error. Please try again later.");
+        }
         else {
-          const json = res.json();
+          const json = await res.json();
           if (!!json.message) {
             console.log(json.message);
             setLoginErrorMsg(json.message);
@@ -46,10 +48,7 @@ export default function LoginForm({onClose}) {
             setLoginErrorMsg("There was an error. Please try again later.");
           }
         }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+      } 
 
     return (
         <>

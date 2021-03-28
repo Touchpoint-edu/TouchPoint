@@ -35,7 +35,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
           lname:data.lname
         });
       if (res.status === 201) {
-        setSignUpErrorMsg("Your account has been successfully created.");
+        setSignUpErrorMsg("Your account has been successfully created. Please check your email to verify your account.");
       }
       else if (res.status === 500) {
         setSignUpErrorMsg("There was an error. Please try again later.");
