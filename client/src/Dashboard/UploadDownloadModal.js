@@ -3,6 +3,7 @@ import Close from "../Components/Close";
 import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import { DashboardContext } from "../contexts.js";
+import { uploadCSV } from "../api/class_period.js"
 
 
 
@@ -61,15 +62,8 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
       return;
     }
 
-    // make FormData object to pass into request
-    const formData = new FormData()
-    formData.append('file', uploadFile)
-
     // fetch to save csv to database
-    const response = await fetch("/period/csv/upload", {
-      method: "POST",
-      body: formData
-    })
+    const response = await uploadCSV(uploadFile);
     const responseData = await response.json()
 
     if (response.status === 200) {
