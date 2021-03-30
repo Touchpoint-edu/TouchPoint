@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient
+var ObjectId = require('mongodb').ObjectID;
 
 var state = {
   client: null,
@@ -23,12 +24,21 @@ exports.db = function(name) {
   return state.db;
 }
 
-exports.insertOne = function(collection, toInsert, databaseName) {
+exports.insertOne = function(collection, toInsert, databaseName, callback) {
   if (databaseName) {
-    client.db(databaseName).collection(collection).insertOne(toInsert);
+    return client.db(databaseName).collection(collection).insertOne(toInsert, callback);
   }
   else {
-    state.db.collection(collection).insertOne(toInsert);
+    return state.db.collection(collection).insertOne(toInsert, callback);
+  }
+}
+
+exports.insertMany = function(collection, toInsert, databaseName) {
+  if (databaseName) {
+    client.db(databaseName).collection(collection).insertMany(toInsert);
+  }
+  else {
+    state.db.collection(collection).insertMany(toInsert);
   }
 }
 
@@ -39,6 +49,18 @@ exports.findUser = function(query, options, databaseName) {
   else {
     return state.db.collection("users").findOne(query, options);
   }
+}
+
+exports.update = function(collection, query, toUpdate, options, callback){
+  return state.db.collection(collection).updateOne(query, toUpdate, options, callback);
+}
+
+exports.findOne = function(collection, query, options){
+  return state.db.collection(collection).findOne(query);
+}
+
+exports.findMany = function(collection, query, options){
+  return state.db.collection(collection).find(query, options);
 }
 
 exports.close = function(done) {

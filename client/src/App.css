@@ -11,7 +11,11 @@
     box-shadow: 1px 3px 1px #9E9E9E;
 }
 
-
+.form-control{
+    -webkit-box-shadow: 2px 2px 2px #9E9E9E;
+    -moz-box-shadow: 2px 2px 2px #9E9E9E;
+    box-shadow: 2px 2px 2px #9E9E9E;
+}
 .text-red-500{
   color: red;
   font-weight: 300;
@@ -65,6 +69,24 @@
 
 .submit_button {
   background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+}
+
+.behavior_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+}
+
+.delete_button {
+  background-color: red;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
@@ -153,7 +175,7 @@
   position: relative; 
 }
 .add-button-container{
-  margin-left:7.7%;
+  margin-left:8.3%;
   margin-top:5px;
   flex: 0 1 auto;
   margin-right:auto;
@@ -164,6 +186,49 @@
   background-color: #83B55C;
   border:none;
   color: white;
+  -webkit-box-shadow: 2px 2px 2px #9E9E9E;
+  -moz-box-shadow: 2px 2px 2px #9E9E9E;
+  box-shadow: 2px 2px 2px #9E9E9E;
+}
+
+.edit-button{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 145%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button:active{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 145%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button:focus{
+  border-radius:0.25rem;
+  border-color: #83B55C;
+  background-color:transparent;
+  color: #40904C;
+  margin-top:10px;
+  height: calc(1.5em + .75rem + 2px);
+  width: 145%;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+
+}
+.edit-button-container{
+  margin-right:11%!important;
 }
 
 .name-error{
@@ -189,7 +254,8 @@
   touch-action: none;
   width: 600px;
   flex: 0 1 auto;
-  position: absolute;            
+  position: absolute;  
+  margin-top: 50px;          
   left: 50%;
   transform: translateX(-50%);
 
@@ -216,6 +282,12 @@
 .student-modal{
   max-height: 400px;
   overflow: auto;
+}
+
+.behavior-label{
+  color: #40904C;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
 }
 .loader {
   margin: 100px auto;

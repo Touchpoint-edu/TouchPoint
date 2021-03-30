@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import FloatingTextField from "../Components/FloatingTF";
 import Button from "../Components/Button";
 import { login } from "../api/auth";
 import GoogleSignIn from './GoogleSignIn';
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import { DataStoreContext } from "../contexts.js";
 import { loginWithGoogle } from "../api/auth";
 
 
@@ -17,27 +18,37 @@ export default function LoginForm({onClose}) {
       });
 
     const [isAuthenticated, setAuthenticated] = useState("");
+    const { user, setUser } = useContext(DataStoreContext);
     const [loginErrorMsg, setLoginErrorMsg] = useState("");
-  
+    const history = useHistory();
     async function handleSubmit(values) {
 
-      try {
-        const success = await login({ 
+        const res = await login({ 
           email: values.email, 
           password: values.password 
         });
-        if (success === 200) {
+        if (res.status === 200) {
+          let json = await res.json();
+          console.log(json);
+          setUser(json.name);
+          history.push("/dashboard");
           setAuthenticated(true);
           onClose();
         }
-        else {
-          console.log(success);
-          setLoginErrorMsg(success.message);
+        else if (res.status === 500) {
+          setLoginErrorMsg("There was an error. Please try again later.");
         }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+        else {
+          const json = await res.json();
+          if (!!json.message) {
+            console.log(json.message);
+            setLoginErrorMsg(json.message);
+          }
+          else {
+            setLoginErrorMsg("There was an error. Please try again later.");
+          }
+        }
+      } 
 
     return (
         <>

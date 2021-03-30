@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "../Components/Button";
 import UploadDownloadModal from "./UploadDownloadModal";
 import { DataStoreContext, DashboardContext } from "../contexts.js";
 
 
 export default function DashboardHeader() {
-    
+
     const [modalOpen, setModalOpen] = useState(false);
     const [modalVariant, setModalVariant] = useState("upload");
     const openModal = (variant) => {
@@ -15,23 +15,23 @@ export default function DashboardHeader() {
     const closeModal = () => setModalOpen(false);
 
     const periods = [
-        { id: 1, value: "Period 1" },
-        { id: 2, value: "Period 2" },
-        { id: 3, value: "Period 3" }
+        { id: 0, value: "Period 1" },
+        { id: 1, value: "Period 2" },
+        { id: 2, value: "Period 3" }
     ];
     const { user, setUser } = useContext(DataStoreContext);
     const [students, setStudents] = useState();
-    // const [periods, setPeriods] = useState();
+    // const [periods, setPeriods] = useState([]);
     //uncomments and add to dashboardcontext provider
     const [selectedPeriod, setSelectedPeriod] = useState("Periods");
-    
+
     function handlePeriodChange(event) {
         // API Call
         // const newStudents 
         // setStudents(newStudents);
         setSelectedPeriod(event.target.value);
     }
-   
+
 
     return (
     <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
@@ -57,7 +57,7 @@ export default function DashboardHeader() {
             
             </div>
         </div>
-        <div className = " mt-1 dash_header_buttons">
+        <div className = "ml-4 mt-1 dash_header_buttons">
             <div className = "mb-2">
                 <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
                     + Upload CSV
@@ -68,15 +68,14 @@ export default function DashboardHeader() {
                     - Download CSV
                 </Button>
             </div>
-        {modalOpen && <UploadDownloadModal
-            open={modalOpen}
-            onClose={closeModal}
-            variant={modalVariant}
-            toggleVariant={() =>
-            setModalVariant(modalVariant === "upload" ? "upload" : "download")
-        }
-        />}
-            
+            {modalOpen && <UploadDownloadModal
+                open={modalOpen}
+                onClose={closeModal}
+                variant={modalVariant}
+                toggleVariant={() =>
+                setModalVariant(modalVariant === "upload" ? "upload" : "download")
+            }
+            />}
         </div>
         
     </div>
