@@ -175,7 +175,7 @@ export default function Dashboard () {
         <div className = "dash"> 
           <div className="add-button-container "> 
             <form onSubmit = {addStudent} >
-              <InputGroup className="mb-3">
+              <InputGroup className="add-student mb-3">
                 <FormControl
                   placeholder="Student Name"
                   aria-label="Student Name"
@@ -191,7 +191,6 @@ export default function Dashboard () {
             </form>
           </div>
         <div className = "grid-container">
-
           <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
         </div>
         <div className ="edit-button-container">

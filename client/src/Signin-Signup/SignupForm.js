@@ -104,7 +104,7 @@ export default function SignupForm({ toggleVariant, onClose }) {
                 )}
                 <p className="terms mt-3"> By signing up, you agree to the <a href="#" id="terms-highlight">Terms of Service</a> and <a href="#" id="terms-highlight">Privacy Policy</a>, including Cookie Use. </p>
                 <Button
-                  className={` w-100 h-12 text-xl submit_button mt-3`}
+                  className={` w-100 h-12 text-xl sign_button mt-3`}
                   fullWidth={true}
                   disabled={isSubmitting}
                   onSubmit = {handleSubmit}
