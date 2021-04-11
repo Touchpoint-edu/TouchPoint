@@ -11,13 +11,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
-
+  const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
 
   return (
-    <DataStoreContext.Provider value = {{user, setUser}}>
+    <DataStoreContext.Provider value = {{user, setUser, students, setStudents}}>
       <Router>
       {isLoading ? <Loading/> : <>
         <div className = "container-fluid shadow">  
@@ -25,10 +25,10 @@ function App() {
         </div>
           <main >
             <Switch>
-              <Route path="/" exact={true}>
+              <Route path="/temp" exact={true}>
                   <Home/>
               </Route>
-              <Route path="/dashboard" exact={true}>
+              <Route path="/" exact={true}>
                   <Dashboard/>
               </Route>
               <Route path="*">

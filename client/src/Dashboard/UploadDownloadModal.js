@@ -8,7 +8,7 @@ import { DashboardContext } from "../contexts.js";
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function UploadDownloadModal({ open, variant, onClose }) {
+export default function UploadDownloadModal({ open, variant, onClose, students, setStudents }) {
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
@@ -29,8 +29,6 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
   // State to store uploaded file
   const [uploadFile, setUploadFile] = useState();
   const [downloadLoadfile, setDownloadFile] = useState("");
-  const [studentList, setStudentList] = useState();
-  const { students, setStudents } = useContext(DashboardContext);
   const { selectedPeriod, setSelectedPeriod } = useContext(DashboardContext);
   // const { periods, setPeriods } = useContext(DashboardContext);
 
@@ -55,7 +53,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
     //setStudents - DONE
     //set the period of the uploaded csv - COMMENTED
     //setSelectedPeriod - COMMENTED
-
+    
     if (!uploadFile) {
       // TODO: put out error message for no file chosen
       return;
@@ -102,9 +100,6 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
     onClose();
   }
   async function handleConfirmUpload(e) {
-    console.log("hiiiii")
-    e.preventDefault();
-
     onClose();
   }
 
@@ -141,7 +136,7 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                       <Button
                           className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
                           fullWidth={true}
-                          onSubmit = {handleConfirmUpload}
+                          onClick = {handleConfirmUpload}
                           onClose = {onClose}
                       >
                         Confirm
@@ -159,7 +154,6 @@ export default function UploadDownloadModal({ open, variant, onClose }) {
                       <Button
                         className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
                         fullWidth={true}
-                        // onSubmit = {handleSubmitUpload}
                         onClose={onClose}
                         onClick={handleSubmitUpload}
                       >
