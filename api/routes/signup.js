@@ -3,6 +3,7 @@ var router = express.Router();
 var mongo = require('../models/mongo');
 var crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
+const verifyUser = require('./email_verification').verifyUser;
 
 const { ACCOUNT_EXISTS_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
 const { USER_PENDING_EMAIL_STATUS } = require('../constants/status');
@@ -92,10 +93,13 @@ router.post("/", async (req, res) => {
                     email: email,
                     hash: hash,
                     status: USER_PENDING_EMAIL_STATUS
+                }, "", function(err, data) {
+                    if (err) sendError(res, 500, SERVER_ERROR_MSG);
+                    else {
+                        verifyUser(email);
+                        res.sendStatus(201);
+                    }
                 });
-
-                // ADD EMAIL VERIFICATION HERE (suggested to create a email verification function)
-                res.sendStatus(201);
             });
         }
     })

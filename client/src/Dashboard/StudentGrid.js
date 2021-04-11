@@ -10,6 +10,7 @@ import {
 import { DashboardContext } from '../contexts';
 import StudentBehaviorModal from "./StudentBehaviorModal.js"
 
+
 export default function StudentGrid({students, setStudents, size, edit}){
     const [modalOpen, setModalOpen] = useState(false);
     const [student, setStudent] = useState();
@@ -41,7 +42,6 @@ export default function StudentGrid({students, setStudents, size, edit}){
         rowHeight={100}
         disableDrag = {edit}
         disableDrop = {edit}
-
         style = {{height: size}}
       >
       {students && students.length ? (

@@ -72,7 +72,7 @@ router.post("/students/add-one/:period_id", function(req,res){
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
     // mongo.insertOne("students", req.body);
     // console.log(req.body);
-    body._id = new ObjectId(); //If you need a new object id
+    req.body._id = new ObjectId(); //If you need a new object id
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
@@ -80,6 +80,36 @@ router.post("/students/add-one/:period_id", function(req,res){
       $push: { "students" : req.body }
     }
     const options = { upsert: true };
+    mongo.update("periods", query, update, options)
+    .then(data =>{
+        if(!data){
+          console.log("err");
+        }
+        else{
+          res.sendStatus(200);
+        }
+    })
+  }
+  catch(err){
+    console.log(err);
+    error.sendError(res, "404", "huh");
+  }
+});
+
+//Delete
+router.delete("/students/remove-one/:period_id", function(req,res){
+  try{
+    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    // mongo.insertOne("students", req.body);
+    // console.log(req.body);
+    const query = {
+      _id: new ObjectId(req.params['period_id'])
+    }
+    console.log(req.params['period_id']);
+    const update = {
+      $pull: { "students" : req.body }
+    }
+    const options = { upsert: false };
     mongo.update("periods", query, update, options)
     .then(data =>{
         if(!data){

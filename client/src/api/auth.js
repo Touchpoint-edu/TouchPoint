@@ -9,6 +9,10 @@ export async function signUp(userData) {
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
     },
+    body: JSON.stringify({
+      fname: userData.fname,
+      lname: userData.lname
+    })
   });
   return response;
 }
