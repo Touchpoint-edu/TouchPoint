@@ -25,10 +25,10 @@ function App() {
         </div>
           <main >
             <Switch>
-              <Route path="/temp" exact={true}>
+              <Route path="/" exact={true}>
                   <Home/>
               </Route>
-              <Route path="/" exact={true}>
+              <Route path="/dashboard" exact={true}>
                   <Dashboard/>
               </Route>
               <Route path="*">
