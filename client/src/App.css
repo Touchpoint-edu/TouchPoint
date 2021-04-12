@@ -174,9 +174,6 @@
   font-family: 'Inter', sans-serif;
   text-decoration: none;
 }
-.upload-box{
-  margin-left: 150px;
-} 
 
 .dash{
   display: flex;
@@ -287,7 +284,6 @@
   border-radius: 1rem;
 }
 .file-uploader{
-  margin-left: -25px;
   background-color: transparent!important;
   color: #83B55C;
 }

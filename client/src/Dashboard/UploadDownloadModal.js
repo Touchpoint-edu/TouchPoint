@@ -117,16 +117,16 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                 <Close />
               </div>
             </div>
-            <div>
+            <div className="px-5">
               {variant === "upload" ? (
                 <>
                   {students ?
                     <div className="student-modal">
-                      <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
+                      <div className="mt-8 d-flex justify-content-start modal-header-text">
                         <h2>upload</h2>
                       </div>
                       <div scrollable={"true"}>
-                        <ul className="list-group ml-5 mr-5">
+                        <ul className="list-group mr-5">
                           {students.map((student) => {
                             console.log(student);
                             return (<li className="list-group-item">{`${student.name}, ${student.email}`}</li>)
@@ -134,7 +134,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                         </ul>
                       </div>
                       <Button
-                          className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
+                          className="h-12 w-75 text-xl submit_button mt-2 mb-2"
                           fullWidth={true}
                           onClick = {handleConfirmUpload}
                           onClose = {onClose}
@@ -143,7 +143,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                       </Button>
                     </div> :
                     <>
-                      <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
+                      <div className="mt-8 d-flex justify-content-start modal-header-text">
                         <h2>upload</h2>
                       </div>
                       <div className="upload-box">
@@ -152,7 +152,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                       </div>
                       <hr className="solid my-4" />
                       <Button
-                        className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
+                        className="h-12 text-xl submit_button mt-2 mb-2"
                         fullWidth={true}
                         onClose={onClose}
                         onClick={handleSubmitUpload}
@@ -165,22 +165,27 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                 </>
               ) : (
                 <>
-                  <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
+                  <div className="mt-8 d-flex justify-content-start modal-header-text">
                     <h2>download</h2>
                   </div>
-                  <div className="upload-box">
-                    <img src="download.png" alt="download" className="mt-2 mb-5" />;
-                        <input type="file" className="file-uploader mb-3" onChange={handleDownload} />
-                    </div>
-                    <hr className="solid my-4 w-75" />
-                    <Button
-                        className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
-                        fullWidth={true}
-                        onSubmit = {handleSubmitDownload}
-                        onClose = {onClose}
-                    >
-                        Download
-                    </Button>
+                  <div>Please select a date range to download a summary of student behaviors in that time period.</div>
+                  <div>
+                    <label for="start">Start Date:</label>
+                    <input type="date" id="start" />
+                  </div>
+                  <div>
+                    <label for="end">End Date:</label>
+                    <input type="date" id="end" />
+                  </div>
+                  <hr className="solid my-4 w-75" />
+                  <Button
+                      className="h-12 text-xl w-75 submit_button mt-2 mb-2"
+                      fullWidth={true}
+                      onSubmit = {handleSubmitDownload}
+                      onClose = {onClose}
+                  >
+                      Download
+                  </Button>
 
                 </>
               )}
