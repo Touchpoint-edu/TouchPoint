@@ -5,15 +5,15 @@ var crypto = require('crypto');
 var morgan  = require('morgan');
 var ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
-const period = require('../models/period')
-const verify = require('../scripts/verify')
-const error = require('../scripts/error')
-const mongo = require('../models/mongo')
+const period = require('../../models/period')
+const verify = require('../../scripts/verify')
+const error = require('../../scripts/error')
+const mongo = require('../../models/mongo')
 
 /**
 Given a period id, updates the period
 */
-router.post("/students/update/:period_id", function(req,res){
+router.post("/update/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
     const query = {
@@ -40,7 +40,7 @@ router.post("/students/update/:period_id", function(req,res){
 /**
 Given a period id, returns the entire seating chart response
 */
-router.get("/students/seating/:period_id", function(req,res) {
+router.get("/seating/:period_id", function(req,res) {
     try{
       verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
       const query = {
@@ -67,7 +67,7 @@ router.get("/students/seating/:period_id", function(req,res) {
 /**
 Given a period id, adds a single student
 */
-router.post("/students/add-one/:period_id", function(req,res){
+router.post("/add-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
     // mongo.insertOne("students", req.body);
@@ -97,7 +97,7 @@ router.post("/students/add-one/:period_id", function(req,res){
 });
 
 //Delete
-router.delete("/students/remove-one/:period_id", function(req,res){
+router.delete("/remove-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
     // mongo.insertOne("students", req.body);
@@ -127,7 +127,7 @@ router.delete("/students/remove-one/:period_id", function(req,res){
 });
 
 
-// router.get("/students/update", async function(req, res) {
+// router.get("/update", async function(req, res) {
 //   try{
 //     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 //     period.findByIdAndUpdate(req.body.period_id, req.body.period, function(err, result) {
@@ -144,7 +144,7 @@ router.delete("/students/remove-one/:period_id", function(req,res){
 // });
 
 //Update Query
-// router.get("/students/update/:period_id", function(req, res) {
+// router.get("/update/:period_id", function(req, res) {
 //   try{
 //     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 //     period.findByIdAndUpdate(req.params['period_id'], req.body, function(err, result) {
@@ -161,7 +161,7 @@ router.delete("/students/remove-one/:period_id", function(req,res){
 //   }
 // });
 
-// router.get("/students/create", function(req,res) {
+// router.get("/create", function(req,res) {
 //     try{
 //       verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 //       const per = new period(req.body);

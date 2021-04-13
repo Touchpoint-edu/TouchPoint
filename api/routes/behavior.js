@@ -50,7 +50,7 @@ router.get("/count-list/:student_id", function (req, res) {
         const options = {
             projection: {
                 _id: 0,
-                date: 0,
+                time: 0,
                 student_id: 0
             }
         }
