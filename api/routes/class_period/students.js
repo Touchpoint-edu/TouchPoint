@@ -24,10 +24,10 @@ router.post("/update/:period_id", function(req,res){
     }
     mongo.update("periods", query, update)
     .then(data =>{
-        if(!data){
+        if(!data){ // TODO: COULDN'T FIND PERIOD **************************************************************************
           console.log("err");
         }
-        else{
+        else{ //  TODO: EVEN IF IT DOESN'T CHANGE ANYTHING, DATA WILL SAY THAT IT DIDN'T FIND, NEED TO CHECK
           res.sendStatus(200);
         }
     })
