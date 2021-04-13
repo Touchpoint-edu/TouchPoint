@@ -24,7 +24,6 @@
 .logout_button{
   color: #2E323F;
   font-family: 'Inter', sans-serif;
-
 }
 
 .logout_button:hover{
@@ -76,6 +75,16 @@
   border: none;
 }
 
+
+.sign_button {
+  background-color: #40904C;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+
+}
 .behavior_button {
   background-color: #40904C;
   font-weight: 500;
@@ -174,8 +183,11 @@
   justify-content: flex-start;   /* adjustment */
   position: relative; 
 }
+.add-student{
+  width:123%;
+}
 .add-button-container{
-  margin-left:8.3%;
+  margin-left:7.8%;
   margin-top:5px;
   flex: 0 1 auto;
   margin-right:auto;
@@ -198,7 +210,7 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 145%;
+  width: 140%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -210,7 +222,7 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 145%;
+  width: 140%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -222,7 +234,7 @@
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 145%;
+  width: 140%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 

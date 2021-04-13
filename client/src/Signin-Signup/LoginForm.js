@@ -95,7 +95,7 @@ export default function LoginForm({onClose}) {
                   <p className="text-red-500 mb-0">{errors.password}</p>
                 }
                 <Button
-                  className="mt-3 h-12 text-xl w-100 submit_button"
+                  className="mt-3 h-12 text-xl w-100 sign_button"
                   variant="filled"
                   fullWidth={true}
                   type="submit"
