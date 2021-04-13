@@ -1,5 +1,5 @@
 export async function fetchAllPeriods() {
-    const res = await fetch("period/retrieve-all", {
+    const res = await fetch("/api/period/retrieve-all", {
         method: "GET"
     })
     return res;
@@ -10,7 +10,7 @@ export async function uploadCSV(uploadFile) {
     const formData = new FormData()
     formData.append('file', uploadFile)
 
-    const res = await fetch("/period/csv/upload", {
+    const res = await fetch("/api/period/csv/upload", {
         method: "POST",
         body: formData
     })
@@ -18,7 +18,7 @@ export async function uploadCSV(uploadFile) {
 }
 
 export async function downloadCSV(studentsArray, start , end) {
-    const res = await fetch("/period/csv/download", {
+    const res = await fetch("/api/period/csv/download", {
         method: "GET",
         body: JSON.stringify({
             students: studentsArray,
@@ -30,14 +30,14 @@ export async function downloadCSV(studentsArray, start , end) {
 }
 
 export async function fetchSeatingChart(period_id) {
-    const res = await fetch("/period/students/seating/" + period_id, {
+    const res = await fetch("/api/period/students/seating/" + period_id, {
         method: "GET"
     })
     return res;
 }
 
 export async function updateSeatingChart(periodId, numCol, studentsArray) {
-    const res = await fetch("/period/students/update/" + periodId, {
+    const res = await fetch("/api/period/students/update/" + periodId, {
         method: "POST",
         body: JSON.stringify({
             columns: numCol,
@@ -48,7 +48,7 @@ export async function updateSeatingChart(periodId, numCol, studentsArray) {
 }
 
 export async function addStudent(periodId, studentName, studentEmail) {
-    const res = await fetch("/period/students/add-one/" + periodId, {
+    const res = await fetch("/api/period/students/add-one/" + periodId, {
         method: "POST",
         body: JSON.stringify({
             name: studentName,
@@ -59,7 +59,7 @@ export async function addStudent(periodId, studentName, studentEmail) {
 }
 
 export async function removeStudent(periodId, studentEmail) {
-    const res = await fetch("/period/students/remove-one/" + periodId, {
+    const res = await fetch("/api/period/students/remove-one/" + periodId, {
         method: "DELETE",
         body: JSON.stringify({
             email: studentEmail

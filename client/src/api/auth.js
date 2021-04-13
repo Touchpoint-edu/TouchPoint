@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 
 export async function signUp(userData) {
   let userStr = btoa(`${userData.email}:${userData.password}`);
-  const response = await fetch("/auth/signup", {
+  const response = await fetch("/api/auth/signup", {
     method: "POST",
     headers: {
       "Authorization": "Basic " + userStr,
@@ -18,7 +18,7 @@ export async function signUp(userData) {
 }
 
 export async function fetchUser() {
-  const response = await fetch("/user");
+  const response = await fetch("/api/user");
 
   if (response.status === 200) {
     return response.json();
@@ -26,7 +26,7 @@ export async function fetchUser() {
 }
 
 export function logout() {
-  return fetch("/auth/logout", {
+  return fetch("/api/auth/logout", {
     method: "POST",
     headers: {
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
@@ -37,7 +37,7 @@ export function logout() {
 export async function login(userData) {
   let userStr = btoa(`${userData.email}:${userData.password}`);
 
-  const response = await fetch("/auth/signin", {
+  const response = await fetch("/api/auth/signin", {
     method: "POST",
     headers: {
       "Authorization": "Basic " + userStr,
@@ -50,7 +50,7 @@ export async function login(userData) {
 }
 
 export async function loginWithGoogle(token) {
-  const res = await fetch("/auth/signin/google", {
+  const res = await fetch("/api/auth/signin/google", {
     method: "POST",
     body: JSON.stringify({
         token: token
@@ -63,7 +63,7 @@ export async function loginWithGoogle(token) {
 }
 
 export async function signUpWithGoogle(token) {
-  const res = await fetch("/auth/signup/google", {
+  const res = await fetch("/api/auth/signup/google", {
     method: "POST",
     body: JSON.stringify({
         token: token
