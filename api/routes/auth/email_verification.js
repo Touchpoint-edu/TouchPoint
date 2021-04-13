@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var handlebars = require('handlebars');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-var mongo = require('../models/mongo');
+var mongo = require('../../models/mongo');
 
 //Getting fancy and trying to read html file 
 const fs = require('fs');
