@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import { DashboardContext } from "../contexts.js";
 import { uploadCSV } from "../api/class_period.js"
+import { countBehaviors } from "../api/behavior";
 
 
 
@@ -41,7 +42,9 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
 
   // Handles file upload event and updates state
   function handleDownload(event) {
-    setDownloadFile(event.target.files[0]);
+    // for (let student in students) {
+    //   countBehaviors(student.id);
+    // }
 
     // Add code here to upload file to server
     // ...

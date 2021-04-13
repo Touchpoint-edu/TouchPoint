@@ -72,6 +72,7 @@ export default function DashboardHeader() {
                 open={modalOpen}
                 onClose={closeModal}
                 variant={modalVariant}
+                students={students}
                 toggleVariant={() =>
                 setModalVariant(modalVariant === "upload" ? "upload" : "download")
             }

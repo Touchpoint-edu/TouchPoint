@@ -7,3 +7,10 @@ export async function addBehavior(studentId, behaviorName) {
     })
     return res;
 }
+
+export async function countBehaviors(studentId) {
+    const res = await fetch("behavior/count-list/" + studentId, {
+        method: "GET",
+    });
+    return res;
+}
