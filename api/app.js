@@ -48,6 +48,7 @@ const client = new MongoClient(process.env.MONGO_DB_URI);
 // put in the uri here haha
 mongo.connect(process.env.MONGO_DB_URI, function(err) {
     //Add routes here
+    if (err) throw err;
     app.use("/test", testRouter);
     app.use("/api/auth", authRouter);
     app.use("/api/period", classPeriodRouter);
