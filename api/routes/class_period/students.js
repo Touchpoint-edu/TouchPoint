@@ -24,10 +24,10 @@ router.post("/update/:period_id", function(req,res){
     }
     mongo.update("periods", query, update)
     .then(data =>{
-        if(!data){
+        if(!data){ // TODO: COULDN'T FIND PERIOD **************************************************************************
           console.log("err");
         }
-        else{
+        else{ //  TODO: EVEN IF IT DOESN'T CHANGE ANYTHING, DATA WILL SAY THAT IT DIDN'T FIND, NEED TO CHECK
           res.sendStatus(200);
         }
     })
@@ -54,7 +54,6 @@ router.get("/seating/:period_id", function(req,res) {
         else{
           console.log(data);
           res.send(data);
-          res.sendStatus(200);
         }
       })
     }
@@ -70,8 +69,6 @@ Given a period id, adds a single student
 router.post("/add-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-    // mongo.insertOne("students", req.body);
-    // console.log(req.body);
     req.body._id = new ObjectId(); //If you need a new object id
     const query = {
       _id: new ObjectId(req.params['period_id'])
@@ -100,8 +97,6 @@ router.post("/add-one/:period_id", function(req,res){
 router.delete("/remove-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-    // mongo.insertOne("students", req.body);
-    // console.log(req.body);
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
