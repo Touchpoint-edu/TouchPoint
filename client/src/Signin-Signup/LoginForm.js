@@ -52,9 +52,6 @@ export default function LoginForm({onClose}) {
 
     return (
         <>
-          <div className="d-flex justify-content-start modal-header-text">
-            <h2>Sign in</h2>
-          </div>
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
