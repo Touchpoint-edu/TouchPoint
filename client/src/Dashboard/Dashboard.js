@@ -2,18 +2,20 @@ import React, { useCallback, useState } from "react";
 import StudentGrid from "./StudentGrid.js";
 import {InputGroup, FormControl, Button} from 'react-bootstrap';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import DashboardHeader from "./DashboardHeader";
+import { fetchAllPeriods } from "../api/class_period.js";
 
 export default function Dashboard () {
 
     
-    const [students, setStudents]   = useState([
+    const [students, setStudents] = useState([[
       {
         id: 0,
         name: "First, Last 1",
         data: 
           {
-            category: 0,
-            behavior: 0,
+            row: 0,
+            col: 0,
           },
         
       },
@@ -22,8 +24,8 @@ export default function Dashboard () {
         name: "First, Last 2",
         data: 
           {
-            category: 1,
-            behavior: 0,
+            row: 1,
+            col: 0,
           },
         
       },
@@ -32,8 +34,8 @@ export default function Dashboard () {
         name: "First, Last 3",
         data: 
           {
-            category: 2,
-            behavior: 0,
+            row: 2,
+            col: 0,
           },
         
       },
@@ -42,8 +44,8 @@ export default function Dashboard () {
         name: "First, Last 4",
         data: 
           {
-            category: 3,
-            behavior: 0,
+            row: 3,
+            col: 0,
           },
         
       },
@@ -52,8 +54,8 @@ export default function Dashboard () {
         name: "First, Last 5",
         data: 
           {
-            category: 0,
-            behavior: 1,
+            row: 0,
+            col: 1,
           },
         
       },
@@ -62,8 +64,8 @@ export default function Dashboard () {
         name: "First, Last 6",
         data: 
           {
-            category: 1,
-            behavior: 1,
+            row: 1,
+            col: 1,
           },
         
       },
@@ -72,8 +74,8 @@ export default function Dashboard () {
         name: "First, Last 7",
         data: 
           {
-            category: 2,
-            behavior: 1,
+            row: 2,
+            col: 1,
           },
         
       },
@@ -82,8 +84,8 @@ export default function Dashboard () {
         name: "First, Last 8",
         data: 
           {
-            category: 3,
-            behavior: 1,
+            row: 3,
+            col: 1,
           },
         
       },
@@ -91,8 +93,8 @@ export default function Dashboard () {
         id: 8,
         name: "First, Last 9",
         data: {
-            category: 0,
-            behavior: 2,
+            row: 0,
+            col: 2,
         },
         
       },
@@ -101,8 +103,8 @@ export default function Dashboard () {
         name: "First, Last 10",
         data: 
           {
-            category: 1,
-            behavior: 2,
+            row: 1,
+            col: 2,
           },
        
       },
@@ -111,8 +113,8 @@ export default function Dashboard () {
         name: "First, Last 11",
         data: 
           {
-            category: 2,
-            behavior: 2,
+            row: 2,
+            col: 2,
           },
         
       },
@@ -121,23 +123,27 @@ export default function Dashboard () {
         name: "First, Last 12",
         data: 
           {
-            category: 3,
-            behavior: 2,
+            row: 3,
+            col: 2,
           },
         
       },
-    ]);
+    ]]);
     
     const [studentName, setStudentName] = useState("");
     const [cols, setCols] = useState(6); 
+    const [rows, setRows] = useState(6); 
     const [size, setSize] = useState((students.length/cols)*100)
     const [nameError, setNameError] = useState(false); 
     const [editChart, setEditChart] = useState(false);
     
     
     const handle1 = useFullScreenHandle();
-   
-    
+    getStudents();
+    async function getStudents(){
+      const studentResp = await fetchAllPeriods();
+      console.log(studentResp);
+    }
     function addStudent(event){
         event.preventDefault();
         if(studentName.length > 1){
@@ -164,14 +170,27 @@ export default function Dashboard () {
     }
 
     function addCol(){
-      setCols(cols + 1);
-
+      if (cols < 10) {
+        setCols(cols + 1);
+      }
     }
 
     function removeCol(){
-      setCols(cols - 1);
-      setSize(size+100);
+      if (cols > 1) {
+        setCols(cols - 1);
+      }
+    }
 
+    function addRow() {
+      if (rows < 10) {
+        setRows(rows + 1);
+      }
+    }
+
+    function removeRow() {
+      if (cols > 1) {
+        setRows(rows - 1);
+      }
     }
 
     function handleChartSave(){
@@ -184,10 +203,25 @@ export default function Dashboard () {
    
     return (
       <>
-        <div className = "dash"> 
-          <div className="add-button-container "> 
+        <div className = "d-flex justify-content-around p-5 h-100"> 
+        <div className="grid-container">
+            <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols} rows={rows}></StudentGrid>
+          <FullScreen handle={handle1}>
+                <StudentGrid  className = "full-screenable-node" students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols} rows={rows}></StudentGrid>
+            </FullScreen>
+        </div>
+          <div className = "actions-cont">
+            <div className="action">
+              <Button
+                      className="edit-button btn btn-success"
+                      onClick = {handleChartSave}
+                >
+                      {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
+                </Button>
+            </div>
+            <div className="action"> 
             <form onSubmit = {addStudent} >
-              <InputGroup className="mb-3">
+              <InputGroup className="add-student">
                 <FormControl
                   placeholder="Student Name"
                   aria-label="Student Name"
@@ -201,54 +235,43 @@ export default function Dashboard () {
                 </InputGroup.Append>
               </InputGroup>
             </form>
-          </div>
-          
-          <div className = "grid-container">
-            {editChart ? 
-              <>
-              <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
-              <FullScreen handle={handle1}>
-                  <StudentGrid  className = "full-screenable-node" students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
-              </FullScreen> </> :
-              <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
-            } 
-          </div>
-
-          
-          <div className = "actions-cont col">
-            <div className ="edit-button-container row">
-              <div>
-              <Button
-                      className="edit-button btn btn-success"
-                      onClick = {handleChartSave}
-                >
-                      {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
-                </Button>
-              </div>
             </div>
-            <div className ="col-button-container row">
-              <div>
+              <div className="action d-flex justify-content-between">
                 <Button
-                      className="col-btn btn btn-success"
+                      className="btn btn-success"
                       onClick = {addCol}
                 >
                       +
                 </Button>
-                columns
+                <div className="mx-4">columns</div>
                 <Button
-                        className="col-btn btn btn-success"
+                        className="btn btn-success"
                         onClick = {removeCol}
                   >
                       -
                 </Button>
-              </div>
             </div>
-            <div className ="edit-button-container row">
+            <div className="action d-flex justify-content-between">
+                <Button
+                      className="btn btn-success"
+                      onClick = {addRow}
+                >
+                      +
+                </Button>
+                <div className="mx-4">rows</div>
+                <Button
+                        className="btn btn-success"
+                        onClick = {removeRow}
+                  >
+                      -
+                </Button>
+            </div>
+            <div className="action">
               <div>
                 <Button
                       className="full-button btn btn-success"
                       onClick = {handle1.enter}
-                      disabled = {editChart} 
+                      disabled = {!editChart} 
                 >
                       Full Screen
                 </Button>
@@ -260,7 +283,6 @@ export default function Dashboard () {
 
       </div>
       {nameError && <div className = "name-error"> Please enter a name.</div>}
-
       </>
     );
     

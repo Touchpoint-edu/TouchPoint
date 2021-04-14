@@ -20,7 +20,7 @@ export default function Nav(){
         setModalOpen(false);
     }
 
-    const { user, setUser } = useContext(DataStoreContext);
+    const { user, setUser, students, setStudents } = useContext(DataStoreContext);
 
 
     async function logoutUser() {
@@ -67,8 +67,8 @@ export default function Nav(){
                 }
 
             </div>
-            {user ? <><hr></hr>
-                    <DashboardHeader></DashboardHeader></> : <></>}
+            {user ? <><hr />
+                    <DashboardHeader students = {students} setStudents = {setStudents}></DashboardHeader></> : <></>}
         </nav>
     );
 }

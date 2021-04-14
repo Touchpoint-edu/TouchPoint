@@ -11,19 +11,20 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
-
+  const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
 
   return (
-    <DataStoreContext.Provider value = {{user, setUser}}>
+    <DataStoreContext.Provider value = {{user, setUser, students, setStudents}}>
       <Router>
-      {isLoading ? <Loading/> : <>
+      {isLoading ? <Loading/> : 
+        <div className="d-flex flex-column h-100">
         <div className = "container-fluid shadow">  
             <Nav />
         </div>
-          <main >
+          <main className="flex-fill overflow-hidden">
             <Switch>
               <Route path="/" exact={true}>
                   <Home/>
@@ -35,7 +36,8 @@ function App() {
               </Route>
             </Switch>
           </main>
-      </>}
+        </div>
+      }
       </Router>
     </DataStoreContext.Provider>
 

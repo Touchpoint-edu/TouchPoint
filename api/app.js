@@ -9,13 +9,12 @@ var MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 var testRouter = require("./routes/test");
-var loginRouter = require("./routes/login");
-var signupRouter = require("./routes/signup");
-let periodRouter = require("./routes/period");
+
+
 var mongo = require('./models/mongo');
-let mongoose = require('./models/mongoose');
-var emailRouter = require("./routes/email_verification");
-var csvRouter = require("./routes/csv_upload"); 
+const authRouter = require("./routes/auth/controller")
+const classPeriodRouter = require("./routes/class_period/controller")
+
 var behaviorRouter = require("./routes/behavior"); 
 
 var app = express();
@@ -50,12 +49,8 @@ const client = new MongoClient(process.env.MONGO_DB_URI);
 mongo.connect(process.env.MONGO_DB_URI, function(err) {
     //Add routes here
     app.use("/test", testRouter);
-    app.use("/api/login", loginRouter);
-    app.use("/api/signup", signupRouter);
-
-    app.use("/api/period", periodRouter);
-    app.use("/api/email_verification", emailRouter.router); 
-    app.use("/period/csv", csvRouter); 
+    app.use("/auth", authRouter);
+    app.use("/period", classPeriodRouter);
     app.use("/behavior", behaviorRouter); 
 });
 

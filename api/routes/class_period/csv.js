@@ -4,10 +4,10 @@ const multer = require('multer');
 const csv = require('fast-csv');
 const fs = require('fs');
 
-const mongo = require('../models/mongo');
-const verify = require('../scripts/verify')
-const error = require('../scripts/error')
-const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
+const mongo = require('../../models/mongo');
+const verify = require('../../scripts/verify')
+const error = require('../../scripts/error')
+const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../../constants/errors');
 
 var router = express.Router();
 const filesMulter = multer({ dest: 'csv/' });
@@ -47,6 +47,23 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
                     period: period
                 });
             })
+    } catch (err) {
+        console.log(err);
+        error.sendError(res, 404, "huh");
+    }
+})
+
+/**
+ * create a csv file of students and their behaviors with counts of each behavior
+ */
+ router.get("/download", (req, res) => {
+    try {
+        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+
+        // download
+
+        res.sendStatus(200);
+
     } catch (err) {
         console.log(err);
         error.sendError(res, 404, "huh");
@@ -98,9 +115,4 @@ const savePeriodToUser = (period_id, user_id) => {
         })
 }
 
-// router.get("/auth/email/validate/:emailID", async (req, res) => {
-//     var emailID = req.params.emailID; 
-//     console.log(emailID); 
-//     res.sendStatus(200); 
-// })
 module.exports = router;
