@@ -4,12 +4,13 @@ import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import {DashboardContext } from "../contexts.js";
 import {Form, Row, Col} from "react-bootstrap";
+import { FullScreen } from "react-full-screen";
 
 
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student }) {
+export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, handle2 }) {
     const data = [
         {
             id: 0,
@@ -168,7 +169,8 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
 
 
   return createPortal(
-      <>
+    <FullScreen handle = {handle2}>
+    <div className="full-screenable-node">
       <div className="modal-backdrop show"></div>
       <div className="modal" tabIndex="-1" style={{ display: "block" }}>
         <div className="modal-dialog">
@@ -263,7 +265,8 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
           </div>
         </div>
       </div>
-    </>
+    </div>
+    </FullScreen>
     , 
     modalContainer
   );

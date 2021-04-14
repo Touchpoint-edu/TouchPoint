@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useCallback, useState } from "react";
 import StudentGrid from "./StudentGrid.js";
-import {InputGroup, FormControl, Button} from 'react-bootstrap'
-
-
+import {InputGroup, FormControl, Button} from 'react-bootstrap';
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 export default function Dashboard () {
 
@@ -129,15 +128,16 @@ export default function Dashboard () {
       },
     ]);
     
-
-
-
     const [studentName, setStudentName] = useState("");
-    const [size, setSize] = useState((students.length/6)*100)
+    const [cols, setCols] = useState(6); 
+    const [size, setSize] = useState((students.length/cols)*100)
     const [nameError, setNameError] = useState(false); 
     const [editChart, setEditChart] = useState(false);
-
-
+    
+    
+    const handle1 = useFullScreenHandle();
+   
+    
     function addStudent(event){
         event.preventDefault();
         if(studentName.length > 1){
@@ -149,7 +149,7 @@ export default function Dashboard () {
           }
           const s = students.concat(newStud);
           setStudents(s);
-          if(s.length%6 == 1){
+          if(s.length%cols == 1){
             setSize(size+100);
           }
         } else {
@@ -163,12 +163,24 @@ export default function Dashboard () {
       setStudentName(event.target.value);
     }
 
+    function addCol(){
+      setCols(cols + 1);
+
+    }
+
+    function removeCol(){
+      setCols(cols - 1);
+      setSize(size+100);
+
+    }
+
     function handleChartSave(){
       if(editChart == false){
         //save the chart
       }
       setEditChart(!editChart);
     }
+
    
     return (
       <>
@@ -182,28 +194,73 @@ export default function Dashboard () {
                   aria-describedby="basic-addon2"
                   value = {studentName}
                   onChange={handleNameChange}
-
+                  disabled = {editChart}
                 />
                 <InputGroup.Append>
-                  <Button className = "add-button btn btn-success" type="submit">+</Button>
+                  <Button className = "add-button btn btn-success" disabled = {editChart} type="submit">+</Button>
                 </InputGroup.Append>
               </InputGroup>
             </form>
           </div>
+          
           <div className = "grid-container">
-            <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart}></StudentGrid>
+            {editChart ? 
+              <>
+              <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
+              <FullScreen handle={handle1}>
+                  <StudentGrid  className = "full-screenable-node" students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
+              </FullScreen> </> :
+              <StudentGrid students = {students} setStudents = {setStudents} size = {size} edit = {editChart} handle1={handle1} cols = {cols}></StudentGrid>
+            } 
           </div>
-          <div className ="edit-button-container">
+
+          
+          <div className = "actions-cont col">
+            <div className ="edit-button-container row">
+              <div>
               <Button
-                    className="edit-button btn btn-success"
-                    onClick = {handleChartSave}
+                      className="edit-button btn btn-success"
+                      onClick = {handleChartSave}
+                >
+                      {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
+                </Button>
+              </div>
+            </div>
+            <div className ="col-button-container row">
+              <div>
+                <Button
+                      className="col-btn btn btn-success"
+                      onClick = {addCol}
+                >
+                      +
+                </Button>
+                columns
+                <Button
+                        className="col-btn btn btn-success"
+                        onClick = {removeCol}
                   >
-                    {editChart ? (<>Edit Seating</>):(<>Save Seating</>)}
-              </Button>
+                      -
+                </Button>
+              </div>
+            </div>
+            <div className ="edit-button-container row">
+              <div>
+                <Button
+                      className="full-button btn btn-success"
+                      onClick = {handle1.enter}
+                      disabled = {editChart} 
+                >
+                      Full Screen
+                </Button>
+              </div>
+            </div>
+            
           </div>
+          
+
       </div>
       {nameError && <div className = "name-error"> Please enter a name.</div>}
-      
+
       </>
     );
     

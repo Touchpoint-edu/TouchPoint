@@ -1,17 +1,17 @@
 
 import React, {useState} from 'react';
-
 import {
     GridContextProvider,
     GridDropZone,
     GridItem,
     swap
 } from "react-grid-dnd";
-import { DashboardContext } from '../contexts';
 import StudentBehaviorModal from "./StudentBehaviorModal.js"
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 
-export default function StudentGrid({students, setStudents, size, edit}){
+
+export default function StudentGrid({students, setStudents, size, edit, handle1, cols}){
     const [modalOpen, setModalOpen] = useState(false);
     const [student, setStudent] = useState();
   // target id will only be set if dragging from one dropzone to another.
@@ -20,25 +20,38 @@ export default function StudentGrid({students, setStudents, size, edit}){
     setStudents(nextState);
   }
 
+  const handle2 = useFullScreenHandle();
   function handleStudentClick(e){
     const name = e.target.innerText;
     const student = students.filter((s) => {
       return s.name === name;
     });
-    setStudent(student)
-    setModalOpen(true);
+    setStudent(student);
+    if(handle1.active){
+      handle2.enter();
+      setModalOpen(true);
+    } else {
+      setModalOpen(true);
+    }
+    
   }
-  const closeModal = () => setModalOpen(false);
+  function closeModal(){
+    setModalOpen(false);
+    if(handle2.active){
+      handle2.exit();
+      handle1.enter();
+    }
+  }
 
 
   return (
     <>
-
+    
     <GridContextProvider onChange={onChange}>
       <GridDropZone
         id="items"
         className="dropzone"
-        boxesPerRow={6}
+        boxesPerRow={cols}
         rowHeight={100}
         disableDrag = {edit}
         disableDrop = {edit}
@@ -46,8 +59,8 @@ export default function StudentGrid({students, setStudents, size, edit}){
       >
       {students && students.length ? (
         students.map(item => (
-          <GridItem key={item.id}>
-              <div className = "btn grid-item"  onClick = {edit ? handleStudentClick : null} >
+          <GridItem className="item" key={item.id}>
+              <div className = "btn grid-item"  onClick = { edit ? handleStudentClick : null} >
                   <div className = "tile" >{item.name}</div>
               </div>
 
@@ -56,7 +69,7 @@ export default function StudentGrid({students, setStudents, size, edit}){
       </GridDropZone>
     </GridContextProvider>
 
-    {modalOpen && <StudentBehaviorModal open={modalOpen} onClose={closeModal} students = {students} setStudents = {setStudents} student = {student}/>}
+    {modalOpen && <StudentBehaviorModal open={modalOpen} onClose={closeModal} students = {students} setStudents = {setStudents} student = {student} handle2={handle2}/>}
     </>
   )
 }
