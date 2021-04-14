@@ -50,9 +50,6 @@ export default function SignupForm({ toggleVariant, onClose }) {
   
     return (
         <>
-          <div className="mt-8 d-flex justify-content-start modal-header-text">
-            <h2>Create your account</h2>
-          </div>
           <Formik
             initialValues={{ fname: "", lname: "", email: "", password: "", confirmPassword: "" }}
             validationSchema={validationSchema}

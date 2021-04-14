@@ -56,7 +56,7 @@ exports.update = function(collection, query, toUpdate, options, callback){
 }
 
 exports.findOne = function(collection, query, options){
-  return state.db.collection(collection).findOne(query);
+  return state.db.collection(collection).findOne(query, options);
 }
 
 exports.findMany = function(collection, query, options){
