@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import Close from "../Components/Close";
 import { createPortal } from "react-dom";
 import Button from "../Components/Button";
-import { DashboardContext } from "../contexts.js";
-import { Form, Row, Col } from "react-bootstrap";
+import {DashboardContext } from "../contexts.js";
+import {Form, Row, Col} from "react-bootstrap";
+import { FullScreen } from "react-full-screen";
 import { addBehavior } from "../api/behavior";
 import Modal from "../Components/Modal";
 
@@ -11,7 +12,7 @@ import Modal from "../Components/Modal";
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function StudentBehaviorModal({ open, onClose, students, setStudents, student }) {
+export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, handle2 }) {
     const data = [
         {
             id: 0,
@@ -169,8 +170,10 @@ export default function StudentBehaviorModal({ open, onClose, students, setStude
         setSelectedBehavior(event.target.value);
     }
 
-
     return (
+       <FullScreen handle = {handle2}>
+        <div className="full-screenable-node">
+
         <Modal
             title={student[0].name}
             titleColor="#40904C"
@@ -196,10 +199,6 @@ export default function StudentBehaviorModal({ open, onClose, students, setStude
                             );
                         })}
                     </select>
-
-                </div>
-
-
                 <form onSubmit={handleSubmitBehavior}>
                     <div className="row w-75 ml-5 mt-4">
                         <div className="col">
@@ -252,6 +251,8 @@ export default function StudentBehaviorModal({ open, onClose, students, setStude
                 </form>
             </div>
         </Modal>
+</div>
+    </FullScreen>
     );
 }
 

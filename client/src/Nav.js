@@ -73,7 +73,7 @@ export default function Nav(){
                 }
 
             </div>
-            {user ? <><hr></hr>
+            {user ? <><hr />
                     <DashboardHeader students = {students} setStudents = {setStudents}></DashboardHeader></> : <></>}
         </nav>
     );

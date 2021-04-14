@@ -65,7 +65,7 @@ export default function LoginForm({onClose}) {
               isSubmitting,
               values
             }) => (
-              <Form >
+              <Form>
                 <FloatingTextField
                   className="mt-8"
                   name="email"
