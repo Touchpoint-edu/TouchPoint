@@ -59,7 +59,7 @@ exports.findOne = function(collection, query, options){
   return state.db.collection(collection).findOne(query, options);
 }
 
-exports.findMany = function(collection, query, options, callback){
+exports.findMany = function(collection, query, options){
   return state.db.collection(collection).find(query, options);
 }
 

@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.get("/retrieve-all", async (req, res) => {
   try {
-    console.log("Request");
       const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
       const query = {
         user_id: new ObjectId(userPayload.sub)
@@ -21,11 +20,8 @@ router.get("/retrieve-all", async (req, res) => {
       const arr = [];
       const cursor = mongo.findMany("periods", query, options);
       cursor.hasNext((err, hasNext) => {
-        console.log("has next", hasNext);
         if (hasNext) {
-          cursor.forEach((data) => {
-            arr.push(data);
-          }).then(() => {
+          cursor.toArray((err, arr) => {
             res.send(arr);
           });
         }

@@ -27,7 +27,6 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             headers: [undefined, 'name', 'email', undefined],
             skipLines: 6
         }
-        console.log(req.body.period);
         csv.parseFile(req.file.path, parseFileOptions)
             .on("error", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
@@ -48,13 +47,15 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
                 fs.unlinkSync(req.file.path);   // remove temp file
 
                 // create and save period to user
-                const period = createPeriod(students, userPayload.sub, currRow);
-                savePeriodToUser(period._id, userPayload.sub);
-
-                res.status(200);
-                res.json({
-                    period: period
+                createPeriod(students, userPayload.sub, currRow, parseInt(req.body.period)).then((result, err) => {
+                    if (err) {
+                        error.sendError(res, 500, SERVER_ERROR_MSG);
+                    }
+                    else {
+                        res.sendStatus(200);
+                    }
                 });
+                // savePeriodToUser(period._id, userPayload.sub);
             })
     } catch (err) {
         console.log(err);
@@ -86,22 +87,25 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  * @param {*} students : array of students
  * @returns the period created in the db
  */
- const createPeriod = (students, id, rowNum) => {
+ const createPeriod = (students, id, rowNum, periodNum) => {
     const period = {
-        rows: rowNum,
-        columns: DEFAULT_COL_SIZE,
-        user_id: new ObjectId(id),
-        students: students
+        $set: {
+            rows: rowNum+1,
+            columns: DEFAULT_COL_SIZE,
+            user_id: new ObjectId(id),
+            students: students,
+            periodNum: periodNum
+        }
     }
-
-    mongo.insertOne("periods", period)
-        .then(data => {
-            if (!data) {
-                error.sendError(res, 500, SERVER_ERROR_MSG);
-            }
-        });
-
-    return period
+    const query = { 
+        user_id: new ObjectId(id), 
+        periodNum: 
+        periodNum
+    }
+    const options = {
+        upsert: true
+    }
+    return mongo.update("periods", query, period, options);
 }
 
 /**

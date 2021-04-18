@@ -15,10 +15,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState(0);
+  const [reload, setReload] = useState(false);
 
 
   return (
-    <DataStoreContext.Provider value = {{user, setUser, students, setStudents, selectedPeriod, setSelectedPeriod}}>
+    <DataStoreContext.Provider value = {{user, setUser, students, setStudents, selectedPeriod, setSelectedPeriod, reload, setReload}}>
       <Router>
       {isLoading ? <Loading/> : 
         <div className="d-flex flex-column h-100">

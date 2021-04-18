@@ -1,47 +1,26 @@
 
 import React, {useEffect, useState} from 'react';
-import {
-    GridContextProvider,
-    GridDropZone,
-    GridItem,
-    swap
-} from "react-grid-dnd";
-import StudentBehaviorModal from "./StudentBehaviorModal.js"
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Spot from './Spot.js';
 
-
-
-export default function StudentGrid({fullScreenMode, students, setStudents, size, edit, handle1, rows, cols, updatePos}){
-    const [modalOpen, setModalOpen] = useState(false);
-    const [student, setStudent] = useState();
+export default function StudentGrid({fullScreenMode, students, edit, rows, cols, updatePos}){
     const [spots, setSpots] = useState([]);
     const [colsize, setcolsize] = useState("0px");
     const [rowsize, setrowsize] = useState("0px");
     const backgroundRef = React.createRef();
+    console.log("Rerender?");
     useEffect(()=> {
-      setSpots([]);
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-          const found = students.find(student => {
-            return student.row === i && student.col === j && !!student.name;
-          });
-          
-          const posObj = {
-            row: i,
-            col: j
-          }
-          const seatSize = {
-            row: rowsize,
-            col: colsize
-          }
-          setSpots(prev => [
-            ...prev,
-            <Spot fullScreenMode={fullScreenMode} editMode={edit} updatePos={updatePos} seatSize={seatSize} item={found} id={i*cols + j} pos={posObj} />
-          ]);
+      const newSpots = [];
+      let key = 0;
+      students.forEach((student) => {
+        const seatSize = {
+          row: rowsize,
+          col: colsize
         }
-      }
-    }, [rowsize, colsize, rows, cols, students, updatePos, edit, fullScreenMode]);
+        newSpots.push(<Spot key={key} fullScreenMode={fullScreenMode} editMode={edit} updatePos={updatePos} seatSize={seatSize} item={student} />);
+        key++;
+      });
+      setSpots(newSpots);
+    }, [edit, fullScreenMode, students, rowsize, colsize, updatePos]);
 
     useEffect(() => {
       function updateRectSizes() {

@@ -19,7 +19,6 @@ router.post("/update/:period_id", function(req,res){
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
-    console.log(req.body);
     const update = {
       $set: {
         rows: req.body.rows,

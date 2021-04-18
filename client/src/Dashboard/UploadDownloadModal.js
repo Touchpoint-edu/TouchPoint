@@ -3,14 +3,15 @@ import Close from "../Components/Close";
 import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import Modal from "../Components/Modal";
-import { DashboardContext } from "../contexts.js";
+import { DataStoreContext } from "../contexts.js";
 import { uploadCSV } from "../api/class_period";
 
 
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function UploadDownloadModal({ open, variant, onClose, students, setStudents }) {
+export default function UploadDownloadModal({ open, variant, onClose, students, setStudents, period }) {
+  const { reload, setReload } = useContext(DataStoreContext);
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
@@ -32,6 +33,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [uploadFile, setUploadFile] = useState();
   const [downloadLoadfile, setDownloadFile] = useState("");
   const [uploadValidation, setUploadValidation] = useState("");
+  const [confirm, setConfirm] = useState(false);
   // const { periods, setPeriods } = useContext(DashboardContext);
 
   // Handles file upload event and updates state
@@ -61,38 +63,39 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     //setStudents - DONE
     //set the period of the uploaded csv - COMMENTED
     //setSelectedPeriod - COMMENTED
-    
-    if (!uploadFile) {
-      // TODO: put out error message for no file chosen
-      return;
-    }
-    const response = await uploadCSV(uploadFile);
-    console.log(response);
-    const responseData = await response.json();
+    setConfirm(true);
+    // if (!uploadFile) {
+    //   // TODO: put out error message for no file chosen
+    //   return;
+    // }
+    // console.log(period);
+    // const response = await uploadCSV(uploadFile, period);
+    // console.log(response);
 
-    if (response.status === 200) {
-      // set student array
-      if (responseData && responseData.period) {
-        console.log(responseData.period)
+    // if (response.status === 200) {
+    //   setReload(!reload);
+    //   // set student array
+    //   // if (responseData && responseData.period) {
+    //   //   console.log(responseData.period)
 
-        const newPeriod = {
-          id: responseData.period._id,
-          // value: "Period " + (periods.length + 1)
-        }
+    //   //   const newPeriod = {
+    //   //     id: responseData.period._id,
+    //   //     // value: "Period " + (periods.length + 1)
+    //   //   }
 
-        // set the currecct period and its students
-        setStudents(responseData.period.students)
-        // setPeriods([...periods, newPeriod])
-        // setSelectedPeriod(newPeriod.value)
-      }
-      // TODO: the rest
-    } else if (response.status === 400) {
-      // TODO: put out error message from responseData
-      console.log(responseData)
-    } else if (response.status === 500) {
-      // TODO: put out error message from responseData
-      console.log(responseData)
-    }
+    //   //   // set the currecct period and its students
+    //   //   setStudents(responseData.period.students)
+    //   //   // setPeriods([...periods, newPeriod])
+    //   //   // setSelectedPeriod(newPeriod.value)
+    //   // }
+    //   // TODO: the rest
+    // } else if (response.status === 400) {
+    //   // TODO: put out error message from responseData
+    //   // console.log(responseData)
+    // } else if (response.status === 500) {
+    //   // TODO: put out error message from responseData
+    //   // console.log(responseData)
+    // }
   }
 
   async function handleSubmitDownload(e) {
@@ -100,7 +103,36 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     onClose();
   }
   async function handleConfirmUpload(e) {
-    onClose();
+    if (!!uploadFile) {
+      // TODO: put out error message for no file chosen
+      const response = await uploadCSV(uploadFile, period);
+      if (response.status === 200) {
+        setReload(!reload);
+        onClose();
+        // set student array
+        // if (responseData && responseData.period) {
+        //   console.log(responseData.period)
+  
+        //   const newPeriod = {
+        //     id: responseData.period._id,
+        //     // value: "Period " + (periods.length + 1)
+        //   }
+  
+        //   // set the currecct period and its students
+        //   setStudents(responseData.period.students)
+        //   // setPeriods([...periods, newPeriod])
+        //   // setSelectedPeriod(newPeriod.value)
+        // }
+        // TODO: the rest
+      } else if (response.status === 400) {
+        // TODO: put out error message from responseData
+        // console.log(responseData)
+      } else if (response.status === 500) {
+        // TODO: put out error message from responseData
+        // console.log(responseData)
+      }
+      return;
+    }
   }
 
   return (
@@ -108,31 +140,24 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
         <div className="modal-body px-5 mh-100 overflow-auto">
       {variant === "upload" ? (
                 <>
-                  {students.length ?
-                    <>
-                        <ul className="list-group ml-5 mr-5">
-                          {students.map((student) => {
-                            console.log(student);
-                            return (<li className="list-group-item">{`${student.name}, ${student.email}`}</li>)
-                          })}
-                        </ul>
-                      <Button
-                          className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
-                          fullWidth={true}
-                          onClick = {handleConfirmUpload}
-                          onClose = {onClose}
-                      >
-                        Confirm
-                      </Button>
-                      </>
-                       :
-                    <>
                       <div className="text-center">
                         <img src="upload.png" alt="upload" className="mt-2 mb-5" />
-                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" />
+                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" disabled={confirm}/>
                         <div className="text-red-500">{uploadValidation}</div>
                       </div>
+                      {confirm && <div className="text-red-500">If you currently have a seating chart for period {period+1}, this will overwrite it. Do you wish to continue?</div> }
+                      
                       <hr className="solid my-4" />
+                      {confirm ? 
+                        <Button
+                        className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
+                        fullWidth={true}
+                        onClick = {handleConfirmUpload}
+                        onClose = {onClose}
+                    >
+                      Confirm
+                    </Button>
+                     :
                       <Button
                         className="h-12 text-xl submit_button mt-2 mb-2"
                         fullWidth={true}
@@ -142,7 +167,6 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                       >
                         Upload
                       </Button>
-                    </>
                   }
 
                 </>
