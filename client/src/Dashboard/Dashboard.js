@@ -131,7 +131,7 @@ export default function Dashboard() {
   function updateCol(e) {
     const val = parseInt(e.target.value);
     const cols = currPeriod.columns;
-    if (cols < 10 && cols > 1) {
+    if (cols + val <= 10 && cols + val >= 1) {
       setCurrPeriod(prevState => {
         return {...prevState, columns: cols + val};
       });
@@ -142,7 +142,7 @@ export default function Dashboard() {
     const val = parseInt(e.target.value);
     const rows = currPeriod.rows;
     console.log(typeof val);
-    if (rows < 10 && rows > 1) {
+    if (rows + val <= 10 && rows + val >= 1) {
       setCurrPeriod(prevState => {
         return {...prevState, rows: rows + val};
       });
