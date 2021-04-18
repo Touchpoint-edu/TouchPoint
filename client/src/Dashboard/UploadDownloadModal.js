@@ -3,9 +3,8 @@ import Close from "../Components/Close";
 import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import { DashboardContext } from "../contexts.js";
-import { uploadCSV } from "../api/class_period.js"
-
-
+import { uploadCSV } from "../api/class_period.js";
+import { Container, Row, Col, Form, Label } from "react-bootstrap";
 
 const modalContainer = document.getElementById("modal-container");
 
@@ -32,6 +31,8 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [downloadLoadfile, setDownloadFile] = useState("");
   const { selectedPeriod, setSelectedPeriod } = useContext(DashboardContext);
   // const { periods, setPeriods } = useContext(DashboardContext);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   // Handles file upload event and updates state
   function handleUpload(event) {
@@ -54,7 +55,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     //setStudents - DONE
     //set the period of the uploaded csv - COMMENTED
     //setSelectedPeriod - COMMENTED
-    
+
     if (!uploadFile) {
       // TODO: put out error message for no file chosen
       return;
@@ -128,17 +129,17 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                         </ul>
                       </div>
                       <Button
-                          className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
-                          fullWidth={true}
-                          onClick = {handleConfirmUpload}
-                          onClose = {onClose}
+                        className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
+                        fullWidth={true}
+                        onClick={handleConfirmUpload}
+                        onClose={onClose}
                       >
                         Confirm
                       </Button>
                     </div> :
                     <>
                       <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
-                        <h2>upload</h2>
+                        <h2>Upload</h2>
                       </div>
                       <div className="upload-box">
                         <img src="upload.png" alt="upload" className="mt-2 mb-5" />
@@ -159,21 +160,34 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                 </>
               ) : (
                 <>
-                  <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
-                    <h2>download</h2>
+                  <div className="d-flex justify-content-start ml-5 modal-header-text">
+                    <h2>Download</h2>
                   </div>
-                  <div className="upload-box">
-                    <img src="download.png" alt="download" className="mt-2 mb-5" />;
-                        <input type="file" className="file-uploader mb-3" onChange={handleDownload} />
-                    </div>
-                    <hr className="solid my-4 w-75" />
-                    <Button
-                        className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
-                        fullWidth={true}
-                        onSubmit = {handleSubmitDownload}
-                        onClose = {onClose}
-                    >
-                        Download
+
+                  <Container className="px-5 py-3">
+                    <Row>
+                      <Col><h5 className="text-muted">Start Date</h5></Col>
+                      <Col><h5 className="text-muted">End Date</h5></Col>
+                    </Row>
+
+                    <Row>
+                      <Col xs={6}>
+                        <Form.Control type="date" value={startDate} onChange={e => { setStartDate(e.target.value) }} />
+                      </Col>
+                      <Col xs={6}>
+                        <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value) }} />
+                      </Col>
+                    </Row>
+                  </Container>
+
+                  <hr className="solid mb-3 w-75" />
+                  <Button
+                    className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
+                    fullWidth={true}
+                    onSubmit={handleSubmitDownload}
+                    onClose={onClose}
+                  >
+                    Download
                     </Button>
 
                 </>
