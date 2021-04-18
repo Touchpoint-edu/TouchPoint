@@ -5,11 +5,11 @@ export async function fetchAllPeriods() {
     return res;
 }
 
-export async function uploadCSV(uploadFile) {
+export async function uploadCSV(uploadFile, period) {
     // make FormData object to pass into request
     const formData = new FormData()
     formData.append('file', uploadFile)
-
+    formData.append('period', period)
     const res = await fetch("/api/period/csv/upload", {
         method: "POST",
         body: formData
@@ -36,10 +36,14 @@ export async function fetchSeatingChart(period_id) {
     return res;
 }
 
-export async function updateSeatingChart(periodId, numCol, studentsArray) {
+export async function updateSeatingChart(periodId, numRow, numCol, studentsArray) {
     const res = await fetch("/api/period/students/update/" + periodId, {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+          },
         body: JSON.stringify({
+            rows: numRow,
             columns: numCol,
             students: studentsArray
           })

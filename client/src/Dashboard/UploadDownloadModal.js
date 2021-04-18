@@ -31,12 +31,17 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   // State to store uploaded file
   const [uploadFile, setUploadFile] = useState();
   const [downloadLoadfile, setDownloadFile] = useState("");
-  const { selectedPeriod, setSelectedPeriod } = useContext(DashboardContext);
+  const [uploadValidation, setUploadValidation] = useState("");
   // const { periods, setPeriods } = useContext(DashboardContext);
 
   // Handles file upload event and updates state
   function handleUpload(event) {
-    setUploadFile(event.target.files[0]);
+    if (event.target.files[0].type === "text/csv") {
+      setUploadFile(event.target.files[0]);
+    }
+    else {
+      setUploadValidation("Currently, only .csv files are accepted. Please upload a csv file to continue.");
+    }
     // TODO: display file preview
   }
 
@@ -47,6 +52,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     // Add code here to upload file to server
     // ...
   }
+  
   async function handleSubmitUpload(e) {
     // e.preventDefault();
     //upload to database, - DONE
@@ -123,7 +129,8 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                     <>
                       <div className="text-center">
                         <img src="upload.png" alt="upload" className="mt-2 mb-5" />
-                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} />
+                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" />
+                        <div className="text-red-500">{uploadValidation}</div>
                       </div>
                       <hr className="solid my-4" />
                       <Button
@@ -131,6 +138,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                         fullWidth={true}
                         onClose={onClose}
                         onClick={handleSubmitUpload}
+                        disabled={!uploadFile}
                       >
                         Upload
                       </Button>

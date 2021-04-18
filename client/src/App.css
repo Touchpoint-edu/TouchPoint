@@ -78,6 +78,10 @@ html, body, #root {
   border: none;
 }
 
+.submit_button:disabled {
+  opacity: 0.5;
+}
+
 
 .sign_button {
   background-color: #40904C;
@@ -182,7 +186,7 @@ html, body, #root {
 } 
 
 .add-student{
-  width: 200px;
+  min-width: 170px;
 }
 .add-button{
   border-radius:0.25rem;
@@ -199,7 +203,8 @@ html, body, #root {
   background-color:transparent;
   color: #40904C;
   height: calc(1.5em + .75rem + 2px);
-  width:200px;
+  min-width:100px;
+  width: 100%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -210,7 +215,8 @@ html, body, #root {
   background-color:transparent;
   color: #40904C;
   height: calc(1.5em + .75rem + 2px);
-  width:200px;
+  min-width:100px;
+  width: 100%;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -220,9 +226,7 @@ html, body, #root {
   border-color: #83B55C;
   background-color:transparent;
   color: #40904C;
-  margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 185.28px;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -232,9 +236,7 @@ html, body, #root {
   border-color: #83B55C;
   background-color:transparent;
   color: #40904C;
-  margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 185.28px;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -246,7 +248,6 @@ html, body, #root {
   color: #40904C;
   margin-top:10px;
   height: calc(1.5em + .75rem + 2px);
-  width: 185.28px;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
 
@@ -287,7 +288,6 @@ html, body, #root {
   display:flex;
   touch-action: none;
   flex: 0 1 auto;
-  width: 75%;
 }
 .grid-item{
   padding: 15px;

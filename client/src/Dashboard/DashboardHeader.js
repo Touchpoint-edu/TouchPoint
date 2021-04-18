@@ -14,24 +14,19 @@ export default function DashboardHeader({students, setStudents}) {
         setModalOpen(true);
     };
     const closeModal = () => setModalOpen(false);
-    useEffect(() => {
-       //API call to get all the periods for the teacher
-        //setPeriods(responsedata)
-    
-    },[])
+
     const ps = [
-        { id: 0, value: "Period 1" },
-        { id: 1, value: "Period 2" },
-        { id: 2, value: "Period 3" }
+        { id: 0, name: "Period 1" },
+        { id: 1, name: "Period 2" },
+        { id: 2, name: "Period 3" }
     ];
-    const { user, setUser } = useContext(DataStoreContext);
+    const { user, setUser, selectedPeriod, setSelectedPeriod } = useContext(DataStoreContext);
     // const [students, setStudents] = useState();
     // const [periods, setPeriods] = useState([]);
     //uncomments and add to dashboardcontext provider
-    const [selectedPeriod, setSelectedPeriod] = useState("Periods");
 
     async function handlePeriodChange(event) {
-        setSelectedPeriod(event.target.value);
+        setSelectedPeriod(parseInt(event.target.value));
         const response = await fetch("/students/seating/"+selectedPeriod, {
             method: "GET",
         })
@@ -54,7 +49,7 @@ export default function DashboardHeader({students, setStudents}) {
 
 
     return (
-    <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
+    // <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
     <div className = "d-flex">
         <div className = "p-2 ml-5 flex-grow-1">
             <div className = "mb-2 ml-5">
@@ -68,8 +63,8 @@ export default function DashboardHeader({students, setStudents}) {
                 >
                 {ps.map((per) => {
                     return (
-                    <option key={per.id} value={per.value}>
-                        {per.value} 
+                    <option key={per.id} value={per.id}>
+                        {per.name} 
                     </option>
                     );
                 })}
@@ -101,5 +96,6 @@ export default function DashboardHeader({students, setStudents}) {
         </div>
         
     </div>
-    </DashboardContext.Provider>);
+    // </DashboardContext.Provider>
+    );
 }

@@ -12,6 +12,8 @@ const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../../constants/erro
 var router = express.Router();
 const filesMulter = multer({ dest: 'csv/' });
 
+const DEFAULT_COL_SIZE = 6;
+
 /**
  * Parse csv file to save all students into the database and create a period
  * Return the period with students array in the response body
@@ -19,27 +21,34 @@ const filesMulter = multer({ dest: 'csv/' });
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-
+        let currRow = 0, currCol = 0;
         let students = [];
         const parseFileOptions = {
             headers: [undefined, 'name', 'email', undefined],
             skipLines: 6
         }
-
+        console.log(req.body.period);
         csv.parseFile(req.file.path, parseFileOptions)
             .on("error", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
                 error.sendError(res, 400, CSV_FORMAT_ERROR_MSG)
             })
             .on("data", data => {
-                data._id = new ObjectId()
+                data._id = new ObjectId();
+                data.row = currRow;
+                data.col = currCol;
+                currCol++;
+                if (currCol >= 6) {
+                    currRow++;
+                    currCol = 0;
+                }
                 students.push(data);
             })
             .on("end", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
 
                 // create and save period to user
-                const period = createPeriod(students);
+                const period = createPeriod(students, userPayload.sub, currRow);
                 savePeriodToUser(period._id, userPayload.sub);
 
                 res.status(200);
@@ -77,9 +86,11 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  * @param {*} students : array of students
  * @returns the period created in the db
  */
- const createPeriod = (students) => {
+ const createPeriod = (students, id, rowNum) => {
     const period = {
-        columns: 6,
+        rows: rowNum,
+        columns: DEFAULT_COL_SIZE,
+        user_id: new ObjectId(id),
         students: students
     }
 

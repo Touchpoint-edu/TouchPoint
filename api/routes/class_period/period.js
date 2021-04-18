@@ -6,26 +6,31 @@ var ObjectId = require('mongodb').ObjectID;
 
 const router = express.Router();
 
-router.get("/retrieve-all", (req, res) => {
+router.get("/retrieve-all", async (req, res) => {
   try {
+    console.log("Request");
       const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
       const query = {
-        _id: new ObjectId(userPayload.sub)
+        user_id: new ObjectId(userPayload.sub)
       }
       const options = {
         projection: {
-          periods: 1,
-          _id: 0
+          user_id: 0
         }
       }
-      mongo.findOne("users", query, options)
-      .then(data=>{
-        if(!data){
-          console.log("err");
+      const arr = [];
+      const cursor = mongo.findMany("periods", query, options);
+      cursor.hasNext((err, hasNext) => {
+        console.log("has next", hasNext);
+        if (hasNext) {
+          cursor.forEach((data) => {
+            arr.push(data);
+          }).then(() => {
+            res.send(arr);
+          });
         }
-        else{
-          console.log(data);
-          res.send(data);
+        else {
+          res.send(arr);
         }
       })
   } catch (err) {

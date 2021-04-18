@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import Close from "../Components/Close";
 import Button from "./Button";
+import Modal2 from 'react-bootstrap/Modal';
 
-const modalContainer = document.getElementById("modal-container");
+let modalContainer = document.getElementById("modal-container");
 
 
 function stopPropagation(e) {
@@ -24,8 +25,8 @@ export default function Modal({open, onClose, titleColor, title, children, scrol
           document.removeEventListener("keydown", handleEscapeKey);
         };
         }, [open, onClose]);
-    
-    return createPortal(
+
+    return (open && createPortal(
         <>
             <div className="modal-backdrop show"></div>
             <div className="modal" tabIndex="-1" style={{ display: "block" }}>
@@ -51,5 +52,5 @@ export default function Modal({open, onClose, titleColor, title, children, scrol
         </>
         ,
         modalContainer
-    );
+    ));
 }

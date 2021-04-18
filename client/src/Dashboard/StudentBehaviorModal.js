@@ -12,7 +12,7 @@ import Modal from "../Components/Modal";
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, handle2 }) {
+export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, fullScreen, handle2, id }) {
     const data = [
         {
             id: 0,
@@ -118,7 +118,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     const [filteredBehaviors, setFilteredBehaviors] = useState([]);
     const [selectedBehavior, setSelectedBehavior] = useState("");
     const options = [{ id: "-", category: "Select Category" }].concat(data);
-
+    console.log(open);
 
     useEffect(() => {
         function handleEscapeKey(event) {
@@ -139,7 +139,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     function handleSubmitBehavior(e) {
         //add behavior with event value to the student info
         e.preventDefault();
-        addBehavior()
+        addBehavior(student._id, selectedBehavior);
         onClose();
     }
 
@@ -169,13 +169,10 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     function handleOptionChange(event) {
         setSelectedBehavior(event.target.value);
     }
-
     return (
-       <FullScreen handle = {handle2}>
-        <div className="full-screenable-node">
 
         <Modal
-            title={student[0].name}
+            title={student.name}
             titleColor="#40904C"
             open={open}
             onClose={onClose}
@@ -183,6 +180,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
             submitText="Submit Behavior"
             onReset={handleDeleteStudent}
             resetText="Delete Student"
+            id={id}
         >
             <div className="modal-body px-5 mh-100 overflow-auto">
                 <div>
@@ -250,9 +248,8 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                     </div>
                 </form>
             </div>
+            </div>
         </Modal>
-</div>
-    </FullScreen>
     );
 }
 
