@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import Loading from '../src/Components/Loading.js';
 import Home from './Home.js'
 import Nav from './Nav.js';
-import { DataStoreContext} from "./contexts";
+import { DataStoreContext, DashboardContext} from "./contexts";
 import Dashboard from "../src/Dashboard/Dashboard.js";
 
 // import Home from './Home.js';
@@ -14,16 +14,19 @@ function App() {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState(0);
+  const [reload, setReload] = useState(false);
 
 
   return (
-    <DataStoreContext.Provider value = {{user, setUser, students, setStudents}}>
+    <DataStoreContext.Provider value = {{user, setUser, students, setStudents, selectedPeriod, setSelectedPeriod, reload, setReload}}>
       <Router>
-      {isLoading ? <Loading/> : <>
+      {isLoading ? <Loading/> : 
+        <div className="d-flex flex-column h-100">
         <div className = "container-fluid shadow">  
             <Nav />
         </div>
-          <main >
+          <main className="flex-fill overflow-hidden">
             <Switch>
               <Route path="/" exact={true}>
                   <Home/>
@@ -35,7 +38,8 @@ function App() {
               </Route>
             </Switch>
           </main>
-      </>}
+        </div>
+      }
       </Router>
     </DataStoreContext.Provider>
 

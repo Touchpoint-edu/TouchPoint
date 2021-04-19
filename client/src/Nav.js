@@ -1,18 +1,20 @@
 import React, {useContext, useState} from 'react';
 import { NavLink } from "react-router-dom";
 import { DataStoreContext } from "./contexts";
-import SigninSignupModal from './Signin-Signup/SigninSignupModal';
+import LoginForm from './Signin-Signup/LoginForm';
+import SignupForm from './Signin-Signup/SignupForm';
 import DashboardHeader from './Dashboard/DashboardHeader';
 import {logout} from './api/auth';
 import Button from './Components/Button';
+import Modal from './Components/Modal';
 
 
 export default function Nav(){
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalVariant, setModalVariant] = useState("signIn");
+    const [modalTitle, setModalTitle] = useState("Sign In");
     
-    const openModal = (variant) => {
-        setModalVariant(variant);
+    const openModal = (title) => {
+        setModalTitle(title);
         setModalOpen(true);
     };
     const closeModal = () => {
@@ -47,27 +49,31 @@ export default function Nav(){
                 </> 
                 : 
                 <>
-                    <Button className="mr-1 signin_button" onClick={() => openModal("signIn")}>
+                    <Button className="mr-1 signin_button" onClick={() => openModal("Sign In")}>
                         Sign in
                     </Button>
-                    <Button className="signup_button" onClick={() => openModal("signUp")} >
+                    <Button className="signup_button" onClick={() => openModal("Create your account")} >
                         Sign Up
                     </Button>
-                    {modalOpen && <SigninSignupModal
-                        open={modalOpen}
-                        onClose={closeModal}
-                        variant={modalVariant}
-                        toggleVariant={() =>
-                        setModalVariant(modalVariant === "signIn" ? "signUp" : "signIn")
+                    {
+                        modalOpen && 
+                            <Modal
+                                open={modalOpen}
+                                onClose={closeModal}
+                                title={modalTitle}
+                            >
+                                <div className="modal-body px-5 mh-100 overflow-auto">
+                                    {(modalTitle === "Sign In") && <LoginForm onClose={closeModal} /> }
+                                    {(modalTitle === "Create your account") && <SignupForm onClose={closeModal} /> }
+                                </div>
+                            </Modal>
                     }
-                />}
-                
                 </>
                 
                 }
 
             </div>
-            {user ? <><hr></hr>
+            {user ? <><hr />
                     <DashboardHeader students = {students} setStudents = {setStudents}></DashboardHeader></> : <></>}
         </nav>
     );

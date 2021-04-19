@@ -2,13 +2,16 @@ import React, { useEffect, useState, useContext } from "react";
 import Close from "../Components/Close";
 import { createPortal } from "react-dom";
 import Button from "../Components/Button";
-import { DashboardContext } from "../contexts.js";
-import { uploadCSV } from "../api/class_period.js";
-import { Container, Row, Col, Form, Label } from "react-bootstrap";
+import Modal from "../Components/Modal";
+import { DataStoreContext } from "../contexts.js";
+import { uploadCSV } from "../api/class_period";
+import { Container, Row, Col, Form } from "react-bootstrap";
+
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function UploadDownloadModal({ open, variant, onClose, students, setStudents }) {
+export default function UploadDownloadModal({ open, variant, onClose, students, setStudents, period }) {
+  const { reload, setReload } = useContext(DataStoreContext);
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
@@ -29,14 +32,20 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   // State to store uploaded file
   const [uploadFile, setUploadFile] = useState();
   const [downloadLoadfile, setDownloadFile] = useState("");
-  const { selectedPeriod, setSelectedPeriod } = useContext(DashboardContext);
+  const [uploadValidation, setUploadValidation] = useState("");
+  const [confirm, setConfirm] = useState(false);
   // const { periods, setPeriods } = useContext(DashboardContext);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
   // Handles file upload event and updates state
   function handleUpload(event) {
-    setUploadFile(event.target.files[0]);
+    if (event.target.files[0].type === "text/csv") {
+      setUploadFile(event.target.files[0]);
+    }
+    else {
+      setUploadValidation("Currently, only .csv files are accepted. Please upload a csv file to continue.");
+    }
     // TODO: display file preview
   }
 
@@ -47,6 +56,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     // Add code here to upload file to server
     // ...
   }
+
   async function handleSubmitUpload(e) {
     // e.preventDefault();
     //upload to database, - DONE
@@ -56,38 +66,39 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     //set the period of the uploaded csv - COMMENTED
     //setSelectedPeriod - COMMENTED
 
-    if (!uploadFile) {
-      // TODO: put out error message for no file chosen
-      return;
-    }
+    setConfirm(true);
+    // if (!uploadFile) {
+    //   // TODO: put out error message for no file chosen
+    //   return;
+    // }
+    // console.log(period);
+    // const response = await uploadCSV(uploadFile, period);
+    // console.log(response);
 
-    // fetch to save csv to database
-    const response = await uploadCSV(uploadFile);
-    const responseData = await response.json()
+    // if (response.status === 200) {
+    //   setReload(!reload);
+    //   // set student array
+    //   // if (responseData && responseData.period) {
+    //   //   console.log(responseData.period)
 
-    if (response.status === 200) {
-      // set student array
-      if (responseData && responseData.period) {
-        console.log(responseData.period)
+    //   //   const newPeriod = {
+    //   //     id: responseData.period._id,
+    //   //     // value: "Period " + (periods.length + 1)
+    //   //   }
 
-        const newPeriod = {
-          id: responseData.period._id,
-          // value: "Period " + (periods.length + 1)
-        }
-
-        // set the currecct period and its students
-        setStudents(responseData.period.students)
-        // setPeriods([...periods, newPeriod])
-        // setSelectedPeriod(newPeriod.value)
-      }
-      // TODO: the rest
-    } else if (response.status === 400) {
-      // TODO: put out error message from responseData
-      console.log(responseData)
-    } else if (response.status === 500) {
-      // TODO: put out error message from responseData
-      console.log(responseData)
-    }
+    //   //   // set the currecct period and its students
+    //   //   setStudents(responseData.period.students)
+    //   //   // setPeriods([...periods, newPeriod])
+    //   //   // setSelectedPeriod(newPeriod.value)
+    //   // }
+    //   // TODO: the rest
+    // } else if (response.status === 400) {
+    //   // TODO: put out error message from responseData
+    //   // console.log(responseData)
+    // } else if (response.status === 500) {
+    //   // TODO: put out error message from responseData
+    //   // console.log(responseData)
+    // }
   }
 
   async function handleSubmitDownload(e) {
@@ -95,110 +106,104 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     onClose();
   }
   async function handleConfirmUpload(e) {
-    onClose();
+    if (!!uploadFile) {
+      // TODO: put out error message for no file chosen
+      const response = await uploadCSV(uploadFile, period);
+      if (response.status === 200) {
+        setReload(!reload);
+        onClose();
+        // set student array
+        // if (responseData && responseData.period) {
+        //   console.log(responseData.period)
+
+        //   const newPeriod = {
+        //     id: responseData.period._id,
+        //     // value: "Period " + (periods.length + 1)
+        //   }
+
+        //   // set the currecct period and its students
+        //   setStudents(responseData.period.students)
+        //   // setPeriods([...periods, newPeriod])
+        //   // setSelectedPeriod(newPeriod.value)
+        // }
+        // TODO: the rest
+      } else if (response.status === 400) {
+        // TODO: put out error message from responseData
+        // console.log(responseData)
+      } else if (response.status === 500) {
+        // TODO: put out error message from responseData
+        // console.log(responseData)
+      }
+      return;
+    }
   }
 
-  return createPortal(
-    <>
-      <div className="modal-backdrop show"></div>
-      <div className="modal" tabIndex="-1" style={{ display: "block" }}>
-        <div className="modal-dialog">
-          <div className="modal-content pb-3" onClick={stopPropagation}>
-            <div className="d-flex justify-content-end mr-3 mt-3 ">
-              <div className="invisible " onClick={onClose}>
-                <Close />
-              </div>
-              <div className="modal-close cursor-pointer z-50" onClick={onClose}>
-                <Close />
-              </div>
+  return (
+    <Modal title={variant} open={open} onClose={onClose}>
+      <div className="modal-body px-5 mh-100 overflow-auto">
+        {variant === "upload" ? (
+          <>
+            <div className="text-center">
+              <img src="upload.png" alt="upload" className="mt-2 mb-5" />
+              <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" disabled={confirm} />
+              <div className="text-red-500">{uploadValidation}</div>
             </div>
-            <div>
-              {variant === "upload" ? (
-                <>
-                  {students ?
-                    <div className="student-modal">
-                      <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
-                        <h2>upload</h2>
-                      </div>
-                      <div scrollable={"true"}>
-                        <ul className="list-group ml-5 mr-5">
-                          {students.map((student) => {
-                            console.log(student);
-                            return (<li className="list-group-item">{`${student.name}, ${student.email}`}</li>)
-                          })}
-                        </ul>
-                      </div>
-                      <Button
-                        className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
-                        fullWidth={true}
-                        onClick={handleConfirmUpload}
-                        onClose={onClose}
-                      >
-                        Confirm
-                      </Button>
-                    </div> :
-                    <>
-                      <div className="mt-8 d-flex justify-content-start ml-5 modal-header-text">
-                        <h2>Upload</h2>
-                      </div>
-                      <div className="upload-box">
-                        <img src="upload.png" alt="upload" className="mt-2 mb-5" />
-                        <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} />
-                      </div>
-                      <hr className="solid my-4" />
-                      <Button
-                        className="h-12 text-xl submit_button ml-5 mt-2 mb-2"
-                        fullWidth={true}
-                        onClose={onClose}
-                        onClick={handleSubmitUpload}
-                      >
-                        Upload
-                      </Button>
-                    </>
-                  }
+            {confirm && <div className="text-red-500">If you currently have a seating chart for period {period + 1}, this will overwrite it. Do you wish to continue?</div>}
 
-                </>
-              ) : (
-                <>
-                  <div className="d-flex justify-content-start ml-5 modal-header-text">
-                    <h2>Download</h2>
-                  </div>
+            <hr className="solid my-4" />
+            {confirm ?
+              <Button
+                className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
+                fullWidth={true}
+                onClick={handleConfirmUpload}
+                onClose={onClose}
+              >
+                Confirm
+              </Button>
+              :
+              <Button
+                className="h-12 text-xl submit_button mt-2 mb-2"
+                fullWidth={true}
+                onClose={onClose}
+                onClick={handleSubmitUpload}
+                disabled={!uploadFile}
+              >
+                Upload
+              </Button>
+            }
 
-                  <Container className="px-5 py-3">
-                    <Row>
-                      <Col><h5 className="text-muted">Start Date</h5></Col>
-                      <Col><h5 className="text-muted">End Date</h5></Col>
-                    </Row>
+          </>
+        ) : (
+          <>
+            <Container className="px-5 py-3">
+              <Row>
+                <Col><h5 className="text-muted">Start Date</h5></Col>
+                <Col><h5 className="text-muted">End Date</h5></Col>
+              </Row>
 
-                    <Row>
-                      <Col xs={6}>
-                        <Form.Control type="date" value={startDate} onChange={e => { setStartDate(e.target.value) }} />
-                      </Col>
-                      <Col xs={6}>
-                        <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value) }} />
-                      </Col>
-                    </Row>
-                  </Container>
+              <Row>
+                <Col xs={6}>
+                  <Form.Control type="date" value={startDate} onChange={e => { setStartDate(e.target.value) }} />
+                </Col>
+                <Col xs={6}>
+                  <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value) }} />
+                </Col>
+              </Row>
+            </Container>
 
-                  <hr className="solid mb-3 w-75" />
-                  <Button
-                    className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
-                    fullWidth={true}
-                    onSubmit={handleSubmitDownload}
-                    onClose={onClose}
-                  >
-                    Download
-                    </Button>
+            <hr className="solid my-4 w-75" />
+            <Button
+              className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
+              fullWidth={true}
+              onSubmit={handleSubmitDownload}
+              onClose={onClose}
+            >
+              Download
+                  </Button>
 
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
-    </>
-    ,
-    modalContainer
+    </Modal>
   );
 }
-
