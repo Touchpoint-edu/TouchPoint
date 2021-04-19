@@ -21,7 +21,11 @@ router.post("/update/:period_id", function(req,res){
       _id: new ObjectId(req.params['period_id'])
     }
     const update = {
-      $set: req.body
+      $set: {
+        rows: req.body.rows,
+        columns: req.body.columns,
+        students: req.body.students
+      }
     }
     mongo.update("periods", query, update)
     .then(data =>{

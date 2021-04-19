@@ -15,6 +15,7 @@ export default function Button({
   return (
     <button
       className={`${buttonStyle} font-medium py-2 px-4 rounded-lg font-body transition-colors duration-100 focus:outline-none`}
+      disabled={disabled}
       onClick={() => {
         if (!disabled && !!onClick) onClick();
       }}
