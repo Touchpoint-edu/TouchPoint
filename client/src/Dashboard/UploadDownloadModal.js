@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import Close from "../Components/Close";
-import { createPortal } from "react-dom";
 import Button from "../Components/Button";
 import Modal from "../Components/Modal";
 import { DataStoreContext } from "../contexts.js";
 import { uploadCSV } from "../api/class_period";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { downloadCSV } from '../api/class_period';
-
 
 function getEpoch(dateString) {
   const dateArray = dateString.split('-')
@@ -46,6 +43,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   // const { periods, setPeriods } = useContext(DashboardContext);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [isDownloadLoading, setDownloadLoading] = useState(false)
   const [downloadSubmitError, setDownloadSubmitError] = useState(false);
 
   // Handles file upload event and updates state
@@ -62,11 +60,12 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
 
 
   async function handleDownload() {
-    setDownloadSubmitError(false);
+    setDownloadLoading(true);
 
     // return if user didn't select date range
     if (!startDate && !endDate) {
       setDownloadSubmitError(true);
+      setDownloadLoading(false);
       return
     }
 
@@ -75,6 +74,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     // return if user selected a start date that's later than end date
     if (startDate > endEpoch) {
       setDownloadSubmitError(true);
+      setDownloadLoading(false);
       return
     }
 
@@ -86,6 +86,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
       setDownloadSubmitError(true);
     } 
 
+    setDownloadLoading(false);
     onClose()
   }
 
@@ -225,7 +226,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
               onClick={handleDownload}
               onClose={onClose}
             >
-              Download
+              {isDownloadLoading ? <Spinner animation="border" variant="light" size="sm"/> : "Download"}
             </Button>
           </>
         )}
