@@ -66,7 +66,7 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
 /**
  * create a csv file of students and their behaviors with counts of each behavior
  */
- router.get("/download", (req, res) => {
+ router.post("/download", (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 

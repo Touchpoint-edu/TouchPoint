@@ -6,9 +6,18 @@ import Modal from "../Components/Modal";
 import { DataStoreContext } from "../contexts.js";
 import { uploadCSV } from "../api/class_period";
 import { Container, Row, Col, Form } from "react-bootstrap";
+import { downloadCSV } from '../api/class_period';
 
 
-const modalContainer = document.getElementById("modal-container");
+function getEpoch(dateString) {
+  const dateArray = dateString.split('-')
+
+  let year = dateArray[0]
+  let month = dateArray[1] - 1
+  let day = dateArray[2]
+
+  return new Date(year, month, day).getTime() / 1000
+}
 
 export default function UploadDownloadModal({ open, variant, onClose, students, setStudents, period }) {
   const { reload, setReload } = useContext(DataStoreContext);
@@ -35,8 +44,9 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [uploadValidation, setUploadValidation] = useState("");
   const [confirm, setConfirm] = useState(false);
   // const { periods, setPeriods } = useContext(DashboardContext);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [downloadSubmitError, setDownloadSubmitError] = useState(false);
 
   // Handles file upload event and updates state
   function handleUpload(event) {
@@ -49,12 +59,34 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     // TODO: display file preview
   }
 
-  // Handles file upload event and updates state
-  function handleDownload(event) {
-    setDownloadFile(event.target.files[0]);
 
-    // Add code here to upload file to server
-    // ...
+
+  async function handleDownload() {
+    setDownloadSubmitError(false);
+
+    // return if user didn't select date range
+    if (!startDate && !endDate) {
+      setDownloadSubmitError(true);
+      return
+    }
+
+    const startEpoch = getEpoch(startDate)
+    const endEpoch = getEpoch(endDate)
+    // return if user selected a start date that's later than end date
+    if (startDate > endEpoch) {
+      setDownloadSubmitError(true);
+      return
+    }
+
+    const response = await downloadCSV(students, startEpoch, endEpoch);
+
+    if (response.status === 200) {
+
+    } else {
+      setDownloadSubmitError(true);
+    } 
+
+    onClose()
   }
 
   async function handleSubmitUpload(e) {
@@ -101,10 +133,6 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     // }
   }
 
-  async function handleSubmitDownload(e) {
-    e.preventDefault();
-    onClose();
-  }
   async function handleConfirmUpload(e) {
     if (!!uploadFile) {
       // TODO: put out error message for no file chosen
@@ -171,36 +199,34 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                 Upload
               </Button>
             }
-
           </>
         ) : (
           <>
-            <Container className="px-5 py-3">
-              <Row>
-                <Col><h5 className="text-muted">Start Date</h5></Col>
-                <Col><h5 className="text-muted">End Date</h5></Col>
-              </Row>
-
-              <Row>
-                <Col xs={6}>
+            <Container className="">
+              <Row sm={2}>
+                <Col className="mb-2">
+                  <h5 className="text-muted order-md-1">Start Date</h5>
                   <Form.Control type="date" value={startDate} onChange={e => { setStartDate(e.target.value) }} />
+                  {downloadSubmitError && !startDate && <p className="text-red-500 mt-2">Start date required.</p>}
                 </Col>
-                <Col xs={6}>
-                  <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value) }} />
+
+                <Col>
+                  <h5 className="text-muted order-md-2">End Date</h5>
+                  <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value); console.log((e.target.value)) }} />
+                  {downloadSubmitError && !endDate && <p className="text-red-500 mt-2">End date required.</p>}
                 </Col>
               </Row>
             </Container>
 
-            <hr className="solid my-4 w-75" />
+            <hr className="mb-4" />
             <Button
-              className="h-12 text-xl w-75 submit_button ml-5 mt-2 mb-2"
+              className="submit_button w-100"
               fullWidth={true}
-              onSubmit={handleSubmitDownload}
+              onClick={handleDownload}
               onClose={onClose}
             >
               Download
-                  </Button>
-
+            </Button>
           </>
         )}
       </div>

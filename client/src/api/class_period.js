@@ -19,7 +19,7 @@ export async function uploadCSV(uploadFile, period) {
 
 export async function downloadCSV(studentsArray, start , end) {
     const res = await fetch("/api/period/csv/download", {
-        method: "GET",
+        method: "POST",
         body: JSON.stringify({
             students: studentsArray,
             start: start,
