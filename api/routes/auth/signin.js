@@ -14,11 +14,11 @@ const JWT_COOKIE_NAME = 'c_user';
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-function sendToken(res, data) {
+function sendToken(res, key, data) {
     const token = jwt.sign({
         sub: data._id,
         name: data.name
-    }, process.env.JWT_SECRET_KEY, {expiresIn: JWT_EXPIRY_TIME});
+    }, key, {expiresIn: JWT_EXPIRY_TIME});
     res.cookie(JWT_COOKIE_NAME, token, { 
         expires: new Date(Date.now() + 900000), // change expiry time
         httpOnly: true
@@ -63,7 +63,7 @@ router.post("/google", async (req, res) => {
             }
             else {
                 // successfully verified google token and found in db
-                sendToken(res, data);
+                sendToken(res, req.jwtLoginSecret, data);
             }
         });
     })
@@ -109,7 +109,7 @@ router.post("/", async (req, res) => {
                         sendError(res, 401, PENDING_VERIFICATION_ERROR_MSG);
                     }
                     else {
-                        sendToken(res, data);
+                        sendToken(res, req.jwtLoginSecret, data);
                     }
                 }
                 else {

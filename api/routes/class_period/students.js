@@ -15,7 +15,7 @@ Given a period id, updates the period
 */
 router.post("/update/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, req.jwtLoginSecret);
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
@@ -46,7 +46,7 @@ Given a period id, returns the entire seating chart response
 */
 router.get("/seating/:period_id", function(req,res) {
     try{
-      verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+      verify.verify(req.cookies.c_user, req.jwtLoginSecret);
       const query = {
         _id: new ObjectId(req.params['period_id'])
       }
@@ -72,7 +72,7 @@ Given a period id, adds a single student
 */
 router.post("/add-one/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, req.jwtLoginSecret);
     req.body._id = new ObjectId(); //If you need a new object id
     const query = {
       _id: new ObjectId(req.params['period_id'])
@@ -100,7 +100,7 @@ router.post("/add-one/:period_id", function(req,res){
 //Delete
 router.delete("/remove-one/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, req.jwtLoginSecret);
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }

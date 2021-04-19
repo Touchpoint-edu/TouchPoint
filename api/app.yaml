@@ -1,0 +1,8 @@
+runtime: nodejs14
+service: api
+env_variables:
+  MONGO_DB_URI: "mongodb+srv://tp_user:JeAGkwU8wuH2skx@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority"
+  JWT_SECRET_KEY: "ae280b2d0d3e3ca11caa15e3ba7ea172"
+  JWT_VERIFY_KEY: "12d1c4dbfca93914dd8d9a3860115736"
+  EMAIL_USERNAME: "touchpoint.devteam@gmail.com"
+  EMAIL_PASSWORD: "TP_dev401"

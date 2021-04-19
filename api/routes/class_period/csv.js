@@ -20,7 +20,7 @@ const DEFAULT_COL_SIZE = 6;
  */
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
         let currRow = 0, currCol = 0;
         let students = [];
         const parseFileOptions = {
@@ -68,7 +68,7 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  */
  router.post("/download", (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
 
         // download
 
