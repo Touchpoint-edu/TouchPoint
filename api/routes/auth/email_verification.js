@@ -12,7 +12,7 @@ const readFile = promisify(fs.readFile);
 
 const JWT_EXPIRY_TIME = '1h'; // change expiry time
 
-const verifyUser = function(email, verifyCredentials) {
+const verifyUser = function(email, verifyCredentials, jwtVerifySecret) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -31,7 +31,7 @@ const verifyUser = function(email, verifyCredentials) {
     //REPLACE MESSAGE WITH USERS UNIQUE ID
     const token = jwt.sign({
         sub: email,
-    }, req.jwtVerifySecret, {expiresIn: JWT_EXPIRY_TIME});
+    }, jwtVerifySecret, {expiresIn: JWT_EXPIRY_TIME});
 
     const replacements = {
         emailID: token

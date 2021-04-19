@@ -43,7 +43,8 @@ const dbName = 'touchpoint';
 const dbUriSecretName = "projects/903480499371/secrets/db-uri/versions/latest";
 const jwtLoginSecretName = "projects/903480499371/secrets/jwt-login-key/versions/latest";
 const jwtVerifySecretName = "projects/903480499371/secrets/jwt-verify-key/versions/latest";
-const emailCredentialsSecretName = "projects/903480499371/secrets/email-verification-credentials";
+const emailCredentialsSecretName = "projects/903480499371/secrets/email-verification-credentials/versions/latest";
+
 // Create a new MongoClient
 const client = new MongoClient(process.env.MONGO_DB_URI);
 const secretManager = new SecretManagerServiceClient();
@@ -54,7 +55,6 @@ async function getSecret(name) {
     });
 
     const payload = version.payload.data.toString();
-    console.log("getting secret");
     return payload;
   }
 

@@ -96,7 +96,7 @@ router.post("/", async (req, res) => {
                 }, "", function(err, data) {
                     if (err) sendError(res, 500, SERVER_ERROR_MSG);
                     else {
-                        verifyUser(email, req.emailCredentials);
+                        verifyUser(email, req.emailCredentials, req.jwtVerifySecret);
                         res.sendStatus(201);
                     }
                 });
