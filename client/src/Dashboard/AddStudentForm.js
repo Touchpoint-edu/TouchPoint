@@ -17,8 +17,7 @@ export default function AddStudentForm(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = async (values) => {
-        // TODO: edit first parameter (period_id)
-        const response = await addStudent(4, values.name, values.email);
+        const response = await addStudent(props.periodId, values.name, values.email);
         const responseData = await response.json();
 
         if (response.status === 200) {
@@ -38,6 +37,7 @@ export default function AddStudentForm(props) {
         } else {
             alert("Please try again later.")
         }
+        console.log(props.students)
     }
 
     const showForm = (formProps) => (
@@ -100,7 +100,7 @@ export default function AddStudentForm(props) {
 
     return (
         <>
-            <Button variant="success" onClick={handleShow}>+ Add Student</Button>
+            <Button variant="success" disabled={props.disabled} className="w-100" onClick={handleShow}>+ Add Student</Button>
 
             <Modal size="sm" centered show={show} onHide={handleClose} >
                 <Container fluid className="px-4">

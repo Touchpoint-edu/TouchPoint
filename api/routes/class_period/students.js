@@ -87,8 +87,9 @@ router.post("/add-one/:period_id", function(req,res){
         if(!data){
           console.log("err");
         }
-        else{
-          res.sendStatus(200);
+        else {
+          res.status(200);
+          res.json(req.body._id)
         }
     })
   }

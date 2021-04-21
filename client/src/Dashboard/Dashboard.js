@@ -186,22 +186,7 @@ export default function Dashboard() {
           </div>
 
           <div className="action">
-          <AddStudentForm students={students} setStudents={setStudents}></AddStudentForm>
-            <form onSubmit={addStudent} >
-              <InputGroup className="add-student">
-                <FormControl
-                  placeholder="Student Name"
-                  aria-label="Student Name"
-                  aria-describedby="basic-addon2"
-                  value={studentName}
-                  onChange={handleNameChange}
-                  disabled={!editChart}
-                />
-                <InputGroup.Append>
-                  <Button className="add-button btn btn-success" disabled={!editChart} type="submit">+</Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </form>
+          <AddStudentForm disabled={!editChart} periodId={currPeriod._id} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
           </div>
           {addStudentValidation !== "" && <div className="action text-red-500">{addStudentValidation}</div>}
           <div className="action d-flex justify-content-between">
@@ -253,15 +238,6 @@ export default function Dashboard() {
                 </Button>
             </div>
           </div>
-        </div>
-
-        <div className="edit-button-container">
-          <Button
-            className="edit-button btn btn-success mt-1"
-            onClick={handleChartSave}
-          >
-            {editChart ? (<>Edit Seating</>) : (<>Save Seating</>)}
-          </Button>
         </div>
       </div>
     </div>
