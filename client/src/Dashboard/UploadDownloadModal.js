@@ -44,7 +44,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isDownloadLoading, setDownloadLoading] = useState(false)
-  const [downloadSubmitError, setDownloadSubmitError] = useState(false);
+  const [downloadBlankInput, setDownloadBlankInput] = useState(false);
   const [downloadErrMsg, setDownloadErrMsg] = useState("");
 
   // Handles file upload event and updates state
@@ -61,23 +61,31 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
 
 
   async function handleDownload() {
-    setDownloadLoading(true);
+    setDownloadLoading(true)
+    setDownloadBlankInput(false)
+    setDownloadErrMsg(false)
 
     // return if user didn't select date range
-    if (!startDate && !endDate) {
-      setDownloadSubmitError(true);
-      setDownloadLoading(false);
+    if (!startDate || !endDate) {
+      setDownloadBlankInput(true)
+      setDownloadLoading(false)
       return
     }
 
     const startEpoch = getEpoch(startDate)
     const endEpoch = getEpoch(endDate)
+
+    // return if user selected a date in the future
+    if (startEpoch > Date.now / 1000) {
+      setDownloadErrMsg("Invalid start date.")
+      setDownloadLoading(false)
+      return
+    }
+
     // return if user selected a start date that's later than end date
     if (startEpoch > endEpoch) {
-      setDownloadSubmitError(true);
       setDownloadErrMsg("Start date needs to be before end date.")
-      setDownloadLoading(false);
-      console.log("STart is bigger")
+      setDownloadLoading(false)
       return
     }
 
@@ -87,11 +95,10 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
 
     } else {
       const resData = await response.json()
-      setDownloadSubmitError(true);
-      // setDownloadErrMsg(resData)
+      setDownloadErrMsg("An error has occured. Please try again later.")
     } 
 
-    setDownloadLoading(false);
+    setDownloadLoading(false)
     // onClose()
   }
 
@@ -213,16 +220,16 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                 <Col className="mb-2">
                   <h5 className="text-muted order-md-1">Start Date</h5>
                   <Form.Control type="date" value={startDate} onChange={e => { setStartDate(e.target.value) }} />
-                  {downloadSubmitError && !startDate && <p className="text-red-500 mt-2">Start date required.</p>}
+                  {downloadBlankInput && !startDate && <p className="text-red-500 mt-2">Start date required.</p>}
                 </Col>
 
                 <Col>
                   <h5 className="text-muted order-md-2">End Date</h5>
                   <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value); console.log((e.target.value)) }} />
-                  {downloadSubmitError && !endDate && <p className="text-red-500 mt-2">End date required.</p>}
+                  {downloadBlankInput && !endDate && <p className="text-red-500 mt-2">End date required.</p>}
                 </Col>
               </Row>
-              <Row>{downloadSubmitError && <p className="text-red-500 mt-2 mb-0 ml-3">{downloadErrMsg}</p>}</Row>
+              <Row>{downloadErrMsg && <p className="text-red-500 mt-2 mb-0 ml-3">{downloadErrMsg}</p>}</Row>
             </Container>
 
             <hr className="mb-4" />
