@@ -45,6 +45,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [endDate, setEndDate] = useState("");
   const [isDownloadLoading, setDownloadLoading] = useState(false)
   const [downloadSubmitError, setDownloadSubmitError] = useState(false);
+  const [downloadErrMsg, setDownloadErrMsg] = useState("");
 
   // Handles file upload event and updates state
   function handleUpload(event) {
@@ -72,9 +73,11 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     const startEpoch = getEpoch(startDate)
     const endEpoch = getEpoch(endDate)
     // return if user selected a start date that's later than end date
-    if (startDate > endEpoch) {
+    if (startEpoch > endEpoch) {
       setDownloadSubmitError(true);
+      setDownloadErrMsg("Start date needs to be before end date.")
       setDownloadLoading(false);
+      console.log("STart is bigger")
       return
     }
 
@@ -83,11 +86,13 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     if (response.status === 200) {
 
     } else {
+      const resData = await response.json()
       setDownloadSubmitError(true);
+      // setDownloadErrMsg(resData)
     } 
 
     setDownloadLoading(false);
-    onClose()
+    // onClose()
   }
 
   async function handleSubmitUpload(e) {
@@ -217,6 +222,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
                   {downloadSubmitError && !endDate && <p className="text-red-500 mt-2">End date required.</p>}
                 </Col>
               </Row>
+              <Row>{downloadSubmitError && <p className="text-red-500 mt-2 mb-0 ml-3">{downloadErrMsg}</p>}</Row>
             </Container>
 
             <hr className="mb-4" />
