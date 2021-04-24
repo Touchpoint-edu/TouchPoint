@@ -20,8 +20,9 @@ const verifyUser = function(email) {
         pass: process.env.EMAIL_PASSWORD
         }
     });
-    console.log(process.env.EMAIL_USERNAME); 
-    console.log(process.env.EMAIL_PASSWORD); 
+    //Debug statements 
+    //console.log(process.env.EMAIL_USERNAME); 
+    //console.log(process.env.EMAIL_PASSWORD); 
     
     //READS IN EMAIL TEMPLATE 
     //USES HANDLEBARS TO REPLACE {{emailID}} field with emailID 
