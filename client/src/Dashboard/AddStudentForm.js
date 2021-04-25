@@ -17,27 +17,21 @@ export default function AddStudentForm(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = async (values) => {
-        const response = await addStudent(props.periodId, values.name, values.email);
-        const responseData = await response.json();
+        // const response = await addStudent(props.periodId, values.name, values.email);
 
-        if (response.status === 200) {
-            const newStudent = {
-                id: 40,
-                name: values.name,
-                data:
-                {
-                    category: 1,
-                    behavior: 0,
-                },
-            }
-            props.setStudents([...props.students, newStudent]);
-            handleClose();
-        } else if (response.status === 500) {
-            alert(responseData.message)
-        } else {
-            alert("Please try again later.")
+        const newStudent = {
+            col: 0,
+            email: values.email,
+            name: values.name,
+            row: props.currPeriod.columns + 1
         }
+
+        props.setStudents([...props.students, newStudent]);
+        props.setCurrPeriod({...props.currPeriod, columns: newStudent.row});
+
         console.log(props.students)
+        
+        handleClose();
     }
 
     const showForm = (formProps) => (

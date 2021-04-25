@@ -172,7 +172,7 @@ export default function Dashboard() {
       <div className="row h-100">
         <div className="grid-container col-lg-9 col-xl-10 h-100">
           <FullScreen className="w-100" handle={handle1}>
-            <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />
+            <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />
           </FullScreen>
         </div>
         <div className="actions-cont col-lg-3 col-xl-2 d-none d-lg-flex flex-column">
@@ -186,7 +186,7 @@ export default function Dashboard() {
           </div>
 
           <div className="action">
-          <AddStudentForm disabled={!editChart} periodId={currPeriod._id} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
+          <AddStudentForm disabled={!editChart} currPeriod={currPeriod} setCurrPeriod={setCurrPeriod} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
           </div>
           {addStudentValidation !== "" && <div className="action text-red-500">{addStudentValidation}</div>}
           <div className="action d-flex justify-content-between">
