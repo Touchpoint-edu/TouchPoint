@@ -188,7 +188,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
 
                 <Col>
                   <h5 className="text-muted order-md-2">End Date</h5>
-                  <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value); console.log((e.target.value)) }} />
+                  <Form.Control type="date" value={endDate} onChange={e => { setEndDate(e.target.value)}} />
                   {downloadBlankInput && !endDate && <p className="text-red-500 mt-2">End date required.</p>}
                 </Col>
               </Row>
