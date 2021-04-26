@@ -6,32 +6,69 @@ var ObjectId = require('mongodb').ObjectID;
 
 const router = express.Router();
 
-router.get("/retrieve-all", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
-      const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-      const query = {
-        user_id: new ObjectId(userPayload.sub)
+    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+
+    const period = {
+      $set: {
+        rows: req.body.period.rows,
+        columns: req.body.period.columns,
+        user_id: new ObjectId(userPayload.sub),
+        students: req.body.period.students,
+        periodNum: parseInt(req.body.period.periodNum)
       }
-      const options = {
-        projection: {
-          user_id: 0
-        }
-      }
-      const arr = [];
-      const cursor = mongo.findMany("periods", query, options);
-      cursor.hasNext((err, hasNext) => {
-        if (hasNext) {
-          cursor.toArray((err, arr) => {
-            res.send(arr);
-          });
+    }
+
+    const query = {
+      user_id: new ObjectId(userPayload.sub),
+      periodNum:
+        period.periodNum
+    }
+    const options = {
+      upsert: true
+    }
+    mongo.update("periods", query, period, options)
+      .then((result, err) => {
+        if (err) {
+          error.sendError(res, 500, SERVER_ERROR_MSG);
         }
         else {
-          res.send(arr);
+          res.sendStatus(200);
         }
-      })
+      });
   } catch (err) {
-      console.log(err);
-      error.sendError(res, 404, "huh");
+    console.log(err);
+    error.sendError(res, 404, "huh");
+  }
+})
+
+router.get("/retrieve-all", async (req, res) => {
+  try {
+    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    const query = {
+      user_id: new ObjectId(userPayload.sub)
+    }
+    const options = {
+      projection: {
+        user_id: 0
+      }
+    }
+    const arr = [];
+    const cursor = mongo.findMany("periods", query, options);
+    cursor.hasNext((err, hasNext) => {
+      if (hasNext) {
+        cursor.toArray((err, arr) => {
+          res.send(arr);
+        });
+      }
+      else {
+        res.send(arr);
+      }
+    })
+  } catch (err) {
+    console.log(err);
+    error.sendError(res, 404, "huh");
   }
 })
 
