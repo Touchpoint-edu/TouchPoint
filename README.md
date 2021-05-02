@@ -41,4 +41,4 @@ npm i
 npm start
 ```
 - _the server needs to be restarted for every code change_
-- _alternatively, use [nodemon](https://nodemon.io/) and start server by running `nodemon api`_
+- _alternatively, if you don't want to restart every time then use [nodemon](https://nodemon.io/) and start server by running `nodemon api`. _
