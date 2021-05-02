@@ -20,12 +20,17 @@ export async function uploadCSV(uploadFile, period) {
 export async function downloadCSV(studentsArray, start , end) {
     const res = await fetch("/api/period/csv/download", {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+          },
         body: JSON.stringify({
             students: studentsArray,
             start: start,
-            end: end
+            end: end,
           })
     })
+    console.log(res)
+    console.log("hello")
     return res;
 }
 

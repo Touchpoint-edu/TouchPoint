@@ -66,14 +66,16 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
 /**
  * create a csv file of students and their behaviors with counts of each behavior
  */
- router.post("/download", (req, res) => {
+ router.post("/download", async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        //const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 
         // download
-
-        res.sendStatus(200);
-
+       res.setHeader("Content-Type", "text/csv");
+       res.setHeader("Content-Disposition", "attachment; test.csv");
+       res.sendFile(__dirname + "/test.csv");
+    //    console.log(req.body)
+    //    res.send({ foo : 'bar' });
     } catch (err) {
         console.log(err);
         error.sendError(res, 404, "huh");
