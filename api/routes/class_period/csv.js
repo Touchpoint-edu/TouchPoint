@@ -69,10 +69,12 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  router.post("/download", (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader("Content-Disposition", "attachment; test.csv");
+        res.sendFile(__dirname + "/test.csv");
         // download
 
-        res.sendStatus(200);
+        //res.sendStatus(200);
 
     } catch (err) {
         console.log(err);
