@@ -1,6 +1,5 @@
 # TouchPoint
 
-Run `npm i` on both folders I believe and `npm start` with two terminals if you want it to work
 
 ## client folder (frontend)
 - contains React.js frontend code
@@ -21,7 +20,8 @@ npm start
 ```
 4. go to [localhost:3000](http://localhost:3000) on the browser
 
-_changes are made as you code_
+- _changes are made as you code_
+- _if you want to interact with backend you need to start it as well_
 
 ## api folder (backend)
 - contains Node.js with Express backend code
