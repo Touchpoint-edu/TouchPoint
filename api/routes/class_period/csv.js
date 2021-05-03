@@ -8,6 +8,7 @@ const mongo = require('../../models/mongo');
 const verify = require('../../scripts/verify')
 const error = require('../../scripts/error')
 const { CSV_FORMAT_ERROR_MSG, SERVER_ERROR_MSG } = require('../../constants/errors');
+const errorMsg = require('../../constants/errors')
 
 var router = express.Router();
 const filesMulter = multer({ dest: 'csv/' });
@@ -84,7 +85,7 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             })
     } catch (err) {
         console.log(err);
-        error.sendError(res, 404, "huh");
+        error.sendError(res, 500, errorMsg.SERVER_ERROR_MSG);
     }
 })
 
