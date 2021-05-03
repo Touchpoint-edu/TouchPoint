@@ -25,9 +25,8 @@ export default function Nav(){
     const { user, setUser, students, setStudents } = useContext(DataStoreContext);
 
     async function logoutUser() {
-        Cookies.remove("XSRF-TOKEN")
-        console.log(Cookies.get("XSRF-TOKEN"))
         await logout();
+        Cookies.remove("XSRF-TOKEN")
         setUser(null);
     }
 
