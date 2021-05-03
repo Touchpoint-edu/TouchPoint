@@ -6,6 +6,7 @@ import DashboardHeader from "./DashboardHeader";
 import { fetchAllPeriods, updateSeatingChart } from "../api/class_period.js";
 import { DashboardContext, DataStoreContext } from "../contexts.js";
 import AddStudentForm from "./AddStudentForm"
+import Cookies from 'js-cookie';
 const NUM_OF_PERIODS = 8;
 
 export default function Dashboard() {
@@ -166,6 +167,9 @@ export default function Dashboard() {
     }
     setEditChart(!editChart);
   }
+
+  console.log(Cookies.get())
+  console.log(Cookies.get("G_AUTHUSER_H"))
 
   return (
     <div className="container-fluid justify-content-around p-5 h-100">

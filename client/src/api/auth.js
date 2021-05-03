@@ -18,11 +18,11 @@ export async function signUp(userData) {
 }
 
 export async function fetchUser() {
-  const response = await fetch("/api/user");
+  const response = await fetch("/api/auth/username", {
+    method: "GET"
+  });
 
-  if (response.status === 200) {
-    return response.json();
-  }
+  return response
 }
 
 export function logout() {
