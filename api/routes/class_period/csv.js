@@ -63,17 +63,73 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
     }
 })
 
+function createCSV() {
+    
+    
+}
+
 /**
  * create a csv file of students and their behaviors with counts of each behavior
  */
- router.post("/download", (req, res) => {
+ router.get("/download", (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
 
+
+        console.log("creating csv file");
+        var data = ["hiasdfasdf","bye"];
+
+        //EXPECTATION - READS IN A JSON and converts to CSV 
+        var ws = fs.createWriteStream(__dirname + '/test.csv');
+        csv.
+            write([data],{headers:true}).pipe(ws); 
+
+
+        const file = `${__dirname}/test.csv`
+        var filestream = fs.createReadStream(file);
+        filestream.pipe(res);
+        //const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        // if(req.body.date == ""){
+        //     //case1 download all data for period 
+        // }else{
+        //     //case2 download info for specific date range 
+        //     // start = req.body.start; 
+        //     // end = req.body.end; 
+        // }
         // download
+        //var data = ["hi","bye"]; 
+        //'form-tracking/formList.csv', dataToWrite, 'utf8'
+        //var ws = fs.writeFileSync(__dirname + '/test.csv',data,'utf8');
+        //csv.
+        //    write([data],{headers:true}).pipe(ws);
 
-        res.sendStatus(200);
+       //data = "hello i am changing the file\n";
+        // fs.writeFile(__dirname + '/student_data.txt', data, function (err){
+        //     if (err) return console.log(err);
+        // });
+        
+        //console.log(`${__dirname}`);
+        // var filepath = "";
+        // var filename = "student_data.txt";
+        // console.log("help");
+        // fs.readFile(__dirname + '/student_data.txt', 'utf8' , (err, data) => {
+        //     if (err) {
+        //       console.error(err)
+        //       return
+        //     }
+        //     console.log(data)
+        //   });
+        
+        //res.setHeader('Content-type','text/csv');
+        // //res.send("views/email_template.html");
+        //res.sendStatus(200); 
+        //res.setHeader("Content-Disposition", "attachment; test.csv");
+        //res.sendFile(__dirname +"/test.csv");
+        //res.download(file);
+        //res.attachment('test.csv').send(csv)
+        //res.status(200);
 
+        
+        
     } catch (err) {
         console.log(err);
         error.sendError(res, 404, "huh");

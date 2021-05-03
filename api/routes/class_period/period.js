@@ -6,6 +6,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 const router = express.Router();
 
+//Returns all periods for a user 
 router.get("/retrieve-all", async (req, res) => {
   try {
       const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
