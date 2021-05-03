@@ -66,16 +66,58 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
 /**
  * create a csv file of students and their behaviors with counts of each behavior
  */
- router.post("/download", (req, res) => {
+ router.post("/download",async (req, res) => {
     try {
         //const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        /*
+        
+        607bf7d8dcfbdfeeed4d8c51
+        
+        */
+        console.log(req.body); 
+        var period = "607bf7d8dcfbdfeeed4d8c51"; 
+        const query = {
+            _id: new ObjectId(period)
+          }
+        let student_data = await mongo.findOne("periods", query);
+          
+        //console.log(student_data); 
+        students = student_data.students;
+        var arrayLength = students.length;
+        var arr = [];
+        for (var i = 0; i < arrayLength; i++) {
+            //console.log(students[i]);
+            //Do something
+            stud = students[i]._id;
+            const query2 = {
+                student_id: new ObjectId(stud)
+              }
+            //let student_data = await mongo.findMany("behaviors", query2);
+            //console.log(student_data);
+            
+            const cursor = await mongo.findMany("behaviors", query2);
+            await cursor.forEach(( myDoc )=> {
+                arr.push(myDoc);
+            
+            }) 
+        }
         console.log("creating csv file");
-        var data = ["hiasdfasdf","bye"];
-
+        //var data = [["student name","bye"],[1,2]];
+        data = arr; 
+        csv_data = [{
+            "google_id":[1,2,3,4],
+            "name":[5,6,7,8]
+            //"behaviors":[["hello"]]
+        },{
+            "google_id":[11,12,13,14],
+            "hello":[15,16,17,18]
+        }];
+        console.log(csv_data); 
+        //console.log(data);
         //EXPECTATION - READS IN A JSON and converts to CSV 
         var ws = fs.createWriteStream(__dirname + '/test.csv');
         csv.
-            write([data],{headers:true}).pipe(ws); 
+            write(csv_data,{headers:true}).pipe(ws); 
 
 
         const file = `${__dirname}/test.csv`
