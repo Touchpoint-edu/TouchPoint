@@ -1,13 +1,13 @@
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Loading from '../src/Components/Loading.js';
 import Home from './Home.js'
 import Nav from './Nav.js';
-import { DataStoreContext, DashboardContext} from "./contexts";
+import { DataStoreContext, DashboardContext } from "./contexts";
 import Dashboard from "../src/Dashboard/Dashboard.js";
-
+import { fetchUser } from "./api/auth.js";
 // import Home from './Home.js';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
 
 function App() {
@@ -17,33 +17,41 @@ function App() {
   const [selectedPeriod, setSelectedPeriod] = useState(0);
   const [reload, setReload] = useState(false);
 
+  useEffect(() => {
+    fetchUser()
+      .then(res => res.json())
+      .then(json => {
+        if (json && json.name) {
+          setUser(json.name)
+        }
+      })
+  }, []);
 
   return (
-    <DataStoreContext.Provider value = {{user, setUser, students, setStudents, selectedPeriod, setSelectedPeriod, reload, setReload}}>
+    <DataStoreContext.Provider value={{ user, setUser, students, setStudents, selectedPeriod, setSelectedPeriod, reload, setReload }}>
       <Router>
-      {isLoading ? <Loading/> : 
-        <div className="d-flex flex-column h-100">
-        <div className = "container-fluid shadow">  
-            <Nav />
-        </div>
-          <main className="flex-fill overflow-hidden">
-            <Switch>
-              <Route path="/" exact={true}>
-                  <Home/>
-              </Route>
-              <Route path="/dashboard" exact={true}>
-                  <Dashboard/>
-              </Route>
-              <Route path="*">
-              </Route>
-            </Switch>
-          </main>
-        </div>
-      }
+        {isLoading ? <Loading /> :
+          <div className="d-flex flex-column h-100">
+            <div className="container-fluid shadow">
+              <Nav />
+            </div>
+            <main className="flex-fill overflow-hidden">
+            {user ? <Redirect to="/dashboard"></Redirect> : <Redirect to="/"></Redirect>}
+              <Switch>
+                <Route path="/" exact={true}>
+                  <Home />
+                </Route>
+                <Route path="/dashboard" exact={true}>
+                  <Dashboard />
+                </Route>
+                <Route path="*">
+                </Route>
+              </Switch>
+            </main>
+          </div>
+        }
       </Router>
     </DataStoreContext.Provider>
-
-
   );
 }
 
