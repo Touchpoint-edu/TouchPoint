@@ -92,9 +92,16 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     const response = await downloadCSV(students, startEpoch, endEpoch);
 
     if (response.status === 200) {
-
+      await response.blob().then(blob => {
+        console.log(blob)
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'period.csv';
+        a.click();
+      });
     } else {
-      const resData = await response.json()
+      const resData = await response.text()
       setDownloadErrMsg("An error has occured. Please try again later.")
     } 
 
