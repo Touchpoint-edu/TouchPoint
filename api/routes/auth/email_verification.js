@@ -91,7 +91,7 @@ router.get("/auth/email/validate/:emailID", async (req, res) => {
                 else {
                     console.log("success!");
                     if(JSON.parse(result).nModified === 1) {
-                        res.status(200).send("Your email has been verified! <a href=\"http://localhost:3000\">Click here to login.</a>");
+                        res.status(200).send("Your email has been verified! <a href=\"https://touch-point-395620.uc.r.appspot.com\">Click here to login.</a>");
                     }
                     else {
                         res.sendStatus(404);

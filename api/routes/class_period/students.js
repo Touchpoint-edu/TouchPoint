@@ -10,7 +10,7 @@ const verify = require('../../scripts/verify')
 const error = require('../../scripts/error')
 const mongo = require('../../models/mongo')
 const errorMsg = require('../../constants/errors')
-
+const { SERVER_ERROR_MSG } = require('../../constants/errors');
 
 /**
 Given a period id, updates the period i.e overrides everything
@@ -79,7 +79,7 @@ Given a period id, adds a single student
 */
 router.post("/add-one/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
     req.body._id = new ObjectId(); //If you need a new object id
     const query = {
       _id: new ObjectId(req.params['period_id'])
@@ -97,8 +97,9 @@ router.post("/add-one/:period_id", function(req,res){
         else if(data.result.n <= 0){
           error.sendError(res, "500", errorMsg.PERIOD_NOT_FOUND_ERROR_MSG);
         }
-        else{
-          res.sendStatus(200);
+        else {
+          res.status(200);
+          res.json(req.body._id)
         }
     })
   }
