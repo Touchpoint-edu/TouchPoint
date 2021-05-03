@@ -69,11 +69,19 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  */
  router.post("/download", (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        //const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        console.log("creating csv file");
+        var data = ["hiasdfasdf","bye"];
 
-        // download
+        //EXPECTATION - READS IN A JSON and converts to CSV 
+        var ws = fs.createWriteStream(__dirname + '/test.csv');
+        csv.
+            write([data],{headers:true}).pipe(ws); 
 
-        res.sendStatus(200);
+
+        const file = `${__dirname}/test.csv`
+        var filestream = fs.createReadStream(file);
+        filestream.pipe(res);
 
     } catch (err) {
         console.log(err);
