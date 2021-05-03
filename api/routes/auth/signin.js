@@ -17,7 +17,7 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 function sendToken(res, data) {
     const token = jwt.sign({
         sub: data._id,
-        name: data.name
+        name: `${data.fname} ${data.lname}`
     }, process.env.JWT_SECRET_KEY, {expiresIn: JWT_EXPIRY_TIME});
     res.cookie(JWT_COOKIE_NAME, token, { 
         expires: new Date(Date.now() + 900000), // change expiry time

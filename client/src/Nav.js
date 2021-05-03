@@ -12,6 +12,8 @@ import Modal from './Components/Modal';
 export default function Nav(){
     const [modalOpen, setModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("Sign In");
+
+    const { user, setUser, students, setStudents } = useContext(DataStoreContext);
     
     const openModal = (title) => {
         setModalTitle(title);
@@ -21,8 +23,6 @@ export default function Nav(){
         console.log("closing modal");
         setModalOpen(false);
     }
-
-    const { user, setUser, students, setStudents } = useContext(DataStoreContext);
 
     async function logoutUser() {
         await logout();
