@@ -16,7 +16,7 @@ function getEpoch(dateString) {
   return new Date(year, month, day).getTime() / 1000
 }
 
-export default function UploadDownloadModal({ open, variant, onClose, students, setStudents, period }) {
+export default function UploadDownloadModal({ open, variant, onClose, students, setStudents, curPeriodStudents, period }) {
   const { reload, setReload } = useContext(DataStoreContext);
   useEffect(() => {
     function handleEscapeKey(event) {
@@ -89,7 +89,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
       return
     }
 
-    const response = await downloadCSV(students, startEpoch, endEpoch);
+    const response = await downloadCSV(curPeriodStudents, startEpoch, endEpoch);
 
     if (response.status === 200) {
       //Possible error: If file size is too large 
