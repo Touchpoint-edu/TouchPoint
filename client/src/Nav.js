@@ -26,7 +26,6 @@ export default function Nav(){
 
     async function logoutUser() {
         await logout();
-        Cookies.remove("XSRF-TOKEN")
         setUser(null);
     }
 
