@@ -9,10 +9,11 @@ const period = require('../../models/period')
 const verify = require('../../scripts/verify')
 const error = require('../../scripts/error')
 const mongo = require('../../models/mongo')
+const errorMsg = require('../../constants/errors')
 const { SERVER_ERROR_MSG } = require('../../constants/errors');
 
 /**
-Given a period id, updates the period
+Given a period id, updates the period i.e overrides everything
 */
 router.post("/update/:period_id", function(req,res){
   try{
@@ -29,16 +30,21 @@ router.post("/update/:period_id", function(req,res){
     }
     mongo.update("periods", query, update)
     .then(data =>{
-        if(!data){ // TODO: COULDN'T FIND PERIOD **************************************************************************
-          console.log("err");
+        if(!data){
+          //Note not sure if this ever will get called, if it cant find it will still return data
+          error.sendError(res, "500", errorMsg.UPDATE_PERIOD_ERROR_MSG);
         }
-        else{ //  TODO: EVEN IF IT DOESN'T CHANGE ANYTHING, DATA WILL SAY THAT IT DIDN'T FIND, NEED TO CHECK
+        //if no results found
+        else if(data.result.n <= 0){
+          error.sendError(res, "500", errorMsg.PERIOD_NOT_FOUND_ERROR_MSG);
+        }
+        else{ 
           res.sendStatus(200);
         }
     })
   }catch(err){
     console.log(err);
-    error.sendError(res, "404", "huh");
+    error.sendError(res, "500", errorMsg.UPDATE_PERIOD_ERROR_MSG);
   }
 });
 
@@ -54,7 +60,7 @@ router.get("/seating/:period_id", function(req,res) {
       mongo.findOne("periods", query)
       .then(data=>{
         if(!data){
-          console.log("err");
+          error.sendError(res, "500", errorMsg.PERIOD_NO_RETURN_ERROR_MSG);
         }
         else{
           console.log(data);
@@ -64,7 +70,7 @@ router.get("/seating/:period_id", function(req,res) {
     }
     catch(err){
       console.log(err);
-      error.sendError(res, "404", "huh");
+      error.sendError(res, "500", errorMsg.PERIOD_NO_RETURN_ERROR_MSG);
     }
 });
 
@@ -81,11 +87,15 @@ router.post("/add-one/:period_id", function(req,res){
     const update = {
       $push: { "students" : req.body }
     }
-    const options = { upsert: true };
+    const options = { upsert: false };
     mongo.update("periods", query, update, options)
     .then(data =>{
         if(!data){
-          console.log("err");
+          error.sendError(res, "500", errorMsg.UPDATE_STUDENT_ERROR_MSG);
+        }
+        //if no results found
+        else if(data.result.n <= 0){
+          error.sendError(res, "500", errorMsg.PERIOD_NOT_FOUND_ERROR_MSG);
         }
         else {
           res.status(200);
@@ -95,11 +105,13 @@ router.post("/add-one/:period_id", function(req,res){
   }
   catch(err){
     console.log(err);
-    error.sendError(res, 500, SERVER_ERROR_MSG);
+    error.sendError(res, "500", errorMsg.UPDATE_STUDENT_ERROR_MSG);
   }
 });
 
-//Delete
+/**
+Given a period id, and student email to remove, deletes a student
+*/
 router.delete("/remove-one/:period_id", function(req,res){
   try{
     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
@@ -114,7 +126,10 @@ router.delete("/remove-one/:period_id", function(req,res){
     mongo.update("periods", query, update, options)
     .then(data =>{
         if(!data){
-          console.log("err");
+          error.sendError(res, "500", errorMsg.UPDATE_STUDENT_ERROR_MSG);
+        }
+        else if(data.result.n <= 0){
+          error.sendError(res, "500", errorMsg.PERIOD_NOT_FOUND_ERROR_MSG);
         }
         else{
           res.sendStatus(200);
@@ -123,63 +138,9 @@ router.delete("/remove-one/:period_id", function(req,res){
   }
   catch(err){
     console.log(err);
-    error.sendError(res, "404", "huh");
+    error.sendError(res, "500", errorMsg.DELETE_STUDENT_FROM_PERIOD_ERROR_MSG);
   }
 });
 
-
-// router.get("/update", async function(req, res) {
-//   try{
-//     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-//     period.findByIdAndUpdate(req.body.period_id, req.body.period, function(err, result) {
-//       if (err) {
-//         res.send(err);
-//       } else {
-//         res.send(result);
-//       }
-//     });
-//   }catch(err){
-//     console.log(err);
-//     error.sendError(res, "404", "huh");
-//   }
-// });
-
-//Update Query
-// router.get("/update/:period_id", function(req, res) {
-//   try{
-//     verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-//     period.findByIdAndUpdate(req.params['period_id'], req.body, function(err, result) {
-//       if (err) {
-//         res.send(err);
-//       } else {
-//         res.send(result);
-//       }
-//     });
-//   }
-//   catch(err){
-//     console.log(err);
-//     error.sendError(res, "404", "huh");
-//   }
-// });
-
-// router.get("/create", function(req,res) {
-//     try{
-//       verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-//       const per = new period(req.body);
-//       // const per = new period(req.body);
-//       per.save()
-//         .then((result) => {
-//           res.send(result)
-//         })
-//         .catch((err) =>{
-//           console.log(err);
-//         });
-//     }
-//     catch(err){
-//       console.log(err);
-//       error.sendError(res, "404", "huh");
-//     }
-//
-// });
 
 module.exports = router;

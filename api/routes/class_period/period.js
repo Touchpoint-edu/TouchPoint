@@ -3,6 +3,7 @@ const verify = require('../../scripts/verify');
 const error = require('../../scripts/error')
 const mongo = require('../../models/mongo')
 var ObjectId = require('mongodb').ObjectID;
+const errorMsg = require('../../constants/errors')
 
 const router = express.Router();
 
@@ -67,8 +68,8 @@ router.get("/retrieve-all", async (req, res) => {
       }
     })
   } catch (err) {
-    console.log(err);
-    error.sendError(res, 404, "huh");
+      console.log(err);
+      error.sendError(res, 500, errorMsg.SERVER_ERROR_MSG);
   }
 })
 
