@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [addStudentValidation, setAddStudentValidation] = useState("");
   const [editChart, setEditChart] = useState(false);
 
-  const { selectedPeriod, reload } = useContext(DataStoreContext);
+  const { selectedPeriod, reload, user} = useContext(DataStoreContext);
   const handle1 = useFullScreenHandle();
   async function getStudents() {
     console.log("working..?");
@@ -85,7 +85,9 @@ export default function Dashboard() {
         students: []
       });
     }
-  }, [selectedPeriod, periods])
+  }, [selectedPeriod, periods, user])
+
+  console.log("USER:" + user)
 
   function addStudent(event) {
     event.preventDefault();
@@ -168,11 +170,10 @@ export default function Dashboard() {
     setEditChart(!editChart);
   }
 
-  console.log(Cookies.get())
-  console.log(Cookies.get("G_AUTHUSER_H"))
 
   return (
     <div className="container-fluid justify-content-around p-5 h-100">
+      <DashboardHeader students = {studentsArr} curPeriodStudents={currPeriod.students} setStudents = {setStudentsArr}></DashboardHeader>
       <div className="row h-100">
         <div className="grid-container col-lg-9 col-xl-10 h-100">
           <FullScreen className="w-100" handle={handle1}>

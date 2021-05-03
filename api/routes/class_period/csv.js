@@ -104,18 +104,20 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] : 1620012831; 
         var period = req.body["period"] ? req.body["period"] : "607bf7d8dcfbdfeeed4d8c51"; 
-        const query = {
-            _id: new ObjectId(period)
-          }
-        let student_data = await mongo.findOne("periods", query);
+        var students = req.body["students"];
+        // const query = {
+        //     _id: new ObjectId(period)
+        //   }
+        // let student_data = await mongo.findOne("periods", query);
           
-        students = student_data.students;
+        // students = student_data.students;
         var arrayLength = students.length;
         var arr = [];
         for (var i = 0; i < arrayLength; i++) {
-            stud = students[i]._id;
+            studentEmail = students[i].email
+            studName = students[i].name
             const query2 = {
-                student_id: new ObjectId(stud)
+                email: studentEmail
               }
             const cursor = await mongo.findMany("behaviors", query2);
 
@@ -123,8 +125,8 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             //As we iterate we find more behaviors and add it to student object
             let studentObj = {}
             //*****Here Set google_id can be set to anything right now its ID********* */
-            studentObj["google_id"] = stud
-            studentObj["name"] = "Temp Name"
+            studentObj["google_id"] = studentEmail
+            studentObj["name"] = studName
             let studentBehaviorArray = await cursor.toArray();
               
             //Go thbrough all beavhiors

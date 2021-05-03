@@ -14,11 +14,11 @@ const router = express.Router();
 router.post("/add/:student_id", function (req, res) {
     try {
         verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-
         const behavior = {
             name: req.body.behavior_name,
             time: Date.now() / 1000,
-            student_id: ObjectId(req.params['student_id'])
+            student_id: ObjectId(req.params['student_id']),
+            email: req.body["email"] //terry was here
         }
 
         mongo.insertOne("behaviors", behavior)
