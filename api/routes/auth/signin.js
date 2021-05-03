@@ -36,7 +36,6 @@ function sendError(res, status, message) {
 
 router.post("/google", async (req, res) => {
     const { token }  = req.body;
-    console.log(req.body);
     // Verify Google Token
     client.verifyIdToken({
         idToken: token,
