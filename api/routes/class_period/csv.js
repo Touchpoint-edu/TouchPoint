@@ -72,16 +72,16 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             .on("end", () => {
                 fs.unlinkSync(req.file.path);   // remove temp file
 
-                // create and save period to user
-                createPeriod(students, userPayload.sub, currRow, parseInt(req.body.period)).then((result, err) => {
-                    if (err) {
-                        error.sendError(res, 500, SERVER_ERROR_MSG);
-                    }
-                    else {
-                        res.sendStatus(200);
-                    }
-                });
-                // savePeriodToUser(period._id, userPayload.sub);
+                const period = {
+                        rows: currRow + 1,
+                        columns: DEFAULT_COL_SIZE,
+                        students: students,
+                        periodNum: parseInt(req.body.period)
+                }
+
+                res.status(200);
+                res.json({ period: period });
+
             })
     } catch (err) {
         console.log(err);
@@ -179,20 +179,20 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  * @param {*} students : array of students
  * @returns the period created in the db
  */
- const createPeriod = (students, id, rowNum, periodNum) => {
+const createPeriod = (students, id, rowNum, periodNum) => {
     const period = {
         $set: {
-            rows: rowNum+1,
+            rows: rowNum + 1,
             columns: DEFAULT_COL_SIZE,
             user_id: new ObjectId(id),
             students: students,
             periodNum: periodNum
         }
     }
-    const query = { 
-        user_id: new ObjectId(id), 
-        periodNum: 
-        periodNum
+    const query = {
+        user_id: new ObjectId(id),
+        periodNum:
+            periodNum
     }
     const options = {
         upsert: true

@@ -9,6 +9,20 @@ export async function fetchAllPeriods() {
     return res;
 }
 
+export async function createPeriod(period) {
+    const res = await fetch("/api/period/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify({
+            period: period
+          })
+    })
+    return res;
+}
+
+
 export async function uploadCSV(uploadFile, period) {
     // make FormData object to pass into request
     const formData = new FormData()

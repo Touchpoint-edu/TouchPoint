@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import Button from "../Components/Button";
 import Modal from "../Components/Modal";
 import { DataStoreContext } from "../contexts.js";
-import { uploadCSV } from "../api/class_period";
-import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
+import { uploadCSV, createPeriod } from "../api/class_period";
+import { Container, Row, Col, Form, Spinner, } from "react-bootstrap";
 import { downloadCSV } from '../api/class_period';
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+
 
 function getEpoch(dateString) {
   const dateArray = dateString.split('-')
@@ -37,7 +39,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   }
   // State to store uploaded file
   const [uploadFile, setUploadFile] = useState();
-  const [downloadLoadfile, setDownloadFile] = useState("");
+  const [parsedPeriod, setParsedPeriod] = useState();
   const [uploadValidation, setUploadValidation] = useState("");
   const [confirm, setConfirm] = useState(false);
   // const { periods, setPeriods } = useContext(DashboardContext);
@@ -48,17 +50,14 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
   const [downloadErrMsg, setDownloadErrMsg] = useState("");
 
   // Handles file upload event and updates state
-  function handleUpload(event) {
-    if (event.target.files[0].type === "text/csv") {
+  async function handleUpload(event) {
+    if (event.target.files[0] && event.target.files[0].type === "text/csv") {
       setUploadFile(event.target.files[0]);
     }
     else {
       setUploadValidation("Currently, only .csv files are accepted. Please upload a csv file to continue.");
     }
-    // TODO: display file preview
   }
-
-
 
   async function handleDownload() {
     setDownloadLoading(true)
@@ -104,105 +103,69 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
     } else {
       const resData = await response.json()
       setDownloadErrMsg("An error has occured. Please try again later.")
-    } 
+    }
 
     setDownloadLoading(false)
     // onClose()
   }
 
   async function handleSubmitUpload(e) {
-    // e.preventDefault();
-    //upload to database, - DONE
-    // change period - COMMENTED
-    //set the students array to student names - NOT DONE
-    //setStudents - DONE
-    //set the period of the uploaded csv - COMMENTED
-    //setSelectedPeriod - COMMENTED
+    const response = await uploadCSV(uploadFile, period);
 
-    setConfirm(true);
-    // if (!uploadFile) {
-    //   // TODO: put out error message for no file chosen
-    //   return;
-    // }
-    // console.log(period);
-    // const response = await uploadCSV(uploadFile, period);
-    // console.log(response);
+    if (response.status === 200) {
+      const responseData = await response.json();
 
-    // if (response.status === 200) {
-    //   setReload(!reload);
-    //   // set student array
-    //   // if (responseData && responseData.period) {
-    //   //   console.log(responseData.period)
-
-    //   //   const newPeriod = {
-    //   //     id: responseData.period._id,
-    //   //     // value: "Period " + (periods.length + 1)
-    //   //   }
-
-    //   //   // set the currecct period and its students
-    //   //   setStudents(responseData.period.students)
-    //   //   // setPeriods([...periods, newPeriod])
-    //   //   // setSelectedPeriod(newPeriod.value)
-    //   // }
-    //   // TODO: the rest
-    // } else if (response.status === 400) {
-    //   // TODO: put out error message from responseData
-    //   // console.log(responseData)
-    // } else if (response.status === 500) {
-    //   // TODO: put out error message from responseData
-    //   // console.log(responseData)
-    // }
+      setParsedPeriod(responseData.period)
+      setConfirm(true);
+    } else {
+      alert("An error has occured. Please try again.")
+    }
   }
 
   async function handleConfirmUpload(e) {
     if (!!uploadFile) {
-      // TODO: put out error message for no file chosen
-      const response = await uploadCSV(uploadFile, period);
+      const response = await createPeriod(parsedPeriod);
       if (response.status === 200) {
         setReload(!reload);
+
         onClose();
-        // set student array
-        // if (responseData && responseData.period) {
-        //   console.log(responseData.period)
-
-        //   const newPeriod = {
-        //     id: responseData.period._id,
-        //     // value: "Period " + (periods.length + 1)
-        //   }
-
-        //   // set the currecct period and its students
-        //   setStudents(responseData.period.students)
-        //   // setPeriods([...periods, newPeriod])
-        //   // setSelectedPeriod(newPeriod.value)
-        // }
-        // TODO: the rest
-      } else if (response.status === 400) {
-        // TODO: put out error message from responseData
-        // console.log(responseData)
-      } else if (response.status === 500) {
-        // TODO: put out error message from responseData
-        // console.log(responseData)
+      } else {
+        alert("An error has occured. Please try again.")
       }
-      return;
     }
   }
 
+  const displayStudents = () => (
+    <>
+      <h5 className="mb-3">Found {parsedPeriod.students.length} students from file:</h5>
+      <MDBTable scrollY striped maxHeight="300px">
+        <MDBTableHead columns={[{ label: "" }, { label: "Name" }, { label: "Email" }]} />
+        <MDBTableBody rows={parsedPeriod.students.map((student, index) => ({ "#": index + 1, name: student.name, email: student.email }))} />
+      </MDBTable>
+    </>
+  )
+
   return (
-    <Modal title={variant} open={open} onClose={onClose}>
+    <Modal title={variant} open={open} onClose={() => { setParsedPeriod(null); onClose() }}>
       <div className="modal-body px-5 mh-100 overflow-auto">
         {variant === "upload" ? (
           <>
-            <div className="text-center">
-              <img src="upload.png" alt="upload" className="mt-2 mb-5" />
-              <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" disabled={confirm} />
-              <div className="text-red-500">{uploadValidation}</div>
-            </div>
+            {!parsedPeriod &&
+              <div className="text-center">
+                <img src="upload.png" alt="upload" className="mt-2 mb-5" />
+                <input type="file" encType="multipart/form-data" className="file-uploader mb-3" onChange={handleUpload} accept=".csv" disabled={confirm} />
+                <div className="text-red-500">{uploadValidation}</div>
+              </div>
+            }
+
+            {parsedPeriod && displayStudents()}
+
             {confirm && <div className="text-red-500">If you currently have a seating chart for period {period + 1}, this will overwrite it. Do you wish to continue?</div>}
 
             <hr className="solid my-4" />
             {confirm ?
               <Button
-                className="h-12 w-75 text-xl submit_button ml-5 mt-2 mb-2"
+                className="submit_button w-100"
                 fullWidth={true}
                 onClick={handleConfirmUpload}
                 onClose={onClose}
@@ -211,7 +174,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
               </Button>
               :
               <Button
-                className="h-12 text-xl submit_button mt-2 mb-2"
+                className="submit_button w-100"
                 fullWidth={true}
                 onClose={onClose}
                 onClick={handleSubmitUpload}
@@ -247,7 +210,7 @@ export default function UploadDownloadModal({ open, variant, onClose, students, 
               onClick={handleDownload}
               onClose={onClose}
             >
-              {isDownloadLoading ? <Spinner animation="border" variant="light" size="sm"/> : "Download"}
+              {isDownloadLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Download"}
             </Button>
           </>
         )}
