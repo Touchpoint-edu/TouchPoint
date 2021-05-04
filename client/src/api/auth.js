@@ -26,11 +26,8 @@ export async function fetchUser() {
 }
 
 export function logout() {
-  return fetch("/api/auth/logout", {
-    method: "POST",
-    headers: {
-      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
-    },
+  return fetch("/api/auth/signout", {
+    method: "POST"
   });
 }
 
