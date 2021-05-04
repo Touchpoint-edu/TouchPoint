@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
-import { Link, NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Cookies from "js-cookie";
 import { DataStoreContext } from "./contexts";
 import LoginForm from './Signin-Signup/LoginForm';
 import SignupForm from './Signin-Signup/SignupForm';
@@ -7,7 +8,6 @@ import DashboardHeader from './Dashboard/DashboardHeader';
 import {logout} from './api/auth';
 import Button from './Components/Button';
 import Modal from './Components/Modal';
-
 
 export default function Nav(){
     const [modalOpen, setModalOpen] = useState(false);
@@ -72,8 +72,6 @@ export default function Nav(){
                 }
 
             </div>
-            {user ? <><hr />
-                    <DashboardHeader students = {students} setStudents = {setStudents}></DashboardHeader></> : <></>}
         </nav>
     );
 }

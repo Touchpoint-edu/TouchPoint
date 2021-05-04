@@ -20,7 +20,7 @@ npm start
 ```
 4. go to [localhost:3000](http://localhost:3000) on the browser
 
-- _changes are made as you code_
+- _changes on the browser are made as you code_
 - _if you want to interact with backend you need to start it as well_
 
 ## api folder (backend)

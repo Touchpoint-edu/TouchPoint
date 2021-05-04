@@ -139,7 +139,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     function handleSubmitBehavior(e) {
         //add behavior with event value to the student info
         e.preventDefault();
-        addBehavior(student._id, selectedBehavior);
+        addBehavior(student._id, selectedBehavior, student.email);
         onClose();
     }
 

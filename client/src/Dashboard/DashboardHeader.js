@@ -5,15 +5,17 @@ import { DataStoreContext, DashboardContext } from "../contexts.js";
 
 const NUM_OF_PERIODS = 8;
 
-export default function DashboardHeader({ students, setStudents }) {
+export default function DashboardHeader({ students, curPeriodStudents, setStudents }) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalVariant, setModalVariant] = useState("upload");
     const [periods, setPeriods] = useState([]);
+    const { user, setUser, selectedPeriod, setSelectedPeriod } = useContext(DataStoreContext);
     const openModal = (variant) => {
         setModalVariant(variant);
         setModalOpen(true);
     };
+    console.log(curPeriodStudents)
     const closeModal = () => setModalOpen(false);
     useEffect(() => {
         const periodOptions = [];
@@ -25,7 +27,7 @@ export default function DashboardHeader({ students, setStudents }) {
         }
         setPeriods(periodOptions);
     }, []);
-    const { user, setUser, selectedPeriod, setSelectedPeriod } = useContext(DataStoreContext);
+
     // const [students, setStudents] = useState();
     // const [periods, setPeriods] = useState([]);
     //uncomments and add to dashboardcontext provider
@@ -76,6 +78,7 @@ export default function DashboardHeader({ students, setStudents }) {
                     variant={modalVariant}
                     students={students}
                     setStudents={setStudents}
+                    curPeriodStudents = {curPeriodStudents}
                     toggleVariant={() =>
                         setModalVariant(modalVariant === "upload" ? "upload" : "download")
                     }

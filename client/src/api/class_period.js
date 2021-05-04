@@ -1,4 +1,8 @@
+import Cookies from "js-cookie";
+
 export async function fetchAllPeriods() {
+    console.log(Cookies.get())
+    console.log(Cookies.get("c_user"))
     const res = await fetch("/api/period/retrieve-all", {
         method: "GET"
     })
