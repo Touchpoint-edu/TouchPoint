@@ -26,6 +26,7 @@ export default function Nav(){
 
     async function logoutUser() {
         await logout();
+        Cookies.remove("G_AUTHUSER_H")
         setUser(null);
     }
 
