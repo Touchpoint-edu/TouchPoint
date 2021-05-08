@@ -1,7 +1,7 @@
 const express = require("express")
 
 const csvRouter = require("./csv"); 
-const studentsRouter = require("./students");
+const studentsRouter = require("./seating");
 const periodRouter = require("./period");
 
 const router = express.Router();
