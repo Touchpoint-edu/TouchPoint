@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var handlebars = require('handlebars');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-var mongo = require('../models/mongo');
+var mongo = require('../../models/mongo');
 
 //Getting fancy and trying to read html file 
 const fs = require('fs');
@@ -20,8 +20,9 @@ const verifyUser = function(email) {
         pass: process.env.EMAIL_PASSWORD
         }
     });
-    console.log(process.env.EMAIL_USERNAME); 
-    console.log(process.env.EMAIL_PASSWORD); 
+    //Debug statements 
+    //console.log(process.env.EMAIL_USERNAME); 
+    //console.log(process.env.EMAIL_PASSWORD); 
     
     //READS IN EMAIL TEMPLATE 
     //USES HANDLEBARS TO REPLACE {{emailID}} field with emailID 
@@ -90,7 +91,7 @@ router.get("/auth/email/validate/:emailID", async (req, res) => {
                 else {
                     console.log("success!");
                     if(JSON.parse(result).nModified === 1) {
-                        res.status(200).send("Your email has been verified! <a href=\"http://localhost:3000\">Click here to login.</a>");
+                        res.status(200).send("Your email has been verified! <a href=\"https://touch-point-395620.uc.r.appspot.com\">Click here to login.</a>");
                     }
                     else {
                         res.sendStatus(404);

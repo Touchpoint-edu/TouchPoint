@@ -1,62 +1,46 @@
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import Spot from './Spot.js';
 
-import {
-    GridContextProvider,
-    GridDropZone,
-    GridItem,
-    swap
-} from "react-grid-dnd";
-import { DashboardContext } from '../contexts';
-import StudentBehaviorModal from "./StudentBehaviorModal.js"
+export default function StudentGrid({fullScreenMode, students, edit, rows, cols, updatePos}){
+    const [spots, setSpots] = useState([]);
+    const [colsize, setcolsize] = useState("0px");
+    const [rowsize, setrowsize] = useState("0px");
+    const backgroundRef = React.createRef();
+    console.log("Rerender?");
+    useEffect(()=> {
+      const newSpots = [];
+      let key = 0;
+      students.forEach((student) => {
+        const seatSize = {
+          row: rowsize,
+          col: colsize
+        }
+        newSpots.push(<Spot key={key} fullScreenMode={fullScreenMode} editMode={edit} updatePos={updatePos} seatSize={seatSize} item={student} />);
+        key++;
+      });
+      setSpots(newSpots);
+    }, [edit, fullScreenMode, students, rowsize, colsize, updatePos]);
 
-
-export default function StudentGrid({students, setStudents, size, edit}){
-    const [modalOpen, setModalOpen] = useState(false);
-    const [student, setStudent] = useState();
-  // target id will only be set if dragging from one dropzone to another.
-  function onChange(sourceId, sourceIndex, targetIndex, targetId) {
-    const nextState = swap(students, sourceIndex, targetIndex);
-    setStudents(nextState);
-  }
-
-  function handleStudentClick(e){
-    const name = e.target.innerText;
-    const student = students.filter((s) => {
-      return s.name === name;
-    });
-    setStudent(student)
-    setModalOpen(true);
-  }
-  const closeModal = () => setModalOpen(false);
+    useEffect(() => {
+      function updateRectSizes() {
+        if (backgroundRef.current) {
+          const rect = backgroundRef.current.getBoundingClientRect();
+          const width = rect.width / cols;
+          const height = rect.height / rows;
+          setcolsize(`${width}px`);
+          setrowsize(`${height}px`);
+        }
+      }
+      updateRectSizes();
+      window.addEventListener('resize', updateRectSizes);
+      return () => window.removeEventListener('resize', updateRectSizes);
+    }, [backgroundRef, cols, rows, students.length]);
 
 
   return (
-    <>
-
-    <GridContextProvider onChange={onChange}>
-      <GridDropZone
-        id="items"
-        className="dropzone"
-        boxesPerRow={6}
-        rowHeight={100}
-        disableDrag = {edit}
-        disableDrop = {edit}
-        style = {{height: size}}
-      >
-      {students && students.length ? (
-        students.map(item => (
-          <GridItem key={item.id}>
-              <div className = "btn grid-item"  onClick = {edit ? handleStudentClick : null} >
-                  <div className = "tile" >{item.name}</div>
-              </div>
-
-          </GridItem>
-        )) ) : <></>}
-      </GridDropZone>
-    </GridContextProvider>
-
-    {modalOpen && <StudentBehaviorModal open={modalOpen} onClose={closeModal} students = {students} setStudents = {setStudents} student = {student}/>}
-    </>
+    <div id="dropzone" ref={backgroundRef} className="dropzone h-100">
+      { spots }
+    </div>
   )
 }

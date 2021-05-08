@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var mongo = require('../models/mongo');
+var mongo = require('../../models/mongo');
 var crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const verifyUser = require('./email_verification').verifyUser;
 
-const { ACCOUNT_EXISTS_ERROR_MSG, SERVER_ERROR_MSG } = require('../constants/errors');
-const { USER_PENDING_EMAIL_STATUS } = require('../constants/status');
-const { GOOGLE_CLIENT_ID } = require('../constants/config');
+const { ACCOUNT_EXISTS_ERROR_MSG, SERVER_ERROR_MSG } = require('../../constants/errors');
+const { USER_PENDING_EMAIL_STATUS } = require('../../constants/status');
+const { GOOGLE_CLIENT_ID } = require('../../constants/config');
 
 const USER_COLLECTION_NAME = "users";
 

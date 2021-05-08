@@ -1,13 +1,13 @@
 var express = require("express")
-var mongo = require('../models/mongo');
+var mongo = require('../../models/mongo');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 
-const { INCORRECT_PASSWORD_ERROR_MSG, NO_ACCOUNT_FOUND_ERROR_MSG, PENDING_VERIFICATION_ERROR_MSG, SERVER_ERROR_MSG, USE_GOOGLE_ERROR_MSG } = require('../constants/errors');
-const { USER_PENDING_EMAIL_STATUS } = require('../constants/status')
-const { GOOGLE_CLIENT_ID } = require('../constants/config');
+const { INCORRECT_PASSWORD_ERROR_MSG, NO_ACCOUNT_FOUND_ERROR_MSG, PENDING_VERIFICATION_ERROR_MSG, SERVER_ERROR_MSG, USE_GOOGLE_ERROR_MSG } = require('../../constants/errors');
+const { USER_PENDING_EMAIL_STATUS } = require('../../constants/status')
+const { GOOGLE_CLIENT_ID } = require('../../constants/config');
 
 const JWT_EXPIRY_TIME = '1h'; // change expiry time
 const JWT_COOKIE_NAME = 'c_user';
@@ -17,7 +17,7 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 function sendToken(res, data) {
     const token = jwt.sign({
         sub: data._id,
-        name: data.name
+        name: `${data.fname} ${data.lname}`
     }, process.env.JWT_SECRET_KEY, {expiresIn: JWT_EXPIRY_TIME});
     res.cookie(JWT_COOKIE_NAME, token, { 
         expires: new Date(Date.now() + 900000), // change expiry time
@@ -34,9 +34,8 @@ function sendError(res, status, message) {
     });
 }
 
-router.post("/auth/google", async (req, res) => {
+router.post("/google", async (req, res) => {
     const { token }  = req.body;
-    console.log(req.body);
     // Verify Google Token
     client.verifyIdToken({
         idToken: token,
@@ -72,7 +71,7 @@ router.post("/auth/google", async (req, res) => {
     });
 })
 
-router.post("/auth", async (req, res) => {
+router.post("/", async (req, res) => {
     const base64credentials = req.headers.authorization.split(' ')[1]
     const credentials = Buffer.from(base64credentials, 'base64').toString('ascii');
     const [email, password] = credentials.split(':');
