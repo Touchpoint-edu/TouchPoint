@@ -29,7 +29,7 @@ export default function Modal({open, onClose, titleColor, title, children, scrol
     return (open && createPortal(
         <>
             <div className="modal-backdrop show"></div>
-            <div className="modal" tabIndex="-1" style={{ display: "block" }}>
+            <div className="modal" tabIndex="-1" style={{ display: "block" }} >
                 <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                     <div className="modal-content pb-3" onClick={stopPropagation}>
                         <div className="d-flex justify-content-end mr-3 mt-3 ">
@@ -40,7 +40,7 @@ export default function Modal({open, onClose, titleColor, title, children, scrol
                                 <Close />
                             </div>
                         </div>
-                        <div>
+                        <div className="modal-body" scrollable = {true}>
                             <div className="mt-8 d-flex justify-content-start ml-5 modal-title">
                                 <h2 style={{color: titleColor}}>{title}</h2>
                             </div>

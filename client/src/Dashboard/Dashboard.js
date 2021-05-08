@@ -190,9 +190,9 @@ export default function Dashboard() {
             </Button>
           </div>
 
-          <div className="action">
+          {/* <div className="action">
           <AddStudentForm disabled={!editChart} currPeriod={currPeriod} setCurrPeriod={setCurrPeriod} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
-          </div>
+          </div> */}
           {addStudentValidation !== "" && <div className="action text-red-500">{addStudentValidation}</div>}
           <div className="action d-flex justify-content-between">
             <Button
