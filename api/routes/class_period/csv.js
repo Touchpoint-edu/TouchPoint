@@ -104,14 +104,8 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
         console.log(req.body);
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] : 1620012831; 
-        var period = req.body["period"] ? req.body["period"] : "607bf7d8dcfbdfeeed4d8c51"; 
         var students = req.body["students"];
-        // const query = {
-        //     _id: new ObjectId(period)
-        //   }
-        // let student_data = await mongo.findOne("periods", query);
           
-        // students = student_data.students;
         var arrayLength = students.length;
         var arr = [];
         for (var i = 0; i < arrayLength; i++) {
@@ -125,7 +119,7 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
             //Creates a student object
             //As we iterate we find more behaviors and add it to student object
             let studentObj = {}
-            //*****Here Set google_id can be set to anything right now its ID********* */
+            //*****Here Set google_id can be set to anything right now its email********* */
             studentObj["google_id"] = studentEmail
             studentObj["name"] = studName
             let studentBehaviorArray = await cursor.toArray();
@@ -163,13 +157,9 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
                 console.log("Writing out csv file")
 
             })
-        //csv.end();
-
-
-
     } catch (err) {
         console.log(err);
-        error.sendError(res, 404, "huh");
+        error.sendError(res, 500, SERVER_ERROR_MSG);
     }
 })
 

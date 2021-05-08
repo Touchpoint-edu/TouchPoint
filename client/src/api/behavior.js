@@ -1,5 +1,5 @@
 export async function addBehavior(studentId, behaviorName, email) {
-    const res = await fetch("api/behavior/add/" + studentId, {
+    const res = await fetch("api/behavior/add", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
