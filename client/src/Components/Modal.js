@@ -29,7 +29,7 @@ export default function Modal({ open, onClose, titleColor, title, children, scro
     return (open && createPortal(
         <>
             <div className="modal-backdrop show"></div>
-            <div className="modal" tabIndex="-1" style={{ display: "block" }}>
+            <div className="modal" tabIndex="-1" style={{ display: "block" }} >
                 <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                     <div className="modal-content pb-3" onClick={stopPropagation}>
                         <div className="modal-body p-4">
