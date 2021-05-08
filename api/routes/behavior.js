@@ -18,7 +18,8 @@ router.post("/add/:student_id", function (req, res) {
         const behavior = {
             name: req.body.behavior_name,
             time: Date.now() / 1000,
-            student_id: ObjectId(req.params['student_id'])
+            student_id: ObjectId(req.params['student_id']),
+            email: req.body["email"] //terry was here
         }
 
         mongo.insertOne("behaviors", behavior)

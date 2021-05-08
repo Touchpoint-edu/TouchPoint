@@ -5,7 +5,8 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import DashboardHeader from "./DashboardHeader";
 import { fetchAllPeriods, updateSeatingChart } from "../api/class_period.js";
 import { DashboardContext, DataStoreContext } from "../contexts.js";
-
+import AddStudentForm from "./AddStudentForm"
+import Cookies from 'js-cookie';
 const NUM_OF_PERIODS = 8;
 
 export default function Dashboard() {
@@ -23,7 +24,7 @@ export default function Dashboard() {
   const [addStudentValidation, setAddStudentValidation] = useState("");
   const [editChart, setEditChart] = useState(false);
 
-  const { selectedPeriod, reload } = useContext(DataStoreContext);
+  const { selectedPeriod, reload, user} = useContext(DataStoreContext);
   const handle1 = useFullScreenHandle();
   async function getStudents() {
     console.log("working..?");
@@ -84,7 +85,9 @@ export default function Dashboard() {
         students: []
       });
     }
-  }, [selectedPeriod, periods])
+  }, [selectedPeriod, periods, user])
+
+  console.log("USER:" + user)
 
   function addStudent(event) {
     event.preventDefault();
@@ -167,12 +170,14 @@ export default function Dashboard() {
     setEditChart(!editChart);
   }
 
+
   return (
-    <div className="container-fluid justify-content-around p-5 h-100">
-      <div className="row h-100">
+    <div className="container-fluid justify-content-around px-5 py-3 h-100">
+      <DashboardHeader students = {studentsArr} curPeriodStudents={currPeriod.students} setStudents = {setStudentsArr}></DashboardHeader>
+      <div className="row h-75 mt-2">
         <div className="grid-container col-lg-9 col-xl-10 h-100">
           <FullScreen className="w-100" handle={handle1}>
-            <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />
+            <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />
           </FullScreen>
         </div>
         <div className="actions-cont col-lg-3 col-xl-2 d-none d-lg-flex flex-column">
@@ -186,21 +191,7 @@ export default function Dashboard() {
           </div>
 
           <div className="action">
-            <form onSubmit={addStudent} >
-              <InputGroup className="add-student">
-                <FormControl
-                  placeholder="Student Name"
-                  aria-label="Student Name"
-                  aria-describedby="basic-addon2"
-                  value={studentName}
-                  onChange={handleNameChange}
-                  disabled={!editChart}
-                />
-                <InputGroup.Append>
-                  <Button className="add-button btn btn-success" disabled={!editChart} type="submit">+</Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </form>
+          <AddStudentForm disabled={!editChart} currPeriod={currPeriod} setCurrPeriod={setCurrPeriod} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
           </div>
           {addStudentValidation !== "" && <div className="action text-red-500">{addStudentValidation}</div>}
           <div className="action d-flex justify-content-between">
@@ -252,12 +243,8 @@ export default function Dashboard() {
                 </Button>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
-
   );
-
 }

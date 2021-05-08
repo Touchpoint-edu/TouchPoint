@@ -1,9 +1,27 @@
+import Cookies from "js-cookie";
+
 export async function fetchAllPeriods() {
+    console.log(Cookies.get())
+    console.log(Cookies.get("c_user"))
     const res = await fetch("/api/period/retrieve-all", {
         method: "GET"
     })
     return res;
 }
+
+export async function createPeriod(period) {
+    const res = await fetch("/api/period/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify({
+            period: period
+          })
+    })
+    return res;
+}
+
 
 export async function uploadCSV(uploadFile, period) {
     // make FormData object to pass into request
@@ -20,6 +38,9 @@ export async function uploadCSV(uploadFile, period) {
 export async function downloadCSV(studentsArray, start , end) {
     const res = await fetch("/api/period/csv/download", {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify({
             students: studentsArray,
             start: start,
