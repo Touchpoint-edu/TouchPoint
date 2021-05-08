@@ -6,7 +6,7 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
   dir: 'client'
-  timeout: 90s
+  timeout: 300s
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['app', 'deploy']
   dir: 'client'
@@ -18,7 +18,7 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
   dir: 'api'
-  timeout: 90s
+  timeout: 300s
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['app', 'deploy']
   dir: 'api'
