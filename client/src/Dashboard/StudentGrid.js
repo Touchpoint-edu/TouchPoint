@@ -24,22 +24,19 @@ export default function StudentGrid({fullScreenMode, students, edit, rows, cols,
 
     useEffect(() => {
       function updateRectSizes() {
-        if (backgroundRef.current) {
-          const rect = backgroundRef.current.getBoundingClientRect();
-          const width = rect.width / cols;
-          const height = rect.height / rows;
-          setcolsize(`${width}px`);
-          setrowsize(`${height}px`);
-        }
+          const width = 100 / cols;
+          const height = 100 / rows;
+          setcolsize(`${width}%`);
+          setrowsize(`${height}%`);
       }
       updateRectSizes();
       window.addEventListener('resize', updateRectSizes);
       return () => window.removeEventListener('resize', updateRectSizes);
-    }, [backgroundRef, cols, rows, students.length]);
+    }, [cols, rows, students.length]);
 
 
   return (
-    <div id="dropzone" ref={backgroundRef} className="dropzone h-100">
+    <div id="dropzone" className="dropzone h-100">
       { spots }
     </div>
   )

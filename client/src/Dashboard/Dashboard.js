@@ -172,9 +172,9 @@ export default function Dashboard() {
 
 
   return (
-    <div className="container-fluid justify-content-around px-5 py-3 h-100">
+    <div className="d-flex flex-column justify-content-around px-5 py-3 h-100">
       <DashboardHeader students = {studentsArr} curPeriodStudents={currPeriod.students} setStudents = {setStudentsArr}></DashboardHeader>
-      <div className="row h-75 mt-2">
+      <div className="flex-grow-1 d-flex flex-column flex-lg-row h-75 mt-2">
         <div className="grid-container col-lg-9 col-xl-10 h-100">
           <FullScreen className="w-100" handle={handle1}>
             <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />

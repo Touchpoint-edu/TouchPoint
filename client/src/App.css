@@ -120,9 +120,6 @@ html, body, #root {
   border: none;
 
 }
-.dash_header_buttons{
-  margin-right: 100px;
-}
 .dash_title{
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -193,9 +190,9 @@ html, body, #root {
   background-color: #83B55C;
   border:none;
   color: white;
-  -webkit-box-shadow: 2px 2px 2px #9E9E9E;
-  -moz-box-shadow: 2px 2px 2px #9E9E9E;
-  box-shadow: 2px 2px 2px #9E9E9E;
+  -webkit-box-shadow: 4px 4px 10px #e0e0e0;
+  -moz-box-shadow: 4px 4px 10px #e0e0e0;
+  box-shadow: 4px 4px 10px #e0e0e0;
 }
 .edit-button{
   border-radius:0.25rem;

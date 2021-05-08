@@ -39,14 +39,14 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
 
     return (
         // <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
-        <div className="d-flex">
-            <div className="p-2 ml-5 flex-grow-1">
-                <div className="mb-2 ml-5">
+        <div className="d-flex justify-content-between">
+            <div className="p-2 flex-grow-1">
+                <div className="mb-2">
                     <span className="dash_title">{user}'s Classroom</span>
                 </div>
-                <div>
+                <div className="d-flex flex-column justify-content-center">
                     <select
-                        className="form-control w-25 ml-5"
+                        className="form-control w-50"
                         value={selectedPeriod}
                         onChange={handlePeriodChange}
                     >
@@ -61,7 +61,7 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
 
                 </div>
             </div>
-            <div className="ml-4 mt-1 dash_header_buttons">
+            <div>
                 <div className="mb-2">
                     <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
                         + Upload CSV
