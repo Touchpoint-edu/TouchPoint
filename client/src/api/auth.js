@@ -18,19 +18,16 @@ export async function signUp(userData) {
 }
 
 export async function fetchUser() {
-  const response = await fetch("/api/user");
+  const response = await fetch("/api/auth/username", {
+    method: "GET"
+  });
 
-  if (response.status === 200) {
-    return response.json();
-  }
+  return response
 }
 
 export function logout() {
-  return fetch("/api/auth/logout", {
-    method: "POST",
-    headers: {
-      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
-    },
+  return fetch("/api/auth/signout", {
+    method: "POST"
   });
 }
 

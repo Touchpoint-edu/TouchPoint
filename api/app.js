@@ -35,9 +35,6 @@ dotenv.config();
 
 console.log(process.env.MONGO_DB_URI);
 
-// mongoose.connect(process.env.MONGO_DB_URI, function(err){
-//   app.use("/api/period", periodRouter);
-// });
 const dbName = 'touchpoint';
 
 // Create a new MongoClient
@@ -54,39 +51,6 @@ mongo.connect(process.env.MONGO_DB_URI, function(err) {
     app.use("/api/period", classPeriodRouter);
     app.use("/api/behavior", behaviorRouter); 
 });
-
-
-// Terry's useless code
-// app.get('/getTest', (req,res) =>{
-//   res.send("TERRY WAS HERE EXPRESS AND REACT CONNECT");
-//   console.log("Send test to React App");
-// });
-
-// Also Terry's useless code
-// app.get('/', function(req, res){
-//   res.sendFile(__dirname + "/views/index.html");
-// });
-
-
-
-
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-//
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-//
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
 
 
 module.exports = app;

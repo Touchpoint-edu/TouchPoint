@@ -6,6 +6,7 @@ import DashboardHeader from "./DashboardHeader";
 import { fetchAllPeriods, updateSeatingChart } from "../api/class_period.js";
 import { DashboardContext, DataStoreContext } from "../contexts.js";
 import AddStudentForm from "./AddStudentForm"
+import Cookies from 'js-cookie';
 const NUM_OF_PERIODS = 8;
 
 export default function Dashboard() {
@@ -23,7 +24,7 @@ export default function Dashboard() {
   const [addStudentValidation, setAddStudentValidation] = useState("");
   const [editChart, setEditChart] = useState(false);
 
-  const { selectedPeriod, reload } = useContext(DataStoreContext);
+  const { selectedPeriod, reload, user} = useContext(DataStoreContext);
   const handle1 = useFullScreenHandle();
   async function getStudents() {
     console.log("working..?");
@@ -84,7 +85,9 @@ export default function Dashboard() {
         students: []
       });
     }
-  }, [selectedPeriod, periods])
+  }, [selectedPeriod, periods, user])
+
+  console.log("USER:" + user)
 
   function addStudent(event) {
     event.preventDefault();
@@ -167,9 +170,11 @@ export default function Dashboard() {
     setEditChart(!editChart);
   }
 
+
   return (
-    <div className="container-fluid justify-content-around p-5 h-100">
-      <div className="row h-100">
+    <div className="container-fluid justify-content-around px-5 py-3 h-100">
+      <DashboardHeader students = {studentsArr} curPeriodStudents={currPeriod.students} setStudents = {setStudentsArr}></DashboardHeader>
+      <div className="row h-75 mt-2">
         <div className="grid-container col-lg-9 col-xl-10 h-100">
           <FullScreen className="w-100" handle={handle1}>
             <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows} />

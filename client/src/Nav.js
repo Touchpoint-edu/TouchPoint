@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { NavLink } from "react-router-dom";
+import Cookies from "js-cookie";
 import { DataStoreContext } from "./contexts";
 import LoginForm from './Signin-Signup/LoginForm';
 import SignupForm from './Signin-Signup/SignupForm';
@@ -8,10 +9,11 @@ import {logout} from './api/auth';
 import Button from './Components/Button';
 import Modal from './Components/Modal';
 
-
 export default function Nav(){
     const [modalOpen, setModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("Sign In");
+
+    const { user, setUser, students, setStudents } = useContext(DataStoreContext);
     
     const openModal = (title) => {
         setModalTitle(title);
@@ -22,11 +24,9 @@ export default function Nav(){
         setModalOpen(false);
     }
 
-    const { user, setUser, students, setStudents } = useContext(DataStoreContext);
-
-
     async function logoutUser() {
         await logout();
+        Cookies.remove("G_AUTHUSER_H")
         setUser(null);
     }
 
@@ -73,8 +73,6 @@ export default function Nav(){
                 }
 
             </div>
-            {user ? <><hr />
-                    <DashboardHeader students = {students} setStudents = {setStudents}></DashboardHeader></> : <></>}
         </nav>
     );
 }
