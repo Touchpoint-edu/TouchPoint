@@ -5,12 +5,16 @@ import { Redirect } from "react-router-dom";
 export default function GoogleSignIn({onClose, buttonText, dbFunc}) {
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [googleErrorMsg, setGoogleErrorMsg] = useState("");
-    const handleLogin = async googleData => {
-        if (googleData.error) {
-            setGoogleErrorMsg(`${buttonText} failed. Please try again.`);
+    const handleLogin = async (googleData) => {
+        if (googleData.error === "idpiframe_initialization_failed") {
+            setGoogleErrorMsg(`Please enable third party cookies and try again.`);    
         }
-        else{
-            console.log(googleData);
+
+        if (googleData.error === "access_denied") {
+            setGoogleErrorMsg(`Please accept the required permissions.`);    
+        }
+        
+        if (googleData.tokenId) {
             const res = await dbFunc(googleData.tokenId);
 
             if (res.status === 200) {
