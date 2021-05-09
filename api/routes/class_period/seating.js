@@ -17,7 +17,7 @@ Given a period id, updates the period i.e overrides everything
 */
 router.post("/update/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
@@ -53,7 +53,7 @@ Given a period id, returns the entire seating chart response
 */
 router.get("/seating/:period_id", function(req,res) {
     try{
-      verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+      verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
       const query = {
         _id: new ObjectId(req.params['period_id'])
       }
@@ -114,7 +114,7 @@ Given a period id, and student email to remove, deletes a student
 */
 router.delete("/remove-one/:period_id", function(req,res){
   try{
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }

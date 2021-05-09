@@ -15,7 +15,7 @@ router.use("/signout", signoutRouter);
 
 router.get("/username", async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
 
         res.status(200)
         res.json({

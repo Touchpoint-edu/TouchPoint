@@ -46,7 +46,7 @@ var headersArray = [
  */
 router.post("/upload", filesMulter.single('file'), async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY ,res);
         let currRow = 0, currCol = 0;
         let students = [];
         const parseFileOptions = {
@@ -94,7 +94,7 @@ router.post("/upload", filesMulter.single('file'), async (req, res) => {
  */
  router.post("/download",async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] : 1620012831; 
         var students = req.body["students"];

@@ -14,8 +14,8 @@ exports.verify = function(req, key, res){
     let decoded = jwt.verify(req, key);
     return decoded;
   } catch(err){
-    res.status(401)
     res.json("Sign in noob")
+    res.sendStatus(401)
     throw err;
   }
 }

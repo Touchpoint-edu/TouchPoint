@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/create", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
 
     const period = {
       $set: {
@@ -46,7 +46,7 @@ router.post("/create", async (req, res) => {
 
 router.get("/retrieve-all", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY,res);
     const query = {
       user_id: new ObjectId(userPayload.sub)
     }
