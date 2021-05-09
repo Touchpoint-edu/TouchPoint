@@ -114,11 +114,7 @@ Given a period id, and student email to remove, deletes a student
 */
 router.delete("/remove-one/:period_id", function(req,res){
   try{
-<<<<<<< HEAD
-    verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY, res);
-=======
     verify.verify(req.cookies.c_user, req.jwtLoginSecret);
->>>>>>> develop
     const query = {
       _id: new ObjectId(req.params['period_id'])
     }
