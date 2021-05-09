@@ -1,24 +1,32 @@
 import React, { useState, useContext } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
+import { DataStoreContext } from "../contexts.js";
 
 export default function GoogleSignIn({onClose, buttonText, dbFunc}) {
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [googleErrorMsg, setGoogleErrorMsg] = useState("");
-    const handleLogin = async googleData => {
-        if (googleData.error) {
-            setGoogleErrorMsg(`${buttonText} failed. Please try again.`);
+    const { setUser } = useContext(DataStoreContext);
+    const handleLogin = async (googleData) => {
+        if (googleData.error === "idpiframe_initialization_failed") {
+            setGoogleErrorMsg(`Please enable third party cookies and try again.`);    
         }
-        else{
-            console.log(googleData);
+
+        if (googleData.error === "access_denied") {
+            setGoogleErrorMsg(`Please accept the required permissions.`);    
+        }
+        
+        if (googleData.tokenId) {
             const res = await dbFunc(googleData.tokenId);
 
             if (res.status === 200) {
+                const json = await res.json()
+                setUser(json.name)
                 setAuthenticated(true);
                 onClose();
-            }
-            else {
-                console.log(res);
+            } else if (res.status === 201) {
+                setGoogleErrorMsg("Your account has been successfully created.");
+            } else {
                 const data = await res.json();
                 setGoogleErrorMsg(data.message);
             }

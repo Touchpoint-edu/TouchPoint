@@ -6,7 +6,7 @@ const { OAuth2Client } = require('google-auth-library');
 const verifyUser = require('./email_verification').verifyUser;
 
 const { ACCOUNT_EXISTS_ERROR_MSG, SERVER_ERROR_MSG } = require('../../constants/errors');
-const { USER_PENDING_EMAIL_STATUS } = require('../../constants/status');
+const { USER_PENDING_EMAIL_STATUS, USER_ACTIVE_STATUS } = require('../../constants/status');
 const { GOOGLE_CLIENT_ID } = require('../../constants/config');
 
 const USER_COLLECTION_NAME = "users";
@@ -47,7 +47,13 @@ router.post("/google", async (req, res) => {
                     fname: given_name,
                     lname: family_name,
                     email: email,
-                    status: USER_PENDING_EMAIL_STATUS
+                    status: USER_ACTIVE_STATUS
+                }, "", (err, data) => {
+                    if (err) {
+                        sendError(res, 500, SERVER_ERROR_MSG)
+                    } else {
+                        res.sendStatus(201);
+                    }
                 });
             }
         });
@@ -96,7 +102,7 @@ router.post("/", async (req, res) => {
                 }, "", function(err, data) {
                     if (err) sendError(res, 500, SERVER_ERROR_MSG);
                     else {
-                        verifyUser(email);
+                        verifyUser(email, req.emailCredentials, req.jwtVerifySecret);
                         res.sendStatus(201);
                     }
                 });
