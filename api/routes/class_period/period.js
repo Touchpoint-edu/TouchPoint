@@ -9,17 +9,7 @@ const router = express.Router();
 
 router.post("/create", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-
-    const period = {
-      $set: {
-        rows: req.body.period.rows,
-        columns: req.body.period.columns,
-        user_id: new ObjectId(userPayload.sub),
-        students: req.body.period.students,
-        periodNum: parseInt(req.body.period.periodNum)
-      }
-    }
+      const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
 
     const query = {
       user_id: new ObjectId(userPayload.sub),

@@ -13,7 +13,8 @@ const router = express.Router();
  */
 router.post("/add", function (req, res) {
     try {
-        verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+        verify.verify(req.cookies.c_user, req.jwtLoginSecret);
+
         const behavior = {
             name: req.body.behavior_name,
             time: Date.now() / 1000,

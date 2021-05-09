@@ -12,17 +12,16 @@ const readFile = promisify(fs.readFile);
 
 const JWT_EXPIRY_TIME = '1h'; // change expiry time
 
-const verifyUser = function(email) {
+const verifyUser = function(email, verifyCredentials, jwtVerifySecret) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
+        user: verifyCredentials.email,
+        pass: verifyCredentials.password
         }
     });
-    //Debug statements 
-    //console.log(process.env.EMAIL_USERNAME); 
-    //console.log(process.env.EMAIL_PASSWORD); 
+    console.log(verifyCredentials.email); 
+    console.log(verifyCredentials.password);
     
     //READS IN EMAIL TEMPLATE 
     //USES HANDLEBARS TO REPLACE {{emailID}} field with emailID 
@@ -32,7 +31,7 @@ const verifyUser = function(email) {
     //REPLACE MESSAGE WITH USERS UNIQUE ID
     const token = jwt.sign({
         sub: email,
-    }, process.env.JWT_VERIFY_KEY, {expiresIn: JWT_EXPIRY_TIME});
+    }, jwtVerifySecret, {expiresIn: JWT_EXPIRY_TIME});
 
     const replacements = {
         emailID: token
@@ -43,7 +42,7 @@ const verifyUser = function(email) {
     
     if(emailGood){
         var mailOptions = {
-        from: process.env.EMAIL_USERNAME,
+        from: verifyCredentials.email,
             to: email,
             subject: 'Validate TouchPoint Email',
             //Ideally, email is a link where if a userclicks on it, we know they are verified 
@@ -73,7 +72,7 @@ router.post("/auth/email", async (req, res) => {
 router.get("/auth/email/validate/:emailID", async (req, res) => {
     var token = req.params.emailID; 
     console.log(token);
-    jwt.verify(token, process.env.JWT_VERIFY_KEY, function(err, data) {
+    jwt.verify(token, req.jwtVerifySecret, function(err, data) {
         if (err) {
             res.sendStatus(404);
         }
