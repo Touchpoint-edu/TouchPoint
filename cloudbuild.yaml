@@ -7,10 +7,11 @@ steps:
   args: ['run', 'build']
   dir: 'client'
   timeout: 300s
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
   dir: 'client'
-  timeout: 120s
+  timeout: 240s
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
   dir: 'api'
@@ -19,7 +20,8 @@ steps:
   args: ['run', 'build']
   dir: 'api'
   timeout: 300s
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
   dir: 'api'
-  timeout: 120s
+  timeout: 240s
