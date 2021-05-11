@@ -145,6 +145,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
 
     function handleDeleteStudent(e) {
         //delete student from database
+
         onClose();
     }
 
@@ -238,13 +239,13 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                         >
                             Submit Behavior
                     </Button>
-                        <Button
+                        {/* <Button
                             className="h-12 text-xl delete_button mt-2 mb-2"
                             fullWidth={true}
                             onClick={handleDeleteStudent}
                         >
                             Delete Student
-                    </Button>
+                    </Button> */}
                     </div>
                 </form>
             </div>
