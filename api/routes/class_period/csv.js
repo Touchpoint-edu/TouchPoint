@@ -131,7 +131,7 @@ router.post("/upload", async (req, res) => {
 router.post("/download", async (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
-        console.log(req.body);
+        console.log(req.cookies.c_user);
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] + 86400 : 0; // add 86400 so we can be inclusive for today
         var students = req.body["students"];
@@ -171,7 +171,7 @@ router.post("/download", async (req, res) => {
         }
         //EXPECTATION - READS IN A JSON and converts to CSV 
 
-        var ws = fs.createWriteStream(os.tmpdir() + '/test.csv')
+        var ws = fs.createWriteStream(os.tmpdir() + `/${req.cookies.c_user}.csv`)
             .on('data', () => console.log("writing"))
             .on("end", () => console.log("write done"))
 
@@ -179,19 +179,16 @@ router.post("/download", async (req, res) => {
             .write(arr, { headers: headersArray }).pipe(ws)
             .on('finish', () => {
                 console.log("done with csv")
-                const file = os.tmpdir() + `/test.csv`
+                const file = os.tmpdir() + `/${req.cookies.c_user}.csv`
                 var filestream = fs.createReadStream(file);
                 filestream.pipe(res);
-                const path = os.tmpdir() + `/test.csv`
+                const path = os.tmpdir() + `${req.cookies.c_user}.csv`
                 fs.unlink(path ,(err =>{
                     if(err){
                         console.error(err)
                         return
                     }
                 }))
-            })
-            .on('end', () =>{
-                console.log("end")
             })
             .on('open', function () {
                 console.log("Writing out csv file")
