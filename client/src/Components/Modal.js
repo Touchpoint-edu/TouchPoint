@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import Close from "../Components/Close";
 import Button from "./Button";
 import Modal2 from 'react-bootstrap/Modal';
+import { propTypes } from "react-bootstrap/esm/Image";
 
 let modalContainer = document.getElementById("modal-container");
 

@@ -24,13 +24,15 @@ export async function createPeriod(period) {
 
 
 export async function uploadCSV(uploadFile, period) {
-    // make FormData object to pass into request
-    const formData = new FormData()
-    formData.append('file', uploadFile)
-    formData.append('period', period)
     const res = await fetch("/api/period/csv/upload", {
         method: "POST",
-        body: formData
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            uploadFile: uploadFile,
+            period: period
+          })
     })
     return res;
 }
