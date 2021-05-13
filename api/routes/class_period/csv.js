@@ -2,6 +2,7 @@ var express = require("express")
 var ObjectId = require('mongodb').ObjectID;
 const csv = require('fast-csv');
 const fs = require('fs');
+const os = require('os')
 
 const mongo = require('../../models/mongo');
 const verify = require('../../scripts/verify')
@@ -130,15 +131,9 @@ router.post("/upload", async (req, res) => {
 router.post("/download", async (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
-        //const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-        /*
-        
-        607bf7d8dcfbdfeeed4d8c51
-        
-        */
         console.log(req.body);
         var start = req.body["start"] ? req.body["start"] : 0;
-        var end = req.body["end"] ? req.body["end"] : 1620012831;
+        var end = req.body["end"] ? req.body["end"] + 86400 : 0; // add 86400 so we can be inclusive for today
         var students = req.body["students"];
 
         var arrayLength = students.length;
@@ -176,7 +171,7 @@ router.post("/download", async (req, res) => {
         }
         //EXPECTATION - READS IN A JSON and converts to CSV 
 
-        var ws = fs.createWriteStream(__dirname + '/test.csv')
+        var ws = fs.createWriteStream(os.tmpdir() + '/test.csv')
             .on('data', () => console.log("writing"))
             .on("end", () => console.log("write done"))
 
@@ -184,9 +179,19 @@ router.post("/download", async (req, res) => {
             .write(arr, { headers: headersArray }).pipe(ws)
             .on('finish', () => {
                 console.log("done with csv")
-                const file = `${__dirname}/test.csv`
+                const file = os.tmpdir() + `/test.csv`
                 var filestream = fs.createReadStream(file);
                 filestream.pipe(res);
+                const path = os.tmpdir() + `/test.csv`
+                fs.unlink(path ,(err =>{
+                    if(err){
+                        console.error(err)
+                        return
+                    }
+                }))
+            })
+            .on('end', () =>{
+                console.log("end")
             })
             .on('open', function () {
                 console.log("Writing out csv file")
