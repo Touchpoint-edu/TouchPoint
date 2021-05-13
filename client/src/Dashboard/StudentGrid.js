@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import Spot from './Spot.js';
 
-export default function StudentGrid({fullScreenMode, students, edit, rows, cols, updatePos}){
+export default function StudentGrid({fullScreenMode, students, edit, rows, cols, updatePos, periodsArray, selectedPeriod}){
     const [spots, setSpots] = useState([]);
     const [colsize, setcolsize] = useState("0px");
     const [rowsize, setrowsize] = useState("0px");
@@ -16,7 +16,8 @@ export default function StudentGrid({fullScreenMode, students, edit, rows, cols,
           row: rowsize,
           col: colsize
         }
-        newSpots.push(<Spot key={key} fullScreenMode={fullScreenMode} editMode={edit} updatePos={updatePos} seatSize={seatSize} item={student} />);
+        newSpots.push(<Spot key={key} fullScreenMode={fullScreenMode} editMode={edit} updatePos={updatePos} seatSize={seatSize} item={student}
+          curPeriod = {periodsArray[selectedPeriod]} />);
         key++;
       });
       setSpots(newSpots);

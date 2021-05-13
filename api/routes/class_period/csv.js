@@ -131,18 +131,19 @@ router.post("/upload", async (req, res) => {
 router.post("/download", async (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
-        console.log(req.cookies.c_user);
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] + 86400 : 0; // add 86400 so we can be inclusive for today
         var students = req.body["students"];
 
         var arrayLength = students.length;
         var arr = [];
+        console.log(req.body)
         for (var i = 0; i < arrayLength; i++) {
             studentEmail = students[i].email
             studName = students[i].name
             const query2 = {
-                email: studentEmail
+                email: studentEmail,
+                period_id: new ObjectId(req.body["period"])
             }
             const cursor = await mongo.findMany("behaviors", query2);
 
@@ -182,13 +183,16 @@ router.post("/download", async (req, res) => {
                 const file = os.tmpdir() + `/${req.cookies.c_user}.csv`
                 var filestream = fs.createReadStream(file);
                 filestream.pipe(res);
-                const path = os.tmpdir() + `${req.cookies.c_user}.csv`
-                fs.unlink(path ,(err =>{
-                    if(err){
-                        console.error(err)
-                        return
-                    }
-                }))
+                filestream.on('end', () => {
+                    const path = os.tmpdir() + `/${req.cookies.c_user}.csv`
+                    fs.unlink(path ,(err =>{
+                        if(err){
+                            console.error(err)
+                        }
+                    }))
+                    console.log("delete temp file")
+                })
+
             })
             .on('open', function () {
                 console.log("Writing out csv file")
