@@ -9,9 +9,7 @@ const router = express.Router();
 
 router.post("/create", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
-<<<<<<< HEAD
-=======
+    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
     
     const period = {
       $set: {
@@ -22,7 +20,6 @@ router.post("/create", async (req, res) => {
         periodNum: parseInt(req.body.period.periodNum)
       }
     }
->>>>>>> develop
 
     const query = {
       user_id: new ObjectId(userPayload.sub),
@@ -49,7 +46,7 @@ router.post("/create", async (req, res) => {
 
 router.get("/retrieve-all", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
+    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
     const query = {
       user_id: new ObjectId(userPayload.sub)
     }

@@ -44,7 +44,7 @@ var headersArray = [
  */
 router.post("/upload", async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
+        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
         const file = req.body.uploadFile
 
         let currRow = 0, currCol = 0;
@@ -130,7 +130,7 @@ router.post("/upload", async (req, res) => {
  */
 router.post("/download", async (req, res) => {
     try {
-        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret);
+        const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
         console.log(req.cookies.c_user);
         var start = req.body["start"] ? req.body["start"] : 0;
         var end = req.body["end"] ? req.body["end"] + 86400 : 0; // add 86400 so we can be inclusive for today

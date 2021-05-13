@@ -13,7 +13,7 @@ const router = express.Router();
  */
 router.post("/add", function (req, res) {
     try {
-        verify.verify(req.cookies.c_user, req.jwtLoginSecret);
+        verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
 
         const behavior = {
             name: req.body.behavior_name,
