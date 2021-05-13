@@ -9,7 +9,7 @@ const { INCORRECT_PASSWORD_ERROR_MSG, NO_ACCOUNT_FOUND_ERROR_MSG, PENDING_VERIFI
 const { USER_PENDING_EMAIL_STATUS } = require('../../constants/status')
 const { GOOGLE_CLIENT_ID } = require('../../constants/config');
 
-const JWT_EXPIRY_TIME = '1h'; // change expiry time
+const JWT_EXPIRY_TIME = '1d'; // change expiry time
 const JWT_COOKIE_NAME = 'c_user';
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
