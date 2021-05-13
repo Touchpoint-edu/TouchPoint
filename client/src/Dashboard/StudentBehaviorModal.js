@@ -12,7 +12,7 @@ import Modal from "../Components/Modal";
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, fullScreen, handle2, id }) {
+export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, fullScreen, handle2, id, curPeriod }) {
     const data = [
         {
             id: 0,
@@ -139,12 +139,13 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     function handleSubmitBehavior(e) {
         //add behavior with event value to the student info
         e.preventDefault();
-        addBehavior(student._id, selectedBehavior, student.email);
+        addBehavior(student._id, selectedBehavior, student.email, curPeriod);
         onClose();
     }
 
     function handleDeleteStudent(e) {
         //delete student from database
+
         onClose();
     }
 
@@ -240,14 +241,14 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                         >
                             Submit Behavior
                     </Button>
-                        <Button
+                        {/* <Button
                             className="h-12 text-xl delete_button mt-2 mb-2"
                             fullWidth={true}
                             onClick={handleDeleteStudent}
                             disabled
                         >
                             Delete Student
-                    </Button>
+                    </Button> */}
                     </div>
                 </form>
             </div>

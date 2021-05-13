@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.post("/create", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
-
+    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
+    
     const period = {
       $set: {
         rows: req.body.period.rows,
@@ -46,7 +46,7 @@ router.post("/create", async (req, res) => {
 
 router.get("/retrieve-all", async (req, res) => {
   try {
-    const userPayload = verify.verify(req.cookies.c_user, process.env.JWT_SECRET_KEY);
+    const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
     const query = {
       user_id: new ObjectId(userPayload.sub)
     }
@@ -68,8 +68,8 @@ router.get("/retrieve-all", async (req, res) => {
       }
     })
   } catch (err) {
-      console.log(err);
-      error.sendError(res, 500, errorMsg.SERVER_ERROR_MSG);
+    console.log(err);
+    error.sendError(res, 500, errorMsg.SERVER_ERROR_MSG);
   }
 })
 

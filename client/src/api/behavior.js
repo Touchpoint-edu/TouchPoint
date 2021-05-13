@@ -1,4 +1,6 @@
-export async function addBehavior(studentId, behaviorName, email) {
+import { checkExpiration } from "./api"
+
+export async function addBehavior(studentId, behaviorName, email, period) {
     const res = await fetch("api/behavior/add", {
         method: "POST",
         headers: {
@@ -6,8 +8,9 @@ export async function addBehavior(studentId, behaviorName, email) {
           },
         body: JSON.stringify({
             behavior_name: behaviorName,
-            email: email
+            email: email,
+            period: period._id
           })
     })
-    return res;
+    return checkExpiration(res);
 }
