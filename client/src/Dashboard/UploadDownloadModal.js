@@ -4,6 +4,7 @@ import Modal from "../Components/Modal";
 import { Container, Row, Col, Form, Spinner, } from "react-bootstrap";
 import { downloadCSV } from '../api/class_period';
 import UploadCSV from "./UploadCSV"
+import { CSVDownloader } from 'react-papaparse'
 
 function getEpoch(dateString) {
   const dateArray = dateString.split('-')
@@ -87,6 +88,19 @@ export default function UploadDownloadModal({ open, variant, onClose, curPeriodS
     // onClose()
   }
 
+async function returnDownloadData(){
+    let data=[
+      {
+        "Column 1": "1-1",
+        "Column 2": "1-2",
+        "Column 3": "1-3",
+        "Column 4": "1-4",
+      }]
+    return data;
+  }
+
+  
+
   return (
     <Modal title={variant} open={open} onClose={() => { onClose() }}>
       <div className="modal-body px-5 mh-100 overflow-auto">
@@ -120,6 +134,13 @@ export default function UploadDownloadModal({ open, variant, onClose, curPeriodS
             >
               {isDownloadLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Download"}
             </Button>
+            <CSVDownloader
+              data={returnDownloadData()}
+              bom={true}
+              type="button"
+            >
+              Download
+            </CSVDownloader>
           </>
         )}
       </div>
