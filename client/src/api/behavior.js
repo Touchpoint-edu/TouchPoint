@@ -1,3 +1,5 @@
+import { checkExpiration } from "./api"
+
 export async function addBehavior(studentId, behaviorName, email, period) {
     const res = await fetch("api/behavior/add", {
         method: "POST",
@@ -10,5 +12,5 @@ export async function addBehavior(studentId, behaviorName, email, period) {
             period: period._id
           })
     })
-    return res;
+    return checkExpiration(res);
 }

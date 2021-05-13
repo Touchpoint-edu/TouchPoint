@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { checkExpiration } from "./api"
 
 export async function fetchAllPeriods() {
     console.log(Cookies.get())
@@ -6,7 +7,7 @@ export async function fetchAllPeriods() {
     const res = await fetch("/api/period/retrieve-all", {
         method: "GET"
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function createPeriod(period) {
@@ -14,12 +15,12 @@ export async function createPeriod(period) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-          },
+        },
         body: JSON.stringify({
             period: period
-          })
+        })
     })
-    return res;
+    return checkExpiration(res);
 }
 
 
@@ -32,9 +33,9 @@ export async function uploadCSV(uploadFile, period) {
         body: JSON.stringify({
             uploadFile: uploadFile,
             period: period
-          })
+        })
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function downloadCSV(studentsArray, start , end, periodArray) {
@@ -50,14 +51,14 @@ export async function downloadCSV(studentsArray, start , end, periodArray) {
             period: periodArray._id
           })
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function fetchSeatingChart(period_id) {
     const res = await fetch("/api/period/students/seating/" + period_id, {
         method: "GET"
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function updateSeatingChart(periodId, numRow, numCol, studentsArray) {
@@ -65,14 +66,14 @@ export async function updateSeatingChart(periodId, numRow, numCol, studentsArray
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-          },
+        },
         body: JSON.stringify({
             rows: numRow,
             columns: numCol,
             students: studentsArray
-          })
+        })
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function addStudent(periodId, studentName, studentEmail) {
@@ -81,9 +82,9 @@ export async function addStudent(periodId, studentName, studentEmail) {
         body: JSON.stringify({
             name: studentName,
             email: studentEmail
-          })
+        })
     })
-    return res;
+    return checkExpiration(res);
 }
 
 export async function removeStudent(periodId, studentEmail) {
@@ -91,7 +92,7 @@ export async function removeStudent(periodId, studentEmail) {
         method: "DELETE",
         body: JSON.stringify({
             email: studentEmail
-          })
+        })
     })
-    return res;
+    return checkExpiration(res);
 }

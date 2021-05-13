@@ -22,7 +22,6 @@ router.get("/username", async (req, res) => {
             name: userPayload.name
         })
     } catch (err) {
-
         res.status(200)
         res.json({
             name: ""

@@ -1,21 +1,22 @@
 var jwt = require('jsonwebtoken');
+const { sendError } = require('./error');
+const { JWT_EXPIRATION_ERROR_MSG } = require('../constants/errors');
 
-exports.verify = function(req, key){
-  try{
+exports.verify = function (req, key) {
+  try {
     let decoded = jwt.verify(req, key);
     return decoded;
-  } catch(err){
+  } catch (err) {
     throw err;
   }
 }
 
-exports.verify = function(req, key, res){
-  try{
+exports.verify = function (req, key, res) {
+  try {
     let decoded = jwt.verify(req, key);
     return decoded;
-  } catch(err){
-    res.status(401)
-    res.json("Sign in noob")
+  } catch (err) {
+    sendError(res, 401, JWT_EXPIRATION_ERROR_MSG)
     throw err;
   }
 }
