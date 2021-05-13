@@ -41,14 +41,14 @@ export default function UploadCSV(props) {
         dropFile: {
           width: 100,
           height: 120,
-          background: '#ccc',
-        },
-        fileNameInfo: {
-          width: 100,
-
+          background: '#83B55C',
         },
         fileSizeInfo: {
           display: "none",
+        },
+        fileNameInfo: {
+          width: 100,
+          overflow: "hidden",
         },
       }}
       className="text-wrap"
