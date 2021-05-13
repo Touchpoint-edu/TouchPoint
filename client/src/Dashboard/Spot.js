@@ -4,7 +4,7 @@ import StudentBehaviorModal from "./StudentBehaviorModal";
 import Modal from 'react-bootstrap/Modal';
 
 
-export default function Spot({fullScreenMode, editMode, seatSize, item, id, updatePos, pos }) {
+export default function Spot({fullScreenMode, editMode, seatSize, item, id, updatePos, pos, curPeriod }) {
     const [modalOpen, setModalOpen] = useState(false);
     const handleFullScreen = useFullScreenHandle();
     const dragStart = e => {
@@ -44,7 +44,7 @@ export default function Spot({fullScreenMode, editMode, seatSize, item, id, upda
                   { !!item.name &&
                       <div id={item._id} draggable={editMode} onDragStart={dragStart} className="tile">{item.name}
                         <FullScreen handle={handleFullScreen}>
-                            <StudentBehaviorModal open={modalOpen} onClose={closeModal} student={item} />
+                            <StudentBehaviorModal open={modalOpen} onClose={closeModal} student={item} curPeriod={curPeriod} />
                         </FullScreen>
                         </div>
 }

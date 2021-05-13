@@ -12,7 +12,7 @@ import Modal from "../Components/Modal";
 
 const modalContainer = document.getElementById("modal-container");
 
-export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, fullScreen, handle2, id }) {
+export default function StudentBehaviorModal({ open,  onClose, students, setStudents, student, fullScreen, handle2, id, curPeriod }) {
     const data = [
         {
             id: 0,
@@ -139,7 +139,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
     function handleSubmitBehavior(e) {
         //add behavior with event value to the student info
         e.preventDefault();
-        addBehavior(student._id, selectedBehavior, student.email);
+        addBehavior(student._id, selectedBehavior, student.email, curPeriod);
         onClose();
     }
 

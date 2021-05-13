@@ -16,7 +16,7 @@ function getEpoch(dateString) {
   return new Date(year, month, day).getTime() / 1000
 }
 
-export default function UploadDownloadModal({ open, variant, onClose, curPeriodStudents, period }) {
+export default function UploadDownloadModal({ open, variant, onClose, curPeriodStudents, period, periodArray }) {
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
@@ -30,6 +30,9 @@ export default function UploadDownloadModal({ open, variant, onClose, curPeriodS
       document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [open, onClose]);
+
+  console.log(periodArray[period])
+
 
   // const { periods, setPeriods } = useContext(DashboardContext);
   const [startDate, setStartDate] = useState("");
@@ -67,7 +70,8 @@ export default function UploadDownloadModal({ open, variant, onClose, curPeriodS
       return
     }
 
-    const response = await downloadCSV(curPeriodStudents, startEpoch, endEpoch);
+
+    const response = await downloadCSV(curPeriodStudents, startEpoch, endEpoch, periodArray[period]);
 
     if (response.status === 200) {
       //Possible error: If file size is too large 
@@ -87,18 +91,6 @@ export default function UploadDownloadModal({ open, variant, onClose, curPeriodS
     setDownloadLoading(false)
     // onClose()
   }
-
-async function returnDownloadData(){
-    let data=[
-      {
-        "Column 1": "1-1",
-        "Column 2": "1-2",
-        "Column 3": "1-3",
-        "Column 4": "1-4",
-      }]
-    return data;
-  }
-
   
 
   return (
@@ -134,13 +126,6 @@ async function returnDownloadData(){
             >
               {isDownloadLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Download"}
             </Button>
-            <CSVDownloader
-              data={returnDownloadData()}
-              bom={true}
-              type="button"
-            >
-              Download
-            </CSVDownloader>
           </>
         )}
       </div>

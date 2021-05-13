@@ -12,5 +12,6 @@ module.exports = Object.freeze({
     DELETE_STUDENT_FROM_PERIOD_ERROR_MSG: "Server error. Delete student from period failed",
     PERIOD_NOT_FOUND_ERROR_MSG: "Could not find period.",
     PERIOD_ID_NOT_FOUND_ERROR_MSG: "Period id not found.",
-    PERIOD_NO_RETURN_ERROR_MSG: "Could not return data."
+    PERIOD_NO_RETURN_ERROR_MSG: "Could not return data.",
+    JWT_EXPIRATION_ERROR_MSG: "Token expired. Please sign in.",
 });
