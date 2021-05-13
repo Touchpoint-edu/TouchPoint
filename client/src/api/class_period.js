@@ -37,7 +37,7 @@ export async function uploadCSV(uploadFile, period) {
     return res;
 }
 
-export async function downloadCSV(studentsArray, start , end) {
+export async function downloadCSV(studentsArray, start , end, periodArray) {
     const res = await fetch("/api/period/csv/download", {
         method: "POST",
         headers: {
@@ -46,7 +46,8 @@ export async function downloadCSV(studentsArray, start , end) {
         body: JSON.stringify({
             students: studentsArray,
             start: start,
-            end: end
+            end: end,
+            period: periodArray._id
           })
     })
     return res;
