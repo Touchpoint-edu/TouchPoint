@@ -113,7 +113,7 @@ export default function Dashboard() {
   const updatePos = useCallback(function (id, posObj) {
     setCurrPeriod((prev) => {
       const newArr = [...prev.students];
-      const student1 = newArr.find(student => student._id === id);
+      const student1 = newArr.find(student => student.email === id);
       const student2 = newArr.find(student => {
         return student.row === posObj.row && student.col === posObj.col;
       });
