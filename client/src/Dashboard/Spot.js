@@ -42,7 +42,7 @@ export default function Spot({fullScreenMode, editMode, seatSize, item, id, upda
         <div style={{width: seatSize.col, height: seatSize.row}} className="item">
               <div id={id} onDrop={drop} onDragOver={gridDragOver} className = "grid-item" onClick={openModal} data-row={item.row} data-col={item.col}>
                   { !!item.name &&
-                      <div id={item._id} draggable={editMode} onDragStart={dragStart} className="tile">{item.name}
+                      <div id={item.email} draggable={editMode} onDragStart={dragStart} className="tile">{item.name}
                         <FullScreen handle={handleFullScreen}>
                             <StudentBehaviorModal open={modalOpen} onClose={closeModal} student={item} curPeriod={curPeriod} />
                         </FullScreen>
