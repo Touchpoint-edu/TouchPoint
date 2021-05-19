@@ -183,10 +183,11 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
             resetText="Delete Student"
             id={id}
         >
-            <div className="modal-body px-5 mh-100 overflow-auto">
+            <div className="mh-100 overflow-auto">
                 <div>
+                    <div className="d-flex justify-content-center">
                     <select
-                        className="form-control w-50 ml-5 mt-3"
+                        className="form-control w-50 mt-3"
                         value={selectedCategoryId}
                         onChange={handleCategoryChange}
                     >
@@ -198,6 +199,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                             );
                         })}
                     </select>
+                    </div>
                 <form onSubmit={handleSubmitBehavior}>
                     <div className="row w-75 ml-5 mt-4">
                         <div className="col">
@@ -231,7 +233,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                                 : <></>}
                         </div>
                     </div>
-                    <div className="modal-footer justify-content-around">
+                    <div className="d-flex justify-content-around">
                         <Button
                             className="h-12 text-xl behavior_button mt-2 mb-2"
                             fullWidth={true}
@@ -243,6 +245,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                             className="h-12 text-xl delete_button mt-2 mb-2"
                             fullWidth={true}
                             onClick={handleDeleteStudent}
+                            disabled
                         >
                             Delete Student
                     </Button> */}
