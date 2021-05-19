@@ -113,7 +113,7 @@ export default function Dashboard() {
   const updatePos = useCallback(function (id, posObj) {
     setCurrPeriod((prev) => {
       const newArr = [...prev.students];
-      const student1 = newArr.find(student => student._id === id);
+      const student1 = newArr.find(student => student.email === id);
       const student2 = newArr.find(student => {
         return student.row === posObj.row && student.col === posObj.col;
       });
@@ -172,17 +172,15 @@ export default function Dashboard() {
 
 
   return (
-    <div className="container-fluid justify-content-around px-5 py-3 h-100">
+    <div className="d-flex flex-column justify-content-around px-5 py-3 h-100">
       <DashboardHeader students = {studentsArr} curPeriodStudents={currPeriod.students} setStudents = {setStudentsArr} periodsArray = {periods}></DashboardHeader>
-      <div className="row h-75 mt-2">
-        <div className="grid-container col-lg-9 col-xl-10 h-100">
-          <FullScreen className="w-100" handle={handle1}>
-            <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows}
+      <div className="flex-grow-1 d-flex flex-column flex-lg-row h-75 mt-2">
+        <div className="grid-container mr-lg-3 h-100">
+             <StudentGrid fullScreenMode={fullScreenMode} updatePos={updatePos} students={studentsArr} setStudents={setStudentsArr} edit={editChart} cols={currPeriod.columns} rows={currPeriod.rows}
              periodsArray = {periods} selectedPeriod = {selectedPeriod}/>
-          </FullScreen>
         </div>
-        <div className="actions-cont col-lg-3 col-xl-2 d-none d-lg-flex flex-column">
-          <div className="action">
+        <div className="actions-cont mt-3 mt-lg-0 d-flex flex-lg-column justify-content-lg-start">
+          <div className="action mr-3 mr-lg-0">
             <Button
               className="edit-button btn btn-success"
               onClick={handleChartSave}
@@ -195,7 +193,7 @@ export default function Dashboard() {
           <AddStudentForm disabled={!editChart} currPeriod={currPeriod} setCurrPeriod={setCurrPeriod} students={studentsArr} setStudents={setStudentsArr} ></AddStudentForm>
           </div> */}
           {addStudentValidation !== "" && <div className="action text-red-500">{addStudentValidation}</div>}
-          <div className="action d-flex justify-content-between">
+          <div className="action d-flex justify-content-between mr-3 mr-lg-0">
             <Button
               className="btn btn-success"
               onClick={updateCol}
@@ -214,7 +212,7 @@ export default function Dashboard() {
               -
                 </Button>
           </div>
-          <div className="action d-flex justify-content-between">
+          <div className="action d-flex justify-content-between mr-3 mr-lg-0">
             <Button
               className="btn btn-success"
               onClick={updateRow}
@@ -232,17 +230,6 @@ export default function Dashboard() {
             >
               -
                 </Button>
-          </div>
-          <div className="action">
-            <div>
-              <Button
-                className="full-button btn btn-success"
-                onClick={enterFullScreen}
-                disabled={!!editChart}
-              >
-                Full Screen
-                </Button>
-            </div>
           </div>
         </div>
       </div>

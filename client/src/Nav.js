@@ -31,7 +31,7 @@ export default function Nav(){
     }
 
     return(
-        <nav className="nav-scroller py-4 mb-2 mt-2">
+        <nav>
             <div className="nav d-flex">
                 <div className = "p-2 flex-grow-1">
                     <img className= "ml-2 logo_image" src="logo_nav.png" alt="logo" data-testid="logo-image"></img>
@@ -62,10 +62,8 @@ export default function Nav(){
                                 onClose={closeModal}
                                 title={modalTitle}
                             >
-                                <div className="modal-body px-5 mh-100 overflow-auto">
                                     {(modalTitle === "Sign In") && <LoginForm onClose={closeModal} /> }
                                     {(modalTitle === "Create your account") && <SignupForm onClose={closeModal} /> }
-                                </div>
                             </Modal>
                     }
                 </>

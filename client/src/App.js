@@ -35,7 +35,7 @@ function App() {
             <div className="container-fluid shadow">
               <Nav />
             </div>
-            <main className="flex-fill overflow-hidden">
+            <main style={{backgroundColor: "#f2f2f2"}}className="flex-fill overflow-hidden">
             {user ? <Redirect to="/dashboard"></Redirect> : <Redirect to="/"></Redirect>}
               <Switch>
                 <Route path="/" exact={true}>
