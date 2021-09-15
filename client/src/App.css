@@ -38,14 +38,16 @@ html, body, #root {
 }
 
 .signup_button{
-  color: #40904C;
+  color: red;
+  /* color: #40904C; */
   font-family: 'Inter', sans-serif;
   background-color:transparent;
   border: none;
 }
 
 .signin_button{
-  color: #83B55C;
+  color: red;
+  /* color: #83B55C; */
   font-family: 'Inter', sans-serif;
   background-color:transparent;
   border: none;
