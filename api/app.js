@@ -37,24 +37,68 @@ dotenv.config();
 console.log(process.env.MONGO_DB_URI);
 
 const dbName = 'touchpoint';
-const dbUriSecretName = "projects/903480499371/secrets/db-uri/versions/latest";
-const jwtLoginSecretName = "projects/903480499371/secrets/jwt-login-key/versions/latest";
-const jwtVerifySecretName = "projects/903480499371/secrets/jwt-verify-key/versions/latest";
-const emailCredentialsSecretName = "projects/903480499371/secrets/email-verification-credentials/versions/latest";
+const dbUriSecretName = "/projects/903480499371/secrets/db-uri/versions/latest";
+const jwtLoginSecretName = "/projects/903480499371/secrets/jwt-login-key/versions/latest";
+const jwtVerifySecretName = "/projects/903480499371/secrets/jwt-verify-key/versions/latest";
+const emailCredentialsSecretName = "/projects/903480499371/secrets/email-verification-credentials/versions/latest";
 const secretManager = new SecretManagerServiceClient();
 
-async function getSecret(name) {
-    const [version] = await secretManager.accessSecretVersion({
-      name: name,
+//hardcoded
+const jwtLoginSecret = "ae280b2d0d3e3ca11caa15e3ba7ea172";
+console.log("jwtloginsecret",jwtLoginSecret)
+const jwtVerifySecret = "12d1c4dbfca93914dd8d9a3860115736";
+const emailCredentials = "touchpoint.devteam@gmail.com:TP_dev401";
+const emailObj = {
+    email: emailCredentials.split(':')[0],
+    password: emailCredentials.split(':')[1]
+}
+
+app.use(function(req, res, next) {
+    req.jwtLoginSecret = jwtLoginSecret;
+    req.jwtVerifySecret = jwtVerifySecret;
+    req.emailCredentials = emailObj;
+    console.log("req",req.jwtLoginSecret)
+
+    next();
+    console.log("inside app.use");
+
+});
+
+console.log("outside everything");
+
+mongo.connect("mongodb+srv://tp_user:rxZPvezy5OvGRwAE@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", async function(err) {
+        //Add routes here
+        if (err) {
+          console.log("throwing error inside mongo connect");
+          throw err;
+        }
+        app.use("/test", testRouter);
+        app.use("/api/auth", authRouter);
+        app.use("/api/period", classPeriodRouter);
+        app.use("/api/behavior", behaviorRouter); 
+        console.log("end of mongo connect");
     });
 
+module.exports = app;
+/*
+async function getSecret(name) {
+    console.log("get secret1")
+    const [version] = await secretManager.accessSecretVersion({ //stuck here
+      name: name,
+    });
+    console.log("get secret2")
+
     const payload = version.payload.data.toString();
+    console.log("get secret3")
+    console.log(payload)
     return payload;
   }
 
-
 getSecret(dbUriSecretName).then(async (secret) => {
+    console.log("inside get secret");
+
     const jwtLoginSecret = await getSecret(jwtLoginSecretName);
+    console.log("jwtloginsecret",jwtLoginSecret)
     const jwtVerifySecret = await getSecret(jwtVerifySecretName);
     const emailCredentials = await getSecret(emailCredentialsSecretName);
     const emailObj = {
@@ -67,16 +111,22 @@ getSecret(dbUriSecretName).then(async (secret) => {
         req.emailCredentials = emailObj;
         next();
     });
-    mongo.connect(secret, async function(err) {
+    
+    console.log("inside get secret outside mongo connect");
+
+    mongo.connect("mongodb+srv://tp_user:rxZPvezy5OvGRwAE@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", async function(err) {
         //Add routes here
-        if (err) throw err;
+        if (err) {
+          console.log("throwing error inside mongo connect");
+          throw err;
+        }
         app.use("/test", testRouter);
         app.use("/api/auth", authRouter);
         app.use("/api/period", classPeriodRouter);
         app.use("/api/behavior", behaviorRouter); 
+        console.log("end of mongo connect");
     });
-});
+});*/
 // put in the uri here haha
 
 
-module.exports = app;
