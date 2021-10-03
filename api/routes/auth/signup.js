@@ -98,7 +98,7 @@ router.post("/", async (req, res) => {
                     lname: lname,
                     email: email,
                     hash: hash,
-                    status: USER_PENDING_EMAIL_STATUS
+                    status: USER_ACTIVE_STATUS
                 }, "", function(err, data) {
                     if (err) sendError(res, 500, SERVER_ERROR_MSG);
                     else {
