@@ -4,6 +4,7 @@ import { MDBTable, MDBTableBody } from 'mdbreact';
 import { DataStoreContext } from "../contexts.js";
 import { uploadCSV } from "../api/class_period";
 import Button from "../Components/Button";
+import Sample from '../Sample_Spreadsheet.xlsx';
 
 export default function UploadCSV(props) {
   const {reload, setReload} = useContext(DataStoreContext);
@@ -85,6 +86,9 @@ export default function UploadCSV(props) {
       >
         {isUploadBtn ? "Upload" : "Confirm"}
       </Button>
+
+  <a href={Sample} download="CSV_Template.xlsx"> <Button className="CVS_download_button" > Download CSV Template </Button> </a>
+
     </>
   );
 }
