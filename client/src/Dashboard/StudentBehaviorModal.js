@@ -7,6 +7,7 @@ import {Form, Row, Col} from "react-bootstrap";
 import { FullScreen } from "react-full-screen";
 import { addBehavior } from "../api/behavior";
 import Modal from "../Components/Modal";
+import { removeStudent } from "../api/class_period.js";
 
 
 
@@ -145,7 +146,8 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
 
     function handleDeleteStudent(e) {
         //delete student from database
-
+        //e.preventDefault();//throws an error
+        removeStudent(curPeriod._id, student.email);
         onClose();
     }
 
@@ -241,14 +243,22 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                         >
                             Submit Behavior
                     </Button>
-                        {/* <Button
+                        { <Button
                             className="h-12 text-xl delete_button mt-2 mb-2"
                             fullWidth={true}
                             onClick={handleDeleteStudent}
-                            disabled
+                            
                         >
                             Delete Student
-                    </Button> */}
+                    </Button> }
+                    {/* <Button
+                            className="h-12 text-xl edit-button mt-2 mb-2"
+                            fullWidth={true}
+                            onClick={}
+                            disabled
+                        >
+                            Edit Student
+                    </Button>*/ }
                     </div>
                 </form>
             </div>

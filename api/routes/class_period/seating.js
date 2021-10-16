@@ -117,18 +117,22 @@ router.delete("/remove-one/:period_id", function(req,res){
     verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
     const query = {
       _id: new ObjectId(req.params['period_id'])
+      //_id: req.params['period_id']
     }
     console.log(req.params['period_id']);
     const update = {
       $pull: { "students" : req.body }
+      //pull : {"student" : req.body.email}
     }
     const options = { upsert: false };
     mongo.update("periods", query, update, options)
     .then(data =>{
         if(!data){
+          console.log('update student error when trying to delete student');
           error.sendError(res, "500", errorMsg.UPDATE_STUDENT_ERROR_MSG);
         }
         else if(data.result.n <= 0){
+          console.log('period not found when deleting student');
           error.sendError(res, "500", errorMsg.PERIOD_NOT_FOUND_ERROR_MSG);
         }
         else{
@@ -137,6 +141,7 @@ router.delete("/remove-one/:period_id", function(req,res){
     })
   }
   catch(err){
+    console.log('delete catch block');
     console.log(err);
     error.sendError(res, "500", errorMsg.DELETE_STUDENT_FROM_PERIOD_ERROR_MSG);
   }
