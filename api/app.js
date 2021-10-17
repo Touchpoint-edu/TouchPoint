@@ -1,13 +1,13 @@
-var createError = require('http-errors');
+// var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var dotenv = require('dotenv');
-var MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
+// var MongoClient = require('mongodb').MongoClient;
+// const assert = require('assert');
+// const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
 var testRouter = require("./routes/test");
 
 
@@ -16,7 +16,7 @@ const authRouter = require("./routes/auth/controller")
 const classPeriodRouter = require("./routes/class_period/controller")
 
 var behaviorRouter = require("./routes/behavior"); 
-const { access } = require('fs');
+// const { access } = require('fs');
 
 var app = express();
 
@@ -31,42 +31,32 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-//PLAY AROUND HERE
 dotenv.config();
 
-console.log(process.env.MONGO_DB_URI);
+// const dbName = 'touchpoint';
+// const dbUriSecretName = "/projects/903480499371/secrets/db-uri/versions/latest";
+// const jwtLoginSecretName = "/projects/903480499371/secrets/jwt-login-key/versions/latest";
+// const jwtVerifySecretName = "/projects/903480499371/secrets/jwt-verify-key/versions/latest";
+// const emailCredentialsSecretName = "/projects/903480499371/secrets/email-verification-credentials/versions/latest";
+// const secretManager = new SecretManagerServiceClient();
 
-const dbName = 'touchpoint';
-const dbUriSecretName = "/projects/903480499371/secrets/db-uri/versions/latest";
-const jwtLoginSecretName = "/projects/903480499371/secrets/jwt-login-key/versions/latest";
-const jwtVerifySecretName = "/projects/903480499371/secrets/jwt-verify-key/versions/latest";
-const emailCredentialsSecretName = "/projects/903480499371/secrets/email-verification-credentials/versions/latest";
-const secretManager = new SecretManagerServiceClient();
-
-//hardcoded
-const jwtLoginSecret = "ae280b2d0d3e3ca11caa15e3ba7ea172";
+const jwtLoginSecret = process.env.JWT_LOGIN_SECRET;
 console.log("jwtloginsecret",jwtLoginSecret)
-const jwtVerifySecret = "12d1c4dbfca93914dd8d9a3860115736";
-const emailCredentials = "touchpoint.devteam@gmail.com:TP_dev401";
+const jwtVerifySecret = process.env.JWT_VERIFY_SECRET;
 const emailObj = {
-    email: emailCredentials.split(':')[0],
-    password: emailCredentials.split(':')[1]
+    email: EMAIL_USERNAME,
+    password: EMAIL_PASSWORD
 }
 
 app.use(function(req, res, next) {
     req.jwtLoginSecret = jwtLoginSecret;
     req.jwtVerifySecret = jwtVerifySecret;
     req.emailCredentials = emailObj;
-    console.log("req",req.jwtLoginSecret)
-
     next();
-    console.log("inside app.use");
-
 });
 
-console.log("outside everything");
 
-mongo.connect("mongodb+srv://tp_user:rxZPvezy5OvGRwAE@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", async function(err) {
+mongo.connect(process.env.MONGO_DB_URI, async function(err) {
         //Add routes here
         if (err) {
           console.log("throwing error inside mongo connect");
@@ -76,7 +66,6 @@ mongo.connect("mongodb+srv://tp_user:rxZPvezy5OvGRwAE@cluster0.5vnfm.mongodb.net
         app.use("/api/auth", authRouter);
         app.use("/api/period", classPeriodRouter);
         app.use("/api/behavior", behaviorRouter); 
-        console.log("end of mongo connect");
     });
 
 module.exports = app;
