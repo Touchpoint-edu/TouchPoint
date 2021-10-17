@@ -88,8 +88,12 @@ export async function addStudent(periodId, studentName, studentEmail) {
 }
 
 export async function removeStudent(periodId, studentEmail) {
+    console.log("removeStudent email: " + studentEmail);
     const res = await fetch("/api/period/students/remove-one/" + periodId, {
         method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+          },
         body: JSON.stringify({
             email: studentEmail
         })

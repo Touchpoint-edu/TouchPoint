@@ -119,10 +119,11 @@ router.delete("/remove-one/:period_id", function(req,res){
       _id: new ObjectId(req.params['period_id'])
       //_id: req.params['period_id']
     }
-    console.log(req.params['period_id']);
+    console.log("periodId:" + req.params['period_id']);
+    console.log("email to delete: " + req.body["email"]);
     const update = {
-      $pull: { "students" : req.body }
-      //pull : {"student" : req.body.email}
+      //$pull: { "students" : req.body }
+      $pull : { students : {email: req.body["email"]}}//marks all students with given email for deletion (should only be 1 because student emails should be unique)
     }
     const options = { upsert: false };
     mongo.update("periods", query, update, options)
