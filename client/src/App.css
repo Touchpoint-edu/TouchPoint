@@ -112,6 +112,19 @@ html, body, #root {
   border: none;
 }
 
+.edit_period_button {
+  border: black;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  text-decoration: underline;
+  color:#40904C;
+  width: 15%;
+  height: 50%;
+  border: none;
+  background-color:transparent;
+  
+}
+
 .import_button {
   background-color: #40904C;
   font-weight: 500;
@@ -127,6 +140,7 @@ html, body, #root {
   font-weight: 600;
   color: #40904C;
   font-size: 25px;
+  display: inline-block;
 
 }
 .export_button {

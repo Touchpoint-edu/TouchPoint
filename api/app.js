@@ -47,7 +47,7 @@ const secretManager = new SecretManagerServiceClient();
 const jwtLoginSecret = "ae280b2d0d3e3ca11caa15e3ba7ea172";
 console.log("jwtloginsecret",jwtLoginSecret)
 const jwtVerifySecret = "12d1c4dbfca93914dd8d9a3860115736";
-const emailCredentials = "touchpoint.devteam@gmail.com:TP_dev401";
+const emailCredentials = "touchpoint.devteam@gmail.com:TP_dev401!";
 const emailObj = {
     email: emailCredentials.split(':')[0],
     password: emailCredentials.split(':')[1]
@@ -66,7 +66,7 @@ app.use(function(req, res, next) {
 
 console.log("outside everything");
 
-mongo.connect("mongodb+srv://tp_user:rxZPvezy5OvGRwAE@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", async function(err) {
+mongo.connect("mongodb+srv://tp_user:sNuxkqXZ0jzTbZaR@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority", async function(err) {
         //Add routes here
         if (err) {
           console.log("throwing error inside mongo connect");

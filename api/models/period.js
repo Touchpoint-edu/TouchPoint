@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 // }
 
 const periodSchema = new Schema({
+  name: String,
   columns: {
     type: Number,
     required: true

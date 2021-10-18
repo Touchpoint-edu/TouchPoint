@@ -97,6 +97,7 @@ router.post("/upload", async (req, res) => {
         // add period to database
         const period = {
             $set: {
+                name: "",
                 rows: currRow + 1,
                 columns: DEFAULT_COL_SIZE,
                 students: students,

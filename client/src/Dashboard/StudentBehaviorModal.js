@@ -235,7 +235,7 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                     </div>
                     <div className="d-flex justify-content-around">
                         <Button
-                            className="h-12 text-xl behavior_button mt-2 mb-2"
+                            className="h-12 text-xl behavior_button m-2 mr-2"
                             fullWidth={true}
                             type="submit"
                         >

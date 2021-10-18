@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Button from "../Components/Button";
 import UploadDownloadModal from "./UploadDownloadModal";
+import EditPeriodModal from "./EditPeriodModal";
 import { DataStoreContext, DashboardContext } from "../contexts.js";
 
 const NUM_OF_PERIODS = 8;
@@ -8,6 +9,7 @@ const NUM_OF_PERIODS = 8;
 export default function DashboardHeader({ students, curPeriodStudents, setStudents, periodsArray }) {
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
     const [modalVariant, setModalVariant] = useState("upload");
     const [periods, setPeriods] = useState([]);
     const { user, setUser, selectedPeriod, setSelectedPeriod} = useContext(DataStoreContext);
@@ -27,6 +29,12 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
         }
         setPeriods(periodOptions);
     }, []);
+
+    function openEditModal() {
+        setEditModalOpen(true);
+    }
+
+    const closeEditModal = () => setEditModalOpen(false);
     // const [students, setStudents] = useState();
     // const [periods, setPeriods] = useState([]);
     //uncomments and add to dashboardcontext provider
@@ -40,8 +48,14 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
         // <DashboardContext.Provider value = {{selectedPeriod, setSelectedPeriod, students, setStudents}}>
         <div className="d-flex justify-content-between">
             <div className="p-2 flex-grow-1">
-                <div className="mb-2">
-                    <span className="dash_title">{user}'s Classroom</span>
+                <div className="mb-2 action d-flex justify-content-flex-start mr-3">
+                    <span className="mr-4 dash_title">{user}'s Classroom</span>
+                    <Button className="edit_period_button" onClick={openEditModal} >
+                            Edit Period Name
+                    </Button>
+                </div>
+                <div>
+                    
                 </div>
                 <div className="d-flex flex-column justify-content-center">
                     <select
@@ -57,8 +71,12 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
                             );
                         })}
                     </select>
-
                 </div>
+                {/* <div className="mr-2">
+                    <Button className="mr-1 edit_period_button" onClick={() => openEditModal()} >
+                        Edit Period Name
+                    </Button>
+                </div> */}
             </div>
             <div>
                 <div className="mb-2">
@@ -84,6 +102,12 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
                     }
                     period={selectedPeriod}
                 />}
+
+                {editModalOpen && <EditPeriodModal 
+                    open={editModalOpen} 
+                    onClose={closeEditModal}
+                    period={selectedPeriod}
+                    />}
             </div>
 
         </div>
