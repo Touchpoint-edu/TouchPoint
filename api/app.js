@@ -36,15 +36,16 @@ dotenv.config();
 
 console.log(process.env.MONGO_DB_URI);
 
-const dbName = 'touchpoint';
-const dbUriSecretName = "projects/903480499371/secrets/MONGO_DB_URI/versions/latest";
-const jwtLoginSecretName = "projects/903480499371/secrets/JWT_LOGIN_SECRET/versions/latest";
-const jwtVerifySecretName = "projects/903480499371/secrets/JWT_VERIFY_SECRET/versions/latest";
-const emailCredentialsSecretName = "projects/903480499371/secrets/EMAIL_USERNAME/versions/latest";
-const emailCredentialsSecretPassword = "projects/903480499371/secrets/EMAIL_PASSWORD/versions/latest";
-const secretManager = new SecretManagerServiceClient();
-
-async function getSecret(name) {
+if (process.env.location === "production"){
+  console.log("in production")
+  const dbName = 'touchpoint';
+  const dbUriSecretName = "projects/903480499371/secrets/MONGO_DB_URI/versions/latest";
+  const jwtLoginSecretName = "projects/903480499371/secrets/JWT_LOGIN_SECRET/versions/latest";
+  const jwtVerifySecretName = "projects/903480499371/secrets/JWT_VERIFY_SECRET/versions/latest";
+  const emailCredentialsSecretName = "projects/903480499371/secrets/EMAIL_USERNAME/versions/latest";
+  const emailCredentialsSecretPassword = "projects/903480499371/secrets/EMAIL_PASSWORD/versions/latest";
+  const secretManager = new SecretManagerServiceClient();
+  async function getSecret(name) {
     const [version] = await secretManager.accessSecretVersion({
       name: name,
     });
@@ -54,30 +55,65 @@ async function getSecret(name) {
   }
 
 
-getSecret(dbUriSecretName).then(async (secret) => {
-    const jwtLoginSecret = await getSecret(jwtLoginSecretName);
-    const jwtVerifySecret = await getSecret(jwtVerifySecretName);
-    // const emailCredentials = await getSecret(emailCredentialsSecretName);
-    const emailObj = {
-        email: await getSecret(emailCredentialsSecretName),
-        password: await getSecret(emailCredentialsSecretPassword)
-    }
-    app.use(function(req, res, next) {
-        req.jwtLoginSecret = jwtLoginSecret;
-        req.jwtVerifySecret = jwtVerifySecret;
-        req.emailCredentials = emailObj;
-        next();
-    });
-    mongo.connect(secret, async function(err) {
-        //Add routes here
-        if (err) throw err;
-        app.use("/test", testRouter);
-        app.use("/api/auth", authRouter);
-        app.use("/api/period", classPeriodRouter);
-        app.use("/api/behavior", behaviorRouter); 
-    });
-});
-// put in the uri here haha
+  getSecret(dbUriSecretName).then(async (secret) => {
+      const jwtLoginSecret = await getSecret(jwtLoginSecretName);
+      const jwtVerifySecret = await getSecret(jwtVerifySecretName);
+      // const emailCredentials = await getSecret(emailCredentialsSecretName);
+      const emailObj = {
+          email: await getSecret(emailCredentialsSecretName),
+          password: await getSecret(emailCredentialsSecretPassword)
+      }
+      app.use(function(req, res, next) {
+          req.jwtLoginSecret = jwtLoginSecret;
+          req.jwtVerifySecret = jwtVerifySecret;
+          req.emailCredentials = emailObj;
+          next();
+      });
+      mongo.connect(secret, async function(err) {
+          //Add routes here
+          if (err) throw err;
+          app.use("/test", testRouter);
+          app.use("/api/auth", authRouter);
+          app.use("/api/period", classPeriodRouter);
+          app.use("/api/behavior", behaviorRouter); 
+      });
+  });
+  // put in the uri here haha
 
 
-module.exports = app;
+  module.exports = app;
+}
+else{
+  console.log("in local development")
+  const jwtLoginSecret = process.env.JWT_LOGIN_SECRET;
+  console.log("jwtloginsecret",jwtLoginSecret)
+  const jwtVerifySecret = process.env.JWT_VERIFY_SECRET;
+  const emailObj = {
+      email: process.env.EMAIL_USERNAME,
+      password: process.env.EMAIL_PASSWORD
+  }
+  
+  app.use(function(req, res, next) {
+      req.jwtLoginSecret = jwtLoginSecret;
+      req.jwtVerifySecret = jwtVerifySecret;
+      req.emailCredentials = emailObj;
+      next();
+  });
+  
+  
+  mongo.connect(process.env.MONGO_DB_URI, async function(err) {
+          //Add routes here
+          if (err) {
+            console.log("throwing error inside mongo connect");
+            throw err;
+          }
+          app.use("/test", testRouter);
+          app.use("/api/auth", authRouter);
+          app.use("/api/period", classPeriodRouter);
+          app.use("/api/behavior", behaviorRouter); 
+      });
+  
+  module.exports = app;
+}
+
+
