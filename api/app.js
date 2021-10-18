@@ -37,10 +37,11 @@ dotenv.config();
 console.log(process.env.MONGO_DB_URI);
 
 const dbName = 'touchpoint';
-const dbUriSecretName = "projects/903480499371/secrets/db-uri/versions/latest";
-const jwtLoginSecretName = "projects/903480499371/secrets/jwt-login-key/versions/latest";
-const jwtVerifySecretName = "projects/903480499371/secrets/jwt-verify-key/versions/latest";
-const emailCredentialsSecretName = "projects/903480499371/secrets/email-verification-credentials/versions/latest";
+const dbUriSecretName = "projects/903480499371/secrets/MONGO_DB_URI/versions/latest";
+const jwtLoginSecretName = "projects/903480499371/secrets/JWT_LOGIN_SECRET/versions/latest";
+const jwtVerifySecretName = "projects/903480499371/secrets/JWT_VERIFY_SECRET/versions/latest";
+const emailCredentialsSecretName = "projects/903480499371/secrets/EMAIL_USERNAME/versions/latest";
+const emailCredentialsSecretPassword = "projects/903480499371/secrets/EMAIL_PASSWORD/versions/latest";
 const secretManager = new SecretManagerServiceClient();
 
 async function getSecret(name) {
@@ -56,10 +57,10 @@ async function getSecret(name) {
 getSecret(dbUriSecretName).then(async (secret) => {
     const jwtLoginSecret = await getSecret(jwtLoginSecretName);
     const jwtVerifySecret = await getSecret(jwtVerifySecretName);
-    const emailCredentials = await getSecret(emailCredentialsSecretName);
+    // const emailCredentials = await getSecret(emailCredentialsSecretName);
     const emailObj = {
-        email: emailCredentials.split(':')[0],
-        password: emailCredentials.split(':')[1]
+        email: await getSecret(emailCredentialsSecretName),
+        password: await getSecret(emailCredentialsSecretPassword)
     }
     app.use(function(req, res, next) {
         req.jwtLoginSecret = jwtLoginSecret;
