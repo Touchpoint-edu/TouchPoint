@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import Button from "../Components/Button";
 import UploadDownloadModal from "./UploadDownloadModal";
 import { DataStoreContext, DashboardContext } from "../contexts.js";
+import Sample from '../Sample_Spreadsheet.xlsx';
 
 const NUM_OF_PERIODS = 8;
 
@@ -61,6 +62,9 @@ export default function DashboardHeader({ students, curPeriodStudents, setStuden
                 </div>
             </div>
             <div>
+                <div className="mb-2">
+                   <a href={Sample} download="CSV_Template.xlsx"> <Button className="mr-1 CVS_download_button" > CSV Template </Button> </a>
+                </div>
                 <div className="mb-2">
                     <Button className="mr-1 import_button" onClick={() => openModal("upload")} >
                         + Upload CSV

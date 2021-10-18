@@ -138,6 +138,21 @@ html, body, #root {
   border: none;
 
 }
+.CVS_download_button {
+  background-color: #BEBEBE;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color:white;
+  border: none;
+  height: 40%;
+  width: 100%;
+  margin-top: 5px;
+}
+.CVS_download_button:hover{
+  background-color: #949494;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 
 .google_button{
   font-weight: 500!important;
