@@ -1,3 +1,4 @@
 runtime: nodejs14
 service: api
-location: production
+env_variables:
+  location: "production"
