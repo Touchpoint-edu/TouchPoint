@@ -7,6 +7,7 @@ import {Form, Row, Col} from "react-bootstrap";
 import { FullScreen } from "react-full-screen";
 import { addBehavior } from "../api/behavior";
 import Modal from "../Components/Modal";
+import { removeStudent } from "../api/class_period.js";
 
 
 
@@ -145,7 +146,9 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
 
     function handleDeleteStudent(e) {
         //delete student from database
-
+        //e.preventDefault();//throws an error
+        console.log("frontend student email to delete: " + student.email);
+        removeStudent(curPeriod._id, student.email);
         onClose();
     }
 
@@ -183,6 +186,14 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
             resetText="Delete Student"
             id={id}
         >
+             <Button
+                            className="h-12 text-xl delete_button mt-2 mb-2"
+                            fullWidth={true}
+                            onClick={handleDeleteStudent}
+                            
+                        >
+                            Delete Student
+                    </Button> 
             <div className="mh-100 overflow-auto">
                 <div>
                     <div className="d-flex justify-content-center">
@@ -241,14 +252,14 @@ export default function StudentBehaviorModal({ open,  onClose, students, setStud
                         >
                             Submit Behavior
                     </Button>
-                        {/* <Button
-                            className="h-12 text-xl delete_button mt-2 mb-2"
+                    {/* <Button
+                            className="h-12 text-xl edit-button mt-2 mb-2"
                             fullWidth={true}
-                            onClick={handleDeleteStudent}
+                            onClick={}
                             disabled
                         >
-                            Delete Student
-                    </Button> */}
+                            Edit Student
+                    </Button>*/ }
                     </div>
                 </form>
             </div>
