@@ -10,7 +10,7 @@
     "formik": "^2.2.6",
     "gridstack": "^3.3.0",
     "js-cookie": "^2.2.1",
-    "mdbreact": "^5.1.0",
+    "mdbreact": "^5.0.2",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-bootstrap": "^1.5.1",

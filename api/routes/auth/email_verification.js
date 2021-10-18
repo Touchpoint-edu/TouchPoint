@@ -5,48 +5,6 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var mongo = require('../../models/mongo');
 
-const verifyUser = function(email, fname, verifyCredentials, jwtVerifySecret) {
-    // console.log("first");
-    // console.log(email); 
-
-const mailjet = require ('node-mailjet')
-.connect('c5b89163137fac91509e7fb9b158ae39', 'b12f7563a032f1f299d18056d6df5d0a') //need to hide this
-const request = mailjet
-.post("send", {'version': 'v3.1'})
-.request({
-  "Messages":[
-    {
-      "From": {
-        "Email": "touchpoint.devteam@gmail.com",
-        "Name": "TouchPoint"
-      },
-      "To": [
-        {
-          "Email": email,
-          "Name": fname
-        }
-      ],
-      "Subject": "Please Verify Your TouchPoint Account",
-      "TextPart": "Mailjet Email Verification",
-      "HTMLPart": "<h3>Please Verify Your Email Below </h3><br /><button type='button'>Click to Verify Email</button>", 
-      "CustomID": "EmailVerificationTest"
-    }
-  ]
-})
-request
-  .then((result) => {
-    console.log(result.body)
-  })
-  .catch((err) => {
-    console.log(err.statusCode)
-  })
-}
-module.exports = {
-  router: router,
-  verifyUser: verifyUser
-};
-
-/*
 //Getting fancy and trying to read html file 
 const fs = require('fs');
 const { promisify } = require('util');
@@ -146,4 +104,3 @@ module.exports = {
     router: router,
     verifyUser: verifyUser
 };
-*/
