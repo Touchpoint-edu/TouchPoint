@@ -14,7 +14,6 @@ var readline = require('readline');
 const fs = require('fs');
 const {google} = require('googleapis');
 const TOKEN_PATH = 'token.json';
-// var rl = readline.createInterface(process.stdin, process.stdout);
 
 
 const USER_COLLECTION_NAME = "users";
@@ -109,55 +108,6 @@ function sendError(res, status, message) {
     });
 }
 
-// function listCourses() {
-//     const auth = new OAuth2Client("903480499371-r4hhlvmocekr1h8igpqbstf7c75tj5uv.apps.googleusercontent.com", "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", "http://localhost:3000/");
-//     const classroom = google.classroom({version: 'v1', auth});
-//   classroom.courses.list({
-//     pageSize: 10,
-//   }, (err, res) => {
-//     if (err) return console.error('The API returned an error: ' + err);
-//     const courses = res.data.courses;
-//     if (courses && courses.length) {
-//       console.log('Courses:');
-//       courses.forEach((course) => {
-//         console.log(`${course.name} (${course.id})`);
-//       });
-//     } else {
-//       console.log('No courses found.');
-//     }
-//   });
-// }
-
-// function getNewToken(oAuth2Client) {
-//     const authUrl = oAuth2Client.generateAuthUrl({
-//       access_type: 'offline',
-//       scope: SCOPES,
-//     });
-//     console.log('Authorize this app by visiting this url:', authUrl);
-//     const rl = readline.createInterface({
-//       input: process.stdin,
-//       output: process.stdout,
-//     });
-
-//     router.get("/oauth/redirect", (req, res) => {
-//         const code = req.query.code;
-//         console.log('code', code);
-//         oAuth2Client.getToken(code, (err, token) => {
-//             if (err) return console.error('Error retrieving access token', err);
-//             oAuth2Client.setCredentials(token);
-//             // Store the token to disk for later program executions
-//             fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-//               if (err) return console.error(err);
-//               console.log('Token stored to', TOKEN_PATH);
-//               listCourses();
-//             });
-//           });
-//     });
-
-
-//   }
-  
-
 router.post("/google", async (req, res) => {
     const { token }  = req.body;
     // Verify Google Token
@@ -180,8 +130,6 @@ router.post("/google", async (req, res) => {
                 sendError(res, 400, ACCOUNT_EXISTS_ERROR_MSG);
             }
             else {
-                //const auth = new OAuth2Client("903480499371-r4hhlvmocekr1h8igpqbstf7c75tj5uv.apps.googleusercontent.com", "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", "http://localhost:3000/");
-                //getNewToken(auth);
                 mongo.insertOne(USER_COLLECTION_NAME, {
                     google_id: sub,
                     fname: given_name,
