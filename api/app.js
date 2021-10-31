@@ -20,6 +20,12 @@ const { access } = require('fs');
 
 var app = express();
 
+const MONGO_DB_URI="mongodb+srv://tp_user:sNuxkqXZ0jzTbZaR@cluster0.5vnfm.mongodb.net/touchpoint?retryWrites=true&w=majority"
+const JWT_LOGIN_SECRET="ae280b2d0d3e3ca11caa15e3ba7ea172"
+const JWT_VERIFY_SECRET="12d1c4dbfca93914dd8d9a3860115736]"
+const EMAIL_USERNAME="touchpoint.devteam@gmail.com"
+const EMAIL_PASSWORD="TP_dev401!"
+const TOUCHPOINT_ENVIRONMENT = "development"
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,18 +40,18 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 //PLAY AROUND HERE
 dotenv.config();
 
-console.log("process mongo db uri", process.env.MONGO_DB_URI);
+console.log("process mongo db uri", MONGO_DB_URI);
 
-console.log("TOUCHPOINT_ENVIRONMENT", process.env.TOUCHPOINT_ENVIRONMENT)
+console.log("TOUCHPOINT_ENVIRONMENT", TOUCHPOINT_ENVIRONMENT)
 
-if(process.env.TOUCHPOINT_ENVIRONMENT === "development"){
+if(TOUCHPOINT_ENVIRONMENT === "development"){
   console.log("in local development")
-  const jwtLoginSecret = process.env.JWT_LOGIN_SECRET;
+  const jwtLoginSecret = JWT_LOGIN_SECRET;
   console.log("jwtloginsecret",jwtLoginSecret)
-  const jwtVerifySecret = process.env.JWT_VERIFY_SECRET;
+  const jwtVerifySecret = JWT_VERIFY_SECRET;
   const emailObj = {
-      email: process.env.EMAIL_USERNAME,
-      password: process.env.EMAIL_PASSWORD
+      email: EMAIL_USERNAME,
+      password: EMAIL_PASSWORD
   }
   
   app.use(function(req, res, next) {
@@ -56,7 +62,7 @@ if(process.env.TOUCHPOINT_ENVIRONMENT === "development"){
   });
   
   
-  mongo.connect(process.env.MONGO_DB_URI, async function(err) {
+  mongo.connect(MONGO_DB_URI, async function(err) {
           //Add routes here
           if (err) {
             console.log("throwing error inside mongo connect");

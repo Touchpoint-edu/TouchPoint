@@ -15,6 +15,7 @@
     "fast-csv": "^4.3.6",
     "fs": "0.0.1-security",
     "google-auth-library": "^7.0.2",
+    "googleapis": "^39.2.0",
     "handlebars": "^4.7.7",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
