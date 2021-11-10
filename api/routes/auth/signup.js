@@ -20,12 +20,14 @@ const USER_COLLECTION_NAME = "users";
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-// Load client secrets from a local file.
+function readCredentials() {
+    // Load client secrets from a local file.
 fs.readFile('/Users/Kaitlyn/Documents/College/4/cs401/TouchPoint/credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Classroom API.
     authorize(JSON.parse(content), listCourses);
   });
+}
 
   /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -34,7 +36,7 @@ fs.readFile('/Users/Kaitlyn/Documents/College/4/cs401/TouchPoint/credentials.jso
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-    const {client_secret, client_id, redirect_uris} = credentials.installed;
+    const {client_secret, client_id, redirect_uris} = credentials.web;
     const oAuth2Client = new google.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
   
@@ -110,6 +112,7 @@ function sendError(res, status, message) {
 
 router.post("/google", async (req, res) => {
     const { token }  = req.body;
+    readCredentials();
     // Verify Google Token
     client.verifyIdToken({
         idToken: token,
