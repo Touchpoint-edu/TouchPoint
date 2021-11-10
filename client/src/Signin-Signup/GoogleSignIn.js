@@ -36,7 +36,9 @@ export default function GoogleSignIn({onClose, buttonText, dbFunc}) {
     return (
         <div className="text-center">
             <GoogleLogin
-                clientId={"903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com"}
+                clientId={"903480499371-0asb7fmnjuaet16han6ih2g8o3ph15qn.apps.googleusercontent.com"}
+                // original: 903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com
+                // gclass: 903480499371-r4hhlvmocekr1h8igpqbstf7c75tj5uv.apps.googleusercontent.com
                 buttonText={buttonText}
                 className = "google_button w-100"
                 onSuccess={handleLogin}
@@ -48,3 +50,6 @@ export default function GoogleSignIn({onClose, buttonText, dbFunc}) {
 
     );
 }
+
+// https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courses.readonly&response_type=code&client_id=903480499371-r4hhlvmocekr1h8igpqbstf7c75tj5uv.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&flowName=GeneralOAuthFlow
+// https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?redirect_uri=storagerelay%3A%2F%2Fhttp%2Flocalhost%3A3000%3Fid%3Dauth848392&response_type=permission%20id_token&scope=email%20profile%20openid&openid.realm&include_granted_scopes=true&client_id=903480499371-fqef1gdanvccql6q51hgffglp7i800le.apps.googleusercontent.com&ss_domain=http%3A%2F%2Flocalhost%3A3000&prompt&fetch_basic_profile=true&gsiwebsdk=2&flowName=GeneralOAuthFlow
