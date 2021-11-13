@@ -45,10 +45,15 @@ var headersArray = [
 router.post("/upload", async (req, res) => {
     try {
         const userPayload = verify.verify(req.cookies.c_user, req.jwtLoginSecret, res);
-        const file = req.body.uploadFile
+        let file = req.body.uploadFile;        
 
         let currRow = 0, currCol = 0;
         let students = [];
+
+        // detect if there is a new line at the end of the file and remove it (happens on windows when an excel is saved as a csv)
+        if(file[file.length-1].length === 1){
+            file.splice(file.length-1, 1);
+        }
 
         // find where the student list starts
         // assumes it starts after the row with 
@@ -74,7 +79,7 @@ router.post("/upload", async (req, res) => {
             // file format error
             if (file[i].length != 4) {
                 error.sendError(res, 400, CSV_FORMAT_ERROR_MSG)
-                console.log("length isn't 4")
+                console.log("There are not exactly 4 columns")
                 return
             }
 
